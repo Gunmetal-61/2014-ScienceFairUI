@@ -4,10 +4,34 @@
  */
 package com.mycompany.soundsearch200;
 
+import javax.servlet.annotation.WebServlet;
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.TextField;
+import com.google.gwt.user.client.ui.AbsolutePanel; 
+import static com.vaadin.server.Sizeable.UNITS_PIXELS;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Audio;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.ProgressBar;
+import java.io.File;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import static com.vaadin.server.Sizeable.UNITS_PIXELS;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Audio;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Image;
@@ -17,12 +41,23 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import java.io.File;
+import javax.servlet.annotation.WebServlet;
 
 /**
  *
  * @author Mitchell
  */
-public class songresultpage {
+//@Theme("mytheme")
+//@SuppressWarnings("serial")
+
+public class songresultpage extends UI{
+    
+//    @WebServlet(value = "/*", asyncSupported = true)
+//    @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, widgetset = "com.mycompany.soundsearch200.AppWidgetSet")
+//    public static class Servlet extends VaadinServlet {
+//    }
+//
+//    @Override
     protected void init(VaadinRequest request) {
         final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
@@ -72,7 +107,7 @@ public class songresultpage {
         
         Button button = new Button("Click Me");
         button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent event) {
+            public void buttonClick(ClickEvent event) {
                 boardlayout.addComponent(new Label("Thank you for clicking"));
             }
         });
@@ -81,7 +116,7 @@ public class songresultpage {
         FileResource songfile = new FileResource(new File("C:\\Users\\Mitchell\\Documents\\NetBeansProjects\\20141030SoundSearch200\\src\\main\\webapp\\WEB-INF\\audio\\13 Immortal Empire.wav"));
         Audio song = new Audio("",songfile);
         //song.setAutoplay(true);
-        //song.setShowControls(true);
+        song.setShowControls(true);
     //    song.
         
         //ADD TO VERTICAL LAYOUT WITHIN BOARD
@@ -96,10 +131,7 @@ public class songresultpage {
         boardlayout.addComponent(lyricslink);
         boardlayout.addComponent(waveform);
         boardlayout.addComponent(song);
-        
-    }
-
-    private void setContent(VerticalLayout layout) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        songresultpage run = new songresultpage();
+        run.init(request);
     }
 }
