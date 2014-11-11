@@ -1,0 +1,16 @@
+/* 
+    Document   : marginsettings
+    Created on : Nov 10, 2014, 10:45:15 AM
+    Author     : Mitchell
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+#boardlayout {
+    margin-left: 100px;
+}
+    

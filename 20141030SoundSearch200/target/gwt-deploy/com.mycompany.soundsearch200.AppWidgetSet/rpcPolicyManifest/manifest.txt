@@ -1,0 +1,2 @@
+# Module com.mycompany.soundsearch200.AppWidgetSet
+# RPC service class, partial path of RPC policy file
