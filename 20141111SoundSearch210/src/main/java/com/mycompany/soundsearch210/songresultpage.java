@@ -4,6 +4,7 @@
  */
 package com.mycompany.soundsearch210;
 
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
@@ -28,16 +29,103 @@ public class songresultpage {
         grid.setHeight(1080, UNITS_PIXELS);
         grid.setWidth(1366, UNITS_PIXELS);
         
-        AbsoluteLayout ingrid = new AbsoluteLayout();
+        final AbsoluteLayout ingrid = new AbsoluteLayout();
         ingrid.setHeight(1080, UNITS_PIXELS);
         ingrid.setWidth(960, UNITS_PIXELS);
         
         grid.addComponent(ingrid, "left: 203px; top: 0px;");
         
+        //Universal Menu Bar
+        final Button nav0 = new Button();
+        final Button nav1 = new Button();
+        final Button nav2 = new Button();
+        final Button nav3 = new Button();
+        final Button nav4 = new Button();
+        final Button nav5 = new Button();
+        final Button nav6 = new Button();
+        final Button nav7 = new Button();
+        
+//        MyVaadinUI primary = new AbsoluteLayout(primary);
+        nav0.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+
+            }
+        });
+        
+        nav1.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+        
+        nav2.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+        
+        nav3.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+        
+        nav4.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+        
+        nav5.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+        
+        nav6.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+        
+        nav7.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
+                AbsoluteLayout primary = new AbsoluteLayout();
+                primary = searchresultpage.drawPage(primary);
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+        
+        ingrid.addComponent(nav0, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav1, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav2, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav3, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav4, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav5, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav6, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav7, "left: 0px; top: 0px;");
+        
+        
+        
+        
         //LABELS
         //Song Title
         Label songtitle = new Label("One More Night");
-        //Artist of Song
+        //Artist of Song0
         Label songartist = new Label("Maroon 5");
         //Year Song was Released
         Label songyear = new Label("2011");

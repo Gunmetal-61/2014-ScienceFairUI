@@ -29,6 +29,10 @@ import com.vaadin.server.ExternalResource;
 public class MyVaadinUI extends UI
 {
 
+    MyVaadinUI(MyVaadinUI primary) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, widgetset = "com.mycompany.soundsearch210.AppWidgetSet")
     public static class Servlet extends VaadinServlet {
