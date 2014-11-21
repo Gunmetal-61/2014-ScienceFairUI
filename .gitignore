@@ -214,5 +214,8 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+<<<<<<< HEAD
 /20141111SoundSearch210/target/
 /20141120SoundSearch220/target/
+=======
+>>>>>>> parent of cd29649... 2014.11.14 Meeting Update
