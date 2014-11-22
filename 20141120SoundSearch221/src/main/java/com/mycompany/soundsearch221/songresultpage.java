@@ -1,18 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.soundsearch220;
+
+package com.mycompany.soundsearch221;
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import static com.vaadin.server.Sizeable.UNITS_PIXELS;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Audio;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import java.io.File;
 
@@ -20,35 +22,23 @@ import java.io.File;
  *
  * @author Mitchell
  */
-public class searchresultpage {
+public class songresultpage {
     public static AbsoluteLayout drawPage(final AbsoluteLayout primary){
         
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1080, UNITS_PIXELS);
         grid.setWidth(1366, UNITS_PIXELS);
         
-        AbsoluteLayout ingrid = new AbsoluteLayout();
+        final AbsoluteLayout ingrid = new AbsoluteLayout();
         ingrid.setHeight(1080, UNITS_PIXELS);
         ingrid.setWidth(960, UNITS_PIXELS);
         
         grid.addComponent(ingrid, "left: 203px; top: 0px;");
         
-        //SIDEBAR
-        Panel sidebar = new Panel();
-        sidebar.setHeight(1080, UNITS_PIXELS);
-        sidebar.setWidth(260, UNITS_PIXELS);
- //       sidebar.addStyleName(sidebur);
-        ingrid.addComponent(sidebar, "left: 0px; top: 0px;");
-        
-        //MODULAR RESULT PANELS
-        Panel modular = new Panel();
-        modular.setHeight(1080, UNITS_PIXELS);
-        modular.setWidth(700, UNITS_PIXELS);
-                
         //LABELS
         //Song Title
         Label songtitle = new Label("One More Night");
-        //Artist of Song
+        //Artist of Song0
         Label songartist = new Label("Maroon 5");
         //Year Song was Released
         Label songyear = new Label("2011");
@@ -72,8 +62,7 @@ public class searchresultpage {
         albumimage.setHeight(200, UNITS_PIXELS);
         
         //Waveform Graph Image
-//        FileResource waveformf = new FileResource(new File("C:\\Users\\Mitchell\\Documents\\GitHub\\2014-ScienceFairUI\\20141111SoundSearch210\\src\\main\\webapp\\WEB-INF\\images\\stock graph image jpeg.jpg"));
-        FileResource waveformf = new FileResource(new File("R:\\Users\\Mitchell\\Documents\\GitHub\\2014-ScienceFairUI\\20141111SoundSearch210\\src\\main\\webapp\\WEB-INF\\images\\stock graph image jpeg.jpg"));
+        FileResource waveformf = new FileResource(new File("C:\\Users\\Mitchell\\Documents\\GitHub\\2014-ScienceFairUI\\20141111SoundSearch210\\src\\main\\webapp\\WEB-INF\\images\\stock graph image jpeg.jpg"));
         
         Image waveform = new Image("",waveformf);
         waveform.setWidth(900, UNITS_PIXELS);
@@ -127,3 +116,4 @@ public class searchresultpage {
         return ingrid;
     }
 }
+
