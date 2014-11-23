@@ -7,6 +7,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 
 @Theme("mytheme")
@@ -25,8 +26,11 @@ public class MyVaadinUI extends UI
         
         
 
-        primary = homepage.drawPage(primary);
+//        primary = homepage.drawPage(primary);
+        homepage.drawPage(primary);
         setContent(primary);
+        
+        primary.addComponent(new Label("Hello"), "left: 100px; top: 100px;");
     }
 
 }

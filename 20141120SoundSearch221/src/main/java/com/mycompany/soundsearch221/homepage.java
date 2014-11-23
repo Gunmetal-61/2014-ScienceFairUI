@@ -15,7 +15,8 @@ import com.vaadin.ui.Button;
  * @author Mitchell
  */
 public class homepage {
-    public static AbsoluteLayout drawPage(final AbsoluteLayout primary){
+//    public static AbsoluteLayout drawPage(final AbsoluteLayout primary){
+    public static void drawPage(final AbsoluteLayout primary){
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1080, UNITS_PIXELS);
         grid.setWidth(1366, UNITS_PIXELS);
@@ -24,7 +25,8 @@ public class homepage {
         ingrid.setHeight(200, UNITS_PIXELS);
         ingrid.setWidth(960, UNITS_PIXELS);
 
-        grid.addComponent(ingrid, "left: 203px; top: 0px;"); 
+//        grid.addComponent(ingrid, "left: 203px; top: 0px;"); 
+        primary.addComponent(ingrid, "left: 203px; top: 0px;"); 
         //Universal Menu Bar
         final Button nav0 = new Button();
         final Button nav1 = new Button();
@@ -47,24 +49,24 @@ public class homepage {
         nav1.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent nav0e) {
                 AbsoluteLayout primary = new AbsoluteLayout();
-                primary = aboutthisproject.drawPage(primary);
+                primary = searchresultpage.drawPage(primary);
                 ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
         nav2.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary = new AbsoluteLayout();
-                primary = searchresultpage.drawPage(primary);
-                ingrid.addComponent(primary, "left: 0px; top: 600px");
+                AbsoluteLayout primary3 = new AbsoluteLayout();
+                primary3 = searchresultpage.drawPage(primary3);
+                ingrid.addComponent(primary3, "left: 0px; top: 600px");
             }
         });
 
         nav3.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary = new AbsoluteLayout();
-                primary = songresultpage.drawPage(primary);
-                ingrid.addComponent(primary, "left: 0px; top: 600px");
+                AbsoluteLayout primary2 = new AbsoluteLayout();
+                primary2 = songresultpage.drawPage(primary2);
+                ingrid.addComponent(primary2, "left: 0px; top: 600px");
             }
         });
 
@@ -109,6 +111,6 @@ public class homepage {
         //ingrid.addComponent(nav6, "left: 0px; top: 0px;");
         //ingrid.addComponent(nav7, "left: 0px; top: 0px;");
 
-        return ingrid;
+  //      return ingrid;
     }
 }
