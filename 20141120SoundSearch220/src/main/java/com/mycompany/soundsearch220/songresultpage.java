@@ -50,7 +50,7 @@ public class songresultpage {
             public void buttonClick(Button.ClickEvent nav0e) {
                 AbsoluteLayout primary = new AbsoluteLayout();
                 primary = searchresultpage.drawPage(primary);
-
+                ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
         

@@ -31,6 +31,7 @@ public class searchresultpage {
         ingrid.setHeight(1080, UNITS_PIXELS);
         ingrid.setWidth(960, UNITS_PIXELS);
         
+        primary.addComponent(grid);
         grid.addComponent(ingrid, "left: 203px; top: 0px;");
         
         //SIDEBAR

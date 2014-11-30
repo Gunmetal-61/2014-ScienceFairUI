@@ -28,88 +28,87 @@ public class homepage {
 //        grid.addComponent(ingrid, "left: 203px; top: 0px;"); 
         primary.addComponent(ingrid, "left: 203px; top: 0px;"); 
         //Universal Menu Bar
-        final Button nav0 = new Button();
-        final Button nav1 = new Button();
-        final Button nav2 = new Button("Search Results");
-        final Button nav3 = new Button("Song Results");
-        final Button nav4 = new Button();
-        final Button nav5 = new Button();
+        final Button aboutthisprojectbutton = new Button();
+        final Button aboutusbutton = new Button();
+        final Button advancedsearchpagebutton = new Button("Search Results");
+        final Button homepagebutton = new Button();
+        final Button searchresultpagebutton = new Button();
+        final Button songresultpagebutton = new Button("Song Results");
         final Button nav6 = new Button();
         final Button nav7 = new Button();
 
-    //        MyVaadinUI primary = new AbsoluteLayout(primary);
-//        nav0.addClickListener(new Button.ClickListener() {
-//            public void buttonClick(Button.ClickEvent nav0e) {
+        aboutthisprojectbutton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav0e) {
 //                AbsoluteLayout primary = new AbsoluteLayout();
-//                primary = aboutthisproject.drawPage(primary);
-//
-//            }
-//        });
-
-        nav1.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary = new AbsoluteLayout();
-                primary = searchresultpage.drawPage(primary);
-                ingrid.addComponent(primary, "left: 0px; top: 600px");
+                aboutthisproject.drawPage(primary);
+//                ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
-        nav2.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary3 = new AbsoluteLayout();
-                primary3 = searchresultpage.drawPage(primary3);
-                ingrid.addComponent(primary3, "left: 0px; top: 600px");
+        aboutusbutton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav1e) {
+//                AbsoluteLayout primary = new AbsoluteLayout();
+                searchresultpage.drawPage(primary);
+//                ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
-        nav3.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary2 = new AbsoluteLayout();
-                primary2 = songresultpage.drawPage(primary2);
-                ingrid.addComponent(primary2, "left: 0px; top: 600px");
+        advancedsearchpagebutton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav2e) {
+//                AbsoluteLayout primary = new AbsoluteLayout();
+                searchresultpage.drawPage(primary);
+//                ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
-        nav4.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary = new AbsoluteLayout();
-                primary = searchresultpage.drawPage(primary);
-                ingrid.addComponent(primary, "left: 0px; top: 600px");
+        homepagebutton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav3e) {
+//                AbsoluteLayout primary = new AbsoluteLayout();
+                songresultpage.drawPage(primary);
+//                ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
-        nav5.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary = new AbsoluteLayout();
-                primary = searchresultpage.drawPage(primary);
+        searchresultpagebutton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav4e) {
+//                AbsoluteLayout primary = new AbsoluteLayout();
+                searchresultpage.drawPage(primary);
+//                ingrid.addComponent(primary, "left: 0px; top: 600px");
+            }
+        });
+
+        songresultpagebutton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent nav5e) {
+//                AbsoluteLayout primary = new AbsoluteLayout();
+                searchresultpage.drawPage(primary);
                 ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
         nav6.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary = new AbsoluteLayout();
-                primary = searchresultpage.drawPage(primary);
+            public void buttonClick(Button.ClickEvent nav6e) {
+//                AbsoluteLayout primary = new AbsoluteLayout();
+                searchresultpage.drawPage(primary);
                 ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
         nav7.addClickListener(new Button.ClickListener() {
-            public void buttonClick(Button.ClickEvent nav0e) {
-                AbsoluteLayout primary = new AbsoluteLayout();
-                primary = searchresultpage.drawPage(primary);
+            public void buttonClick(Button.ClickEvent nav7e) {
+//                AbsoluteLayout primary = new AbsoluteLayout();
+                searchresultpage.drawPage(primary);
                 ingrid.addComponent(primary, "left: 0px; top: 600px");
             }
         });
 
-        //ingrid.addComponent(nav0, "left: 0px; top: 0px;");
-        //ingrid.addComponent(nav1, "left: 0px; top: 0px;");
-        ingrid.addComponent(nav2, "left: 300px; top: 0px;");
-        ingrid.addComponent(nav3, "left: 380px; top: 0px;");
-        //ingrid.addComponent(nav4, "left: 0px; top: 0px;");
-        //ingrid.addComponent(nav5, "left: 0px; top: 0px;");
-        //ingrid.addComponent(nav6, "left: 0px; top: 0px;");
-        //ingrid.addComponent(nav7, "left: 0px; top: 0px;");
+        ingrid.addComponent(aboutthisprojectbutton, "left: 0px; top: 0px;");
+        ingrid.addComponent(aboutusbutton, "left: 0px; top: 0px;");
+        ingrid.addComponent(advancedsearchpagebutton, "left: 300px; top: 0px;");
+        ingrid.addComponent(homepagebutton, "left: 380px; top: 0px;");
+        ingrid.addComponent(searchresultpagebutton, "left: 0px; top: 0px;");
+        ingrid.addComponent(songresultpagebutton, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav6, "left: 0px; top: 0px;");
+        ingrid.addComponent(nav7, "left: 0px; top: 0px;");
 
   //      return ingrid;
     }

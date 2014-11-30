@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.mycompany.soundsearch221;
+package com.mycompany.soundsearch230;
 
 import com.vaadin.ui.AbsoluteLayout;
 
@@ -12,9 +12,9 @@ import com.vaadin.ui.AbsoluteLayout;
  *
  * @author Mitchell
  */
-public class aboutthisproject {
-    public static AbsoluteLayout drawPage(final AbsoluteLayout primary){
-        
-        return primary;
+public class AdvancedSearchPage {
+    public static AbsoluteLayout drawAdvancedSPage(){
+        AbsoluteLayout grid = new AbsoluteLayout();
+        return grid;
     }
 }
