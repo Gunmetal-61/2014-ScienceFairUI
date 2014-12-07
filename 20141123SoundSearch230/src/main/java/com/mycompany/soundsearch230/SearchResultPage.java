@@ -51,10 +51,10 @@ public class SearchResultPage {
         
         
         
-        Panel serp = new Panel();
-        serp.setHeight(160, UNITS_PIXELS);
-        serp.setWidth(760, UNITS_PIXELS);
-        ingrid.addComponent(serp, "left: 200px; top: 160px;");
+//        Panel serp = new Panel();
+//        serp.setHeight(160, UNITS_PIXELS);
+//        serp.setWidth(760, UNITS_PIXELS);
+//        ingrid.addComponent(serp, "left: 200px; top: 160px;");
         
         
         
@@ -62,17 +62,17 @@ public class SearchResultPage {
         
 ////////////////////////////////////////////////////////////////////////////////
 //      RESULT TABLE
-        final Table table = new Table();
-        table.addContainerProperty("Song Name", String.class, null);
-        table.addContainerProperty("Artist", String.class, null);
-        table.addContainerProperty("Album", String.class, null);
-        table.addContainerProperty("Length", String.class, null);
-        table.addContainerProperty("Genre", String.class, null);
-        table.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 1);
-        table.addItem(new Object[]{"Hall of Fame", "The Script", "#3", "", ""}, 2);
-        table.addItem(new Object[]{"We are the Champions", "Queen", "Top Hits", "", ""}, 3);
+        final Table resultTable = new Table();
+        resultTable.addContainerProperty("Song Name", String.class, null);
+        resultTable.addContainerProperty("Artist", String.class, null);
+        resultTable.addContainerProperty("Album", String.class, null);
+        resultTable.addContainerProperty("Length", String.class, null);
+        resultTable.addContainerProperty("Genre", String.class, null);
+        resultTable.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 1);
+        resultTable.addItem(new Object[]{"Hall of Fame", "The Script", "#3", "", ""}, 2);
+        resultTable.addItem(new Object[]{"We are the Champions", "Queen", "Top Hits", "", ""}, 3);
         
-        
+        ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
         
         
         

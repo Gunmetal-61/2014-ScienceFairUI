@@ -27,6 +27,27 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import java.io.File;
+import java.sql.SQLException;
+import Database.DatabaseAccess;
+import java.io.BufferedInputStream;  
+import java.io.File;
+import java.io.FileInputStream;  
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 
 @Theme("mytheme")
 @SuppressWarnings("serial")
@@ -147,16 +168,65 @@ public class MyVaadinUI extends UI
  
 
 ////////////////////////////////////////////////////////////////////////////////
-button.addClickListener(new Button.ClickListener() {
+        
+        
+        static File[] allwavfiles;
+        static File songfile = null;
+        Clip clip = null;
+        boolean x = true;
+        Thread thread = new Thread(new thread1());
+        long playloc = 0;
+        static DatabaseAccess dba = new DatabaseAccess();
+        static Connection con = dba.startconnection("orcl7");
+        static AudioWaveformCreator awc = new AudioWaveformCreator();
+        DBRow[] result = new DBRow[25];
+        int[] subsong = new int[31];
+        String lyricsr = "";
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 
                 String searchQuery = searchBox.getValue();
                 for(int i = 0; i<10; i++){
                     if(searchQuery.equals (anArray[i])){
                         //table.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 4);
-//                        toolbar.addComponent(new Label("Thank you for clicking"));
+//                      
+                        try{
+                            result = dba.getSearchResults(con,moods,seconds,titleText,artistText,moodlevel);
+                        } catch (SQLException e){
+                            e.printStackTrace();
+                        }
+                        
+                        toolbar.addComponent(new Label("Thank you for clicking"));
                         SearchResultPage searchResultPage = new SearchResultPage();
-                        final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
+                        AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
                         primary.addTab(SeaRPage, "Search Results");  
                     }
                     else { 
