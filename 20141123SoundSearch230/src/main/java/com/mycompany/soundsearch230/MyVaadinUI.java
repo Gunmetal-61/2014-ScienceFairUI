@@ -1,5 +1,6 @@
 package com.mycompany.soundsearch230;
 
+import Database.DBRow;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -170,18 +171,18 @@ public class MyVaadinUI extends UI
 ////////////////////////////////////////////////////////////////////////////////
         
         
-        static File[] allwavfiles;
-        static File songfile = null;
-        Clip clip = null;
-        boolean x = true;
-        Thread thread = new Thread(new thread1());
-        long playloc = 0;
-        static DatabaseAccess dba = new DatabaseAccess();
-        static Connection con = dba.startconnection("orcl7");
-        static AudioWaveformCreator awc = new AudioWaveformCreator();
-        DBRow[] result = new DBRow[25];
-        int[] subsong = new int[31];
-        String lyricsr = "";
+//        static File[] allwavfiles;
+//        static File songfile = null;
+//        Clip clip = null;
+//        boolean x = true;
+//        Thread thread = new Thread(new thread1());
+//        long playloc = 0;
+//        static DatabaseAccess dba = new DatabaseAccess();
+
+//        static AudioWaveformCreator awc = new AudioWaveformCreator();
+//        DBRow[] result = new DBRow[25];
+//        int[] subsong = new int[31];
+//        String lyricsr = "";
         
         
         
@@ -216,13 +217,13 @@ public class MyVaadinUI extends UI
                 String searchQuery = searchBox.getValue();
                 for(int i = 0; i<10; i++){
                     if(searchQuery.equals (anArray[i])){
-                        //table.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 4);
+//                        resultTable.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 4);
 //                      
-                        try{
-                            result = dba.getSearchResults(con,moods,seconds,titleText,artistText,moodlevel);
-                        } catch (SQLException e){
-                            e.printStackTrace();
-                        }
+//                        try{
+//                            result = dba.getSearchResults(con,moods,seconds,titleText,artistText,moodlevel);
+//                        } catch (SQLException e){
+//                            e.printStackTrace();
+//                        }
                         
                         toolbar.addComponent(new Label("Thank you for clicking"));
                         SearchResultPage searchResultPage = new SearchResultPage();
