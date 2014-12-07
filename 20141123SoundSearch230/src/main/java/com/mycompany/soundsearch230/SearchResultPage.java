@@ -72,7 +72,7 @@ public class SearchResultPage {
         table.addItem(new Object[]{"Hall of Fame", "The Script", "#3", "", ""}, 2);
         table.addItem(new Object[]{"We are the Champions", "Queen", "Top Hits", "", ""}, 3);
         
-        
+        ingrid.addComponent(table,"left: 200px; top: 0px;");
         
         
         
