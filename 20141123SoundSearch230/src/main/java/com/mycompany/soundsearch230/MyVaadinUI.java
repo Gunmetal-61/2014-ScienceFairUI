@@ -206,6 +206,14 @@ public class MyVaadinUI extends UI
         
         
         
+        SearchResultPage searchResultPage = new SearchResultPage();
+        AbsoluteLayout SeaRPage;
+        try {
+            SeaRPage = searchResultPage.drawSearchRPage();
+            primary.addTab(SeaRPage, "Search Results");  
+        } catch (SQLException ex) {
+            Logger.getLogger(MyVaadinUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
         
@@ -226,9 +234,8 @@ public class MyVaadinUI extends UI
 //                        }
                         
                         toolbar.addComponent(new Label("Thank you for clicking"));
-                        SearchResultPage searchResultPage = new SearchResultPage();
-                        AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
-                        primary.addTab(SeaRPage, "Search Results");  
+                       
+
                     }
                     else { 
                     }

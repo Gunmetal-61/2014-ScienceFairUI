@@ -22,14 +22,15 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import java.io.File;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  *
  * @author Mitchell
  */
 public class SearchResultPage {
-    public static AbsoluteLayout drawSearchRPage(){
-
+    public static AbsoluteLayout drawSearchRPage() throws SQLException{
+        
 ////////////////////////////////////////////////////////////////////////////////
         //BASE PANELS/LAYOUTS: 
 //        CssLayout grid = new AbsoluteLayout();
@@ -65,50 +66,75 @@ public class SearchResultPage {
         
 ////////////////////////////////////////////////////////////////////////////////
 //      RESULT TABLE
-        Connection con = DatabaseAccess.startconnection("orcl7");
-        DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, null, 0, "", "", 0);
+        int[] anArray;
         
-        final Table resultTable = new Table();
-        resultTable.addContainerProperty("Song Name", String.class, null);
-        resultTable.addContainerProperty("Artist", String.class, null);
-        resultTable.addContainerProperty("Album", String.class, null);
-        resultTable.addContainerProperty("Length", String.class, null);
-        resultTable.addContainerProperty("Genre", String.class, null);
-        resultTable.addContainerProperty("Mood", int.class, null);
+        anArray = new int[7];
+        anArray[0] = 1;
+        anArray[1] = 2;
+        anArray[2] = 3;
+        anArray[3] = 4;
+        anArray[4] = 5;
+        anArray[5] = 6;
+        anArray[6] = 7;
+        
+        
+        Connection con = DatabaseAccess.startconnection("orcl"); 
+        DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, anArray, 0, "", "", 0);
+//        DBRow[] resultFeed(con, int[] mood, int length, String name, String artist) throws SQLException{
+        
+            
 
-        resultTable.addItem(new Object[]{resultFeed[0].name, resultFeed[0].artist, "Top Hits", "", "", resultFeed[0].mood}, 1);
-        resultTable.addItem(new Object[]{resultFeed[1].name, resultFeed[1].artist, "Top Hits", "", "", resultFeed[1].mood}, 2);
-        resultTable.addItem(new Object[]{resultFeed[2].name, resultFeed[2].artist, "Top Hits", "", "", resultFeed[2].mood}, 3);
-        resultTable.addItem(new Object[]{resultFeed[3].name, resultFeed[3].artist, "Top Hits", "", "", resultFeed[3].mood}, 4);
-        resultTable.addItem(new Object[]{resultFeed[4].name, resultFeed[4].artist, "Top Hits", "", "", resultFeed[4].mood}, 5);
-        resultTable.addItem(new Object[]{resultFeed[5].name, resultFeed[5].artist, "Top Hits", "", "", resultFeed[5].mood}, 6);
-        resultTable.addItem(new Object[]{resultFeed[6].name, resultFeed[6].artist, "Top Hits", "", "", resultFeed[6].mood}, 7);
-        resultTable.addItem(new Object[]{resultFeed[7].name, resultFeed[7].artist, "Top Hits", "", "", resultFeed[7].mood}, 8);
-        resultTable.addItem(new Object[]{resultFeed[8].name, resultFeed[8].artist, "Top Hits", "", "", resultFeed[8].mood}, 9);
-        resultTable.addItem(new Object[]{resultFeed[9].name, resultFeed[9].artist, "Top Hits", "", "", resultFeed[9].mood}, 10);
-        resultTable.addItem(new Object[]{resultFeed[10].name, resultFeed[10].artist, "Top Hits", "", "", resultFeed[10].mood}, 11);
-        resultTable.addItem(new Object[]{resultFeed[11].name, resultFeed[11].artist, "Top Hits", "", "", resultFeed[11].mood}, 12);
-        resultTable.addItem(new Object[]{resultFeed[12].name, resultFeed[12].artist, "Top Hits", "", "", resultFeed[12].mood}, 13);
-        resultTable.addItem(new Object[]{resultFeed[13].name, resultFeed[13].artist, "Top Hits", "", "", resultFeed[13].mood}, 14);
-        resultTable.addItem(new Object[]{resultFeed[14].name, resultFeed[14].artist, "Top Hits", "", "", resultFeed[14].mood}, 15);
-        resultTable.addItem(new Object[]{resultFeed[15].name, resultFeed[15].artist, "Top Hits", "", "", resultFeed[15].mood}, 16);
-        resultTable.addItem(new Object[]{resultFeed[16].name, resultFeed[16].artist, "Top Hits", "", "", resultFeed[16].mood}, 17);
-        resultTable.addItem(new Object[]{resultFeed[17].name, resultFeed[17].artist, "Top Hits", "", "", resultFeed[17].mood}, 18);
-        resultTable.addItem(new Object[]{resultFeed[18].name, resultFeed[18].artist, "Top Hits", "", "", resultFeed[18].mood}, 19);
-        resultTable.addItem(new Object[]{resultFeed[19].name, resultFeed[19].artist, "Top Hits", "", "", resultFeed[19].mood}, 20);
-        resultTable.addItem(new Object[]{resultFeed[20].name, resultFeed[20].artist, "Top Hits", "", "", resultFeed[20].mood}, 21);
-        resultTable.addItem(new Object[]{resultFeed[21].name, resultFeed[21].artist, "Top Hits", "", "", resultFeed[21].mood}, 22);
-        resultTable.addItem(new Object[]{resultFeed[22].name, resultFeed[22].artist, "Top Hits", "", "", resultFeed[22].mood}, 23);
-        resultTable.addItem(new Object[]{resultFeed[23].name, resultFeed[23].artist, "Top Hits", "", "", resultFeed[23].mood}, 24);
-        resultTable.addItem(new Object[]{resultFeed[24].name, resultFeed[24].artist, "Top Hits", "", "", resultFeed[24].mood}, 25);
-        resultTable.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 26);
-        resultTable.addItem(new Object[]{"Hall of Fame", "The Script", "#3", "", ""}, 27);
-        resultTable.addItem(new Object[]{"We are the Champions", "Queen", "Top Hits", "", ""}, 28);
+    //        int fdj = mood;
+    //        int dfj = length;
+    //        String gjd = name;
+    //        String gf = artist;
 
-        ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
-        
-    
-        
+//            artist = null;
+//            name = null;
+//            mood = 0;
+//            length = 0;
+            
+//            DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, anArray, mood, name, name, mood);
+            
+            final Table resultTable = new Table();
+            resultTable.addContainerProperty("Song Name", String.class, null);
+            resultTable.addContainerProperty("Artist", String.class, null);
+            resultTable.addContainerProperty("Album", String.class, null);
+            resultTable.addContainerProperty("Length", String.class, null);
+            resultTable.addContainerProperty("Genre", String.class, null);
+            resultTable.addContainerProperty("Mood", int.class, null);
+
+
+            resultTable.addItem(new Object[]{resultFeed[0].name, resultFeed[0].artist, "Top Hits", "", "", resultFeed[0].mood}, 1);
+            resultTable.addItem(new Object[]{resultFeed[1].name, resultFeed[1].artist, "Top Hits", "", "", resultFeed[1].mood}, 2);
+            resultTable.addItem(new Object[]{resultFeed[2].name, resultFeed[2].artist, "Top Hits", "", "", resultFeed[2].mood}, 3);
+            resultTable.addItem(new Object[]{resultFeed[3].name, resultFeed[3].artist, "Top Hits", "", "", resultFeed[3].mood}, 4);
+            resultTable.addItem(new Object[]{resultFeed[4].name, resultFeed[4].artist, "Top Hits", "", "", resultFeed[4].mood}, 5);
+            resultTable.addItem(new Object[]{resultFeed[5].name, resultFeed[5].artist, "Top Hits", "", "", resultFeed[5].mood}, 6);
+            resultTable.addItem(new Object[]{resultFeed[6].name, resultFeed[6].artist, "Top Hits", "", "", resultFeed[6].mood}, 7);
+            resultTable.addItem(new Object[]{resultFeed[7].name, resultFeed[7].artist, "Top Hits", "", "", resultFeed[7].mood}, 8);
+            resultTable.addItem(new Object[]{resultFeed[8].name, resultFeed[8].artist, "Top Hits", "", "", resultFeed[8].mood}, 9);
+            resultTable.addItem(new Object[]{resultFeed[9].name, resultFeed[9].artist, "Top Hits", "", "", resultFeed[9].mood}, 10);
+            resultTable.addItem(new Object[]{resultFeed[10].name, resultFeed[10].artist, "Top Hits", "", "", resultFeed[10].mood}, 11);
+            resultTable.addItem(new Object[]{resultFeed[11].name, resultFeed[11].artist, "Top Hits", "", "", resultFeed[11].mood}, 12);
+            resultTable.addItem(new Object[]{resultFeed[12].name, resultFeed[12].artist, "Top Hits", "", "", resultFeed[12].mood}, 13);
+            resultTable.addItem(new Object[]{resultFeed[13].name, resultFeed[13].artist, "Top Hits", "", "", resultFeed[13].mood}, 14);
+            resultTable.addItem(new Object[]{resultFeed[14].name, resultFeed[14].artist, "Top Hits", "", "", resultFeed[14].mood}, 15);
+            resultTable.addItem(new Object[]{resultFeed[15].name, resultFeed[15].artist, "Top Hits", "", "", resultFeed[15].mood}, 16);
+            resultTable.addItem(new Object[]{resultFeed[16].name, resultFeed[16].artist, "Top Hits", "", "", resultFeed[16].mood}, 17);
+            resultTable.addItem(new Object[]{resultFeed[17].name, resultFeed[17].artist, "Top Hits", "", "", resultFeed[17].mood}, 18);
+            resultTable.addItem(new Object[]{resultFeed[18].name, resultFeed[18].artist, "Top Hits", "", "", resultFeed[18].mood}, 19);
+            resultTable.addItem(new Object[]{resultFeed[19].name, resultFeed[19].artist, "Top Hits", "", "", resultFeed[19].mood}, 20);
+            resultTable.addItem(new Object[]{resultFeed[20].name, resultFeed[20].artist, "Top Hits", "", "", resultFeed[20].mood}, 21);
+            resultTable.addItem(new Object[]{resultFeed[21].name, resultFeed[21].artist, "Top Hits", "", "", resultFeed[21].mood}, 22);
+            resultTable.addItem(new Object[]{resultFeed[22].name, resultFeed[22].artist, "Top Hits", "", "", resultFeed[22].mood}, 23);
+            resultTable.addItem(new Object[]{resultFeed[23].name, resultFeed[23].artist, "Top Hits", "", "", resultFeed[23].mood}, 24);
+            resultTable.addItem(new Object[]{resultFeed[24].name, resultFeed[24].artist, "Top Hits", "", "", resultFeed[24].mood}, 25);
+            resultTable.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 26);
+            resultTable.addItem(new Object[]{"Hall of Fame", "The Script", "#3", "", ""}, 27);
+            resultTable.addItem(new Object[]{"We are the Champions", "Queen", "Top Hits", "", ""}, 28);
+
+            ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
         
 //////////////////////////////////////////////////////////////////////////////////    
 //        //MODULAR RESULT PANEL A
