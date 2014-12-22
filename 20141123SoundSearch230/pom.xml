@@ -97,9 +97,9 @@
             <scope>test</scope>
         </dependency>
 	 <dependency>
-	  <groupId>${project.groupId}</groupId>
-	  <artifactId>20141030SoundSearch200</artifactId>
-	  <version>${project.version}</version>
+	  <groupId>ojdbc</groupId>
+	  <artifactId>ojdbc</artifactId>
+	  <version>7</version>
 	 </dependency>
 	</dependencies>
 

@@ -206,7 +206,7 @@ public class MyVaadinUI extends UI
         
         
         
-        SearchResultPage searchResultPage = new SearchResultPage();
+        final SearchResultPage searchResultPage = new SearchResultPage();
         AbsoluteLayout SeaRPage;
         try {
             SeaRPage = searchResultPage.drawSearchRPage();
@@ -215,17 +215,13 @@ public class MyVaadinUI extends UI
             Logger.getLogger(MyVaadinUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        
-        
-        
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 
                 String searchQuery = searchBox.getValue();
                 for(int i = 0; i<10; i++){
-                    if(searchQuery.equals (anArray[i])){
-//                        resultTable.addItem(new Object[]{"One More Night", "Maroon 5", "Overexposed", "", ""}, 4);
+                    if(searchQuery.equals("prayer")){
+                            searchResultPage.resultTable.addItem(new Object[]{searchResultPage.resultFeed[i].name, searchResultPage.resultFeed[i].artist, "Top Hits", "", "", searchResultPage.resultFeed[i].mood}, i);
 //                      
 //                        try{
 //                            result = dba.getSearchResults(con,moods,seconds,titleText,artistText,moodlevel);
@@ -233,7 +229,7 @@ public class MyVaadinUI extends UI
 //                            e.printStackTrace();
 //                        }
                         
-                        toolbar.addComponent(new Label("Thank you for clicking"));
+//                        toolbar.addComponent(new Label("Thank you for clicking"));
                        
 
                     }
@@ -242,5 +238,9 @@ public class MyVaadinUI extends UI
                 }
             }
         });
+        
+        
+        
+        
    }
 }

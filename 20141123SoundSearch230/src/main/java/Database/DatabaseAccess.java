@@ -91,16 +91,18 @@ public class DatabaseAccess {
      * @param artist
      * @param moodlevel
      * @return
-     * @throws SQLException 
      */
-    public static DBRow[] getSearchResults(Connection con, int[] mood, int length, String name, String artist, int moodlevel) throws SQLException{
+    public static DBRow[] getSearchResults(Connection con, int[] mood, int length, String name, String artist, int moodlevel){
     //  Declare Query Strings  
+        DBRow[] output = new DBRow[25];//creates an array of 25 rows in the song result table
+        
+        try{
         String moodsquery = "";//string from mood query checkboxes
         String lengthsquery = "";//string from length of song query field (search format: min":"secs)
         String namesquery = "";//string from name of song query field
         String artistsquery = "";//string from name of artist query field
         
-        DBRow[] output = new DBRow[25];//creates an array of 25 rows in the song result table
+        
         Statement stmt = null;
         int upperlength = length + 30;/*for [lengthsquery]; sets a leeway of 30 
         seconds above the specified time when results are returned (i.e. query
@@ -176,6 +178,9 @@ public class DatabaseAccess {
             System.err.println(e);
         } finally {
             if (stmt != null) { stmt.close(); } //close connection
+        }
+        }catch(Exception e){
+            
         }
         return output;
     }
