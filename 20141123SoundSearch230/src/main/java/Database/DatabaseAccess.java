@@ -85,6 +85,7 @@ public class DatabaseAccess {
     /**
      * 
      * @param con
+     * @param generalq
      * @param mood
      * @param length
      * @param name
@@ -92,15 +93,16 @@ public class DatabaseAccess {
      * @param moodlevel
      * @return
      */
-    public static DBRow[] getSearchResults(Connection con, int[] mood, int length, String name, String artist, int moodlevel){
+    public static DBRow[] getSearchResults(Connection con, String generalq, int[] mood, int length, String name, String artist, int moodlevel){
     //  Declare Query Strings  
-        DBRow[] output = new DBRow[25];//creates an array of 25 rows in the song result table
+        DBRow[] output = new DBRow[100];//creates an array of 25 rows in the song result table
         
         try{
-        String moodsquery = "";//string from mood query checkboxes
-        String lengthsquery = "";//string from length of song query field (search format: min":"secs)
-        String namesquery = "";//string from name of song query field
-        String artistsquery = "";//string from name of artist query field
+        String generalquery = "";//string to create sql query over all types of data
+        String moodsquery = "";//string from mood query checkboxes sent to sql command line
+        String lengthsquery = "";//string from length of song query field (search format: min":"secs) sent to sql command line
+        String namesquery = "";//string from name of song query field sent to sql command line
+        String artistsquery = "";//string from name of artist query field sent to sql command line
         
         
         Statement stmt = null;
@@ -108,6 +110,18 @@ public class DatabaseAccess {
         seconds above the specified time when results are returned (i.e. query
         for length of 2:30, song is 2:50 long, this will allow it to show up in the results)
         */
+        ////////////////////////////////////////////////////////////////////////
+//      SQL QUERY FOR SEARCH ACROSS ALL FIELDS
+//        for(){
+        if(!generalq.equals("")){
+            generalquery = "WHERE TITLE LIKE '%" +  generalq + "%' OR ARTISTNAME LIKE '%" + generalq + "%'";
+        }
+            
+//        } 
+        
+//        if(!name.equals("")&&!artist.equals("")){
+//            
+//        }
         
         ////////////////////////////////////////////////////////////////////////
 //      SQL QUERY FOR SEARCHING SONGS WITH LENGTH OF SONG             
@@ -115,7 +129,7 @@ public class DatabaseAccess {
         if(lowerlength < 0){//i.e. if [lengthquery] is 20 seconds, if statment sets [lowerlength] leeway to -0 seconds
             lowerlength = 0;
         }       
-        if(length != 0){//if the length of a song is specified
+        if(length != 0&&generalquery.equals("")){//if the length of a song is specified
             lengthsquery = "WHERE SLENGTH BETWEEN " + lowerlength + " AND " + upperlength;//[lengthsquery] becomes an SQL statement that searches for with specified song time as center of a field of +30 or -30 seconds
         }
         
@@ -129,7 +143,7 @@ public class DatabaseAccess {
             if(moodlevel == 0){//if the mood level is 0
                 moods = moods.substring(0, moods.lastIndexOf(","));//moods will then equal
                 moodsquery = " AND AUDIOMOOD IN ("+moods+")";
-                if(lengthsquery.equals("")){
+                if(lengthsquery.equals("")&&generalquery.equals("")){
                     moodsquery = "WHERE AUDIOMOOD IN ("+moods+")";
                 }
             }
@@ -142,7 +156,7 @@ public class DatabaseAccess {
 //      SQL QUERY FOR SEARCHING SONGS WITH NAME OF SONG             
         if(!name.equals("")){
             namesquery = " AND TITLE LIKE '%"+name.toLowerCase()+"%'";
-            if(moodsquery.equals("")&&lengthsquery.equals("")){
+            if(moodsquery.equals("")&&lengthsquery.equals("")&&generalquery.equals("")){
                 namesquery = "WHERE TITLE LIKE '%"+name.toLowerCase()+"%'";
             }
         }
@@ -151,12 +165,14 @@ public class DatabaseAccess {
 //      SQL QUERY FOR SEARCHING SONGS WITH ARTIST NAME        
         if(!artist.equals("")){
             artistsquery = " AND ARTISTNAME LIKE '%"+artist.toLowerCase()+"%'";
-            if(namesquery.equals("")&&moodsquery.equals("")&&lengthsquery.equals("")){
+            if(namesquery.equals("")&&moodsquery.equals("")&&lengthsquery.equals("")&&generalquery.equals("")){
                 artistsquery = "WHERE ARTISTNAME LIKE '%"+artist.toLowerCase()+"%'";
             }
         }
+        
+        
         String query =
-                "SELECT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME FROM SONGTABLE INNER JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID " + lengthsquery + moodsquery + namesquery + artistsquery;
+                "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME FROM SONGTABLE INNER JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID " + generalquery + lengthsquery + moodsquery + namesquery + artistsquery;
         System.out.println(query);
         try {
             stmt = con.createStatement();
@@ -165,8 +181,8 @@ public class DatabaseAccess {
             long estimatedTime = System.nanoTime() - startTime;
             System.out.println(estimatedTime);
             int i = 0;
-            while(rs.next()&&(i<25)) {
-                System.out.println(i+"Hello");
+            while(rs.next()&&(i<100)) {
+             //   System.out.println(i+"Hello");
                 output[i] = new DBRow();
                 output[i].name = rs.getString("TITLE");
                 output[i].artist = rs.getString("ARTISTNAME");
@@ -247,7 +263,7 @@ public class DatabaseAccess {
         } finally {
             if (stmt != null) { stmt.close(); } //close connection
         }
-        return "..\\Songs\\wav\\"+dir;
+        return "\\home\\mitchell\\Music\\Songs\\wav"+dir;
     }
 
     ////////////////////////////////////////////////////////////////////////////

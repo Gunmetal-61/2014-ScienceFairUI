@@ -6,6 +6,7 @@ package com.mycompany.soundsearch230;
 
 import Database.DBRow;
 import Database.DatabaseAccess;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import static com.vaadin.server.Sizeable.UNITS_PIXELS;
@@ -25,22 +26,54 @@ import com.vaadin.ui.Table;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Mitchell
  */
 public class SearchResultPage {
+    
     public Table resultTable = new Table();
     Connection con = DatabaseAccess.startconnection("orcl"); 
     int[] moodarray;
+    public static String nameIdentifier = "";
+    public static String artistIdentifier = "adsf";
+
+    public DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, "", moodarray, 0, "", "", 0);
+
+    Label stConvert;
+    Label saConvert;
+    AbsoluteLayout SRPingrid;
+    public SearchResultPage(Label songtitle, Label songartist, AbsoluteLayout ingrid) {
+        stConvert = songtitle;
+        saConvert = songartist;
+        SRPingrid = ingrid;
+    }
     
-
-    public DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, moodarray, 0, "", "", 0);
-
-    
-
-    public AbsoluteLayout drawSearchRPage() throws SQLException{
+    public File loadsong(String name, String artist){
+        File out = null;
+        try{
+            out = new File(MyVaadinUI.dba.songdir(MyVaadinUI.con,null,name,artist));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+//        playloc = 0;
+//        currenttime.setText("0:00");
+//        audioProgressSlider1.setValue(0);
+//        playpause1.setText("Play");
+//        x = true;
+//        if(!thread.isInterrupted()){
+//            thread.interrupt();
+//        }
+//        if(clip != null){
+//            clip.close();
+//        }
+        return out;
+    }
+    public AbsoluteLayout drawSearchRPage(){
+        
         
 ////////////////////////////////////////////////////////////////////////////////
         //BASE PANELS/LAYOUTS: 
@@ -96,15 +129,30 @@ public class SearchResultPage {
         resultTable.addContainerProperty("Album", String.class, null);
         resultTable.addContainerProperty("Length", String.class, null);
         resultTable.addContainerProperty("Genre", String.class, null);
-        resultTable.addContainerProperty("Mood", java.lang.Integer.class, null);
+        resultTable.addContainerProperty("Mood", java.lang.String.class, null);
 
 
-        
+        final String generalq = "";
 
         
-        
+        resultTable.addItemClickListener(new ItemClickEvent.ItemClickListener () {
+            @Override
+            public void itemClick(ItemClickEvent event) {
+               // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                System.out.println("SOng: " + MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name);
+                nameIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name;
+                System.out.println("nameidentifier: " + nameIdentifier);
+                artistIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].artist;
+                stConvert = new Label(nameIdentifier);
+                saConvert = new Label(artistIdentifier);
+                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
+                SRPingrid.addComponent(saConvert, "left: 260px; top: 60px;");
+            }
+        });
         
         ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
+        
+        
         
 //////////////////////////////////////////////////////////////////////////////////    
 //        //MODULAR RESULT PANEL A
@@ -172,14 +220,19 @@ public class SearchResultPage {
 ////            }
 ////        });
 //        
-//        //Play the Song (Audio)
-//        FileResource songfile = new FileResource(new File("C:\\Users\\Mitchell\\Music\\13 Immortal Empire.wav"));
-//        //FileResource songfile = new FileResource(new File("C:\\Users\\Mitchell\\Documents\\NetBeansProjects\\20141111SoundSearch210\\src\\main\\webapp\\WEB-INF\\audio\\13 Immortal Empire.wav"));
-//        Audio song = new Audio("",songfile);
-//        //song.setAutoplay(true);
-//        song.setShowControls(true);
-//    //    song.
-//        
+        //Play the Song (Audio)
+        File songFilePointer = loadsong("Rolling in the Deep", "Adele");
+        
+        FileResource songFile = new FileResource(new File("C:\\Users\\Mitchell\\Music\\13 Immortal Empire.wav"));
+        //FileResource songfile = new FileResource(new File("C:\\Users\\Mitchell\\Documents\\NetBeansProjects\\20141111SoundSearch210\\src\\main\\webapp\\WEB-INF\\audio\\13 Immortal Empire.wav"));
+        Audio song = new Audio("",songFile);
+        //song.setAutoplay(true);
+        song.setShowControls(true);
+    //    song.
+        
+        
+        
+        
 //        //ADD TO VERTICAL LAYOUT WITHIN BOARD
 //////      
 ////        
@@ -190,4 +243,5 @@ public class SearchResultPage {
         
         return grid;
     }
+    
 }

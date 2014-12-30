@@ -54,7 +54,11 @@ import javax.sound.sampled.Clip;
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
-
+    public static DBRow[] result = new DBRow[100];
+    static DatabaseAccess dba = new DatabaseAccess(); 
+    static Connection con = dba.startconnection("orcl");
+    public static SearchResultPage searchResultPage;
+         
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, widgetset = "com.mycompany.soundsearch230.AppWidgetSet")
     public static class Servlet extends VaadinServlet {
@@ -64,8 +68,8 @@ public class MyVaadinUI extends UI
     protected void init(VaadinRequest request) {
         VerticalLayout overlord = new VerticalLayout();
         final HorizontalLayout toolbar = new HorizontalLayout();
-        
         final TabSheet primary = new TabSheet();
+        
         
         Label derp = new Label("sdfhuwhe");
         
@@ -89,8 +93,8 @@ public class MyVaadinUI extends UI
         Button button = new Button("Search");
         
         
-        final TextField searchBox = new TextField();
-        searchBox.setDescription("Search for a Song");
+        final TextField generalSearchBox = new TextField();
+        generalSearchBox.setDescription("Search for a Song");
         
         
         
@@ -99,7 +103,7 @@ public class MyVaadinUI extends UI
         /////////////////////////
         setContent(overlord);
         overlord.addComponent(toolbar);
-        toolbar.addComponent(searchBox);
+        toolbar.addComponent(generalSearchBox);
        // overlord.addComponent(table);
         toolbar.addComponent(button);
         overlord.addComponent(primary);
@@ -157,17 +161,26 @@ public class MyVaadinUI extends UI
         SongResultPages songResultPage2 = new SongResultPages();
         AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
         primary.addTab(SonRPage, "Song Results");        
+        
+        Button startSearchButton = new Button("test button");
+        SonRPage.addComponent(startSearchButton);
+        
 ////////////////////////////////////////////////////////////////////////////////
 //      TAB 3: Search Results Page        
-        
+        searchResultPage = new SearchResultPage(null, null, null);
+        final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
+        primary.addTab(SeaRPage, "Search Results");  
               
 ////////////////////////////////////////////////////////////////////////////////
 //      TAB 4: Advanced Search Page
-        AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage();
+        AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
         primary.addTab(AdvSPage, "Advanced Search");
  
+        Button startSearchButton2 = new Button("test button");
+        AdvSPage.addComponent(startSearchButton2);
 
+        
 ////////////////////////////////////////////////////////////////////////////////
         
         
@@ -184,6 +197,8 @@ public class MyVaadinUI extends UI
 //        int[] subsong = new int[31];
 //        String lyricsr = "";
         
+
+               
         
         
         
@@ -195,47 +210,28 @@ public class MyVaadinUI extends UI
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        final SearchResultPage searchResultPage = new SearchResultPage();
-        AbsoluteLayout SeaRPage;
-        try {
-            SeaRPage = searchResultPage.drawSearchRPage();
-            primary.addTab(SeaRPage, "Search Results");  
-        } catch (SQLException ex) {
-            Logger.getLogger(MyVaadinUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
+                searchResultPage.resultTable.removeAllItems();
                 
-                String searchQuery = searchBox.getValue();
-                for(int i = 0; i<10; i++){
-                    if(searchQuery.equals("prayer")){
-                            searchResultPage.resultTable.addItem(new Object[]{searchResultPage.resultFeed[i].name, searchResultPage.resultFeed[i].artist, "Top Hits", "", "", searchResultPage.resultFeed[i].mood}, i);
-//                      
-//                        try{
-//                            result = dba.getSearchResults(con,moods,seconds,titleText,artistText,moodlevel);
-//                        } catch (SQLException e){
-//                            e.printStackTrace();
-//                        }
-                        
-//                        toolbar.addComponent(new Label("Thank you for clicking"));
-                       
-
-                    }
-                    else { 
-                    }
+                
+                
+                String generalq = generalSearchBox.getValue();
+                
+                result = dba.getSearchResults(con,generalq,AdvancedSearchPage.ASPmood,AdvancedSearchPage.ASPseconds,AdvancedSearchPage.ASPsongText,AdvancedSearchPage.ASPartistText,AdvancedSearchPage.ASPsubMood);
+                
+                for(int i = 0; i<100; i++){
+//                    if(generalq.equals("prayer")){
+                    if(result[i]==null){
+                    }else{
+                        String moodconvert = Integer.toString(result[i].mood);
+                        searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert}, i);
+                        System.out.println(i + ": " + result[i].name);
+                    }    
+                
                 }
+                primary.setSelectedTab(SeaRPage);
             }
         });
         

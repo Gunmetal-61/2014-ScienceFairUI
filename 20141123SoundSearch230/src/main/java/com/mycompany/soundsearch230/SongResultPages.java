@@ -35,12 +35,14 @@ public class SongResultPages {
         ingrid.setWidth(960, UNITS_PIXELS);
 
         grid.addComponent(ingrid, "left: 203px; top: 0px;");
-
+        
+        
+        
         //LABELS
         //Song Title
-        Label songtitle = new Label("One More Night");
+        Label songtitle = new Label("Sample Song Name");
         //Artist of Song0
-        Label songartist = new Label("Maroon 5");
+        Label songartist = new Label("Sample Artist");
         //Year Song was Released
         Label songyear = new Label("2011");
         //Length of Song
@@ -51,6 +53,23 @@ public class SongResultPages {
         Label songlyrics = new Label("");        
         //Link to Lyrics
         Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));
+        
+        
+//        //LABELS
+//        //Song Title
+//        Label songtitle = new Label("One More Night");
+//        //Artist of Song0
+//        Label songartist = new Label("Maroon 5");
+//        //Year Song was Released
+//        Label songyear = new Label("2011");
+//        //Length of Song
+//        Label songlength = new Label("3:39");
+//        //Song Genre
+//        Label songgenre = new Label("Pop");
+//        //Song Lyrics
+//        Label songlyrics = new Label("");        
+//        //Link to Lyrics
+//        Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));
 
 
 
@@ -143,6 +162,11 @@ public class SongResultPages {
             }
         });
 
+        
+        SearchResultPage RESeaRPage = new SearchResultPage(songtitle, songartist, ingrid);
+        
+        
+        
         
         return grid;
     }

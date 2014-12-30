@@ -9,6 +9,7 @@ package Database;
  * @author Jeffrey
  */
 public class DBRow {
+    public String general;
     public String name;
     public String artist;
     public String album;
