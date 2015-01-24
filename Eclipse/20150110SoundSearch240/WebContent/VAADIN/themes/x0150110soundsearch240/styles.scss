@@ -1,0 +1,9 @@
+@import "addons.scss";
+@import "x0150110soundsearch240.scss";
+
+/* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
+/* The actual styles should be defined in x0150110soundsearch240.scss */
+.x0150110soundsearch240 {
+  @include addons;
+  @include x0150110soundsearch240;
+}

@@ -6,6 +6,7 @@ package com.mycompany.soundsearch230;
 
 import Database.DBRow;
 import Database.DatabaseAccess;
+import Wavesurfer.Wavesurfer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
@@ -22,6 +23,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Table;
 import java.io.File;
 import java.sql.Connection;
@@ -46,10 +48,14 @@ public class SearchResultPage {
     Label stConvert;
     Label saConvert;
     AbsoluteLayout SRPingrid;
-    public SearchResultPage(Label songtitle, Label songartist, AbsoluteLayout ingrid) {
-        stConvert = songtitle;
-        saConvert = songartist;
-        SRPingrid = ingrid;
+    TabSheet other;
+    //AbsoluteLayout alternate;
+    public SearchResultPage(TabSheet primary) {
+//        stConvert = songtitle;
+//        saConvert = songartist;
+//        SRPingrid = ingrid;
+        other = primary;
+        //alternate = SonRPage;
     }
     
     public File loadsong(String name, String artist){
@@ -122,7 +128,6 @@ public class SearchResultPage {
         moodarray[6] = 7;
         
 
-            
         
         resultTable.addContainerProperty("Song Name", String.class, null);
         resultTable.addContainerProperty("Artist", String.class, null);
@@ -130,23 +135,34 @@ public class SearchResultPage {
         resultTable.addContainerProperty("Length", String.class, null);
         resultTable.addContainerProperty("Genre", String.class, null);
         resultTable.addContainerProperty("Mood", java.lang.String.class, null);
-
+ //       resultTable.addContainerProperty("Waveform", Wavesurfer.class, null);
+        
 
         final String generalq = "";
-
+        
+        
         
         resultTable.addItemClickListener(new ItemClickEvent.ItemClickListener () {
             @Override
             public void itemClick(ItemClickEvent event) {
-               // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                if()
+                
+                // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 System.out.println("SOng: " + MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name);
                 nameIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name;
                 System.out.println("nameidentifier: " + nameIdentifier);
                 artistIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].artist;
-                stConvert = new Label(nameIdentifier);
-                saConvert = new Label(artistIdentifier);
-                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
-                SRPingrid.addComponent(saConvert, "left: 260px; top: 60px;");
+//                stConvert = new Label(nameIdentifier);
+//                saConvert = new Label(artistIdentifier);
+//                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
+//                SRPingrid.addComponent(saConvert, "left: 260px; top: 60px;");
+                
+//                other.getTab(SonRPage);
+//                other.removeTab(SonRPage);
+                SongResultPages songResultPage2 = new SongResultPages();
+                AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
+                other.addTab(SonRPage, "Song Results");   
+                other.setSelectedTab(SonRPage);
             }
         });
         

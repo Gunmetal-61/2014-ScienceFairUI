@@ -1,5 +1,7 @@
 package com.mycompany.soundsearch230;
 
+import Wavesurfer.Wavesurfer;
+import MyComponent.MyComponent;
 import Database.DBRow;
 import javax.servlet.annotation.WebServlet;
 
@@ -30,6 +32,7 @@ import com.vaadin.ui.TextField;
 import java.io.File;
 import java.sql.SQLException;
 import Database.DatabaseAccess;
+import Wavesurfer.Wavesurfer;
 import java.io.BufferedInputStream;  
 import java.io.File;
 import java.io.FileInputStream;  
@@ -73,8 +76,13 @@ public class MyVaadinUI extends UI
         
         Label derp = new Label("sdfhuwhe");
         
+        MyComponent myComponent = new MyComponent();
+        overlord.addComponent(myComponent);
         
-        
+        final Wavesurfer myWavesurfer = new Wavesurfer();
+        myWavesurfer.setHeight(130, UNITS_PIXELS);
+        myWavesurfer.setWidth(900, UNITS_PIXELS);
+        overlord.addComponent(myWavesurfer);
  /////////////////////////       
         final String[] anArray;
         
@@ -108,12 +116,15 @@ public class MyVaadinUI extends UI
         toolbar.addComponent(button);
         overlord.addComponent(primary);
         
-////////////////////////////////////////////////////////////////////////////////        
+        ////////////////////////////////////////////////////////////////////////        
 //      TAB 1: Home Page
         HomePage homePage = new HomePage();
         AbsoluteLayout Homage = homePage.drawHomePage();
         primary.addTab(Homage, "Home");
-////////////////////////////////////////////////////////////////////////////////        
+        
+        
+        
+        ////////////////////////////////////////////////////////////////////////        
 //      Tab #2
         
         final VerticalLayout layout = new VerticalLayout();
@@ -156,22 +167,22 @@ public class MyVaadinUI extends UI
 //        }
         primary.addTab(layout, "Example");
         
-////////////////////////////////////////////////////////////////////////////////        
+        ////////////////////////////////////////////////////////////////////////        
 //      TAB 2: Song Results Page
-        SongResultPages songResultPage2 = new SongResultPages();
-        AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
-        primary.addTab(SonRPage, "Song Results");        
         
-        Button startSearchButton = new Button("test button");
-        SonRPage.addComponent(startSearchButton);
+             
+//        
+//        Button startSearchButton = new Button("test button");
+//        SonRPage.addComponent(startSearchButton);
         
-////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
 //      TAB 3: Search Results Page        
-        searchResultPage = new SearchResultPage(null, null, null);
+        searchResultPage = new SearchResultPage(primary);
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
         primary.addTab(SeaRPage, "Search Results");  
+//        SeaRPage.setVisible(false);
               
-////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
 //      TAB 4: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
@@ -182,6 +193,13 @@ public class MyVaadinUI extends UI
 
         
 ////////////////////////////////////////////////////////////////////////////////
+        
+        
+        
+        
+        
+        
+        
         
         
 //        static File[] allwavfiles;
@@ -210,28 +228,31 @@ public class MyVaadinUI extends UI
         
         
         
-        
         button.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 searchResultPage.resultTable.removeAllItems();
-                
-                
-                
                 String generalq = generalSearchBox.getValue();
                 
-                result = dba.getSearchResults(con,generalq,AdvancedSearchPage.ASPmood,AdvancedSearchPage.ASPseconds,AdvancedSearchPage.ASPsongText,AdvancedSearchPage.ASPartistText,AdvancedSearchPage.ASPsubMood);
-                
-                for(int i = 0; i<100; i++){
-//                    if(generalq.equals("prayer")){
-                    if(result[i]==null){
-                    }else{
-                        String moodconvert = Integer.toString(result[i].mood);
-                        searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert}, i);
-                        System.out.println(i + ": " + result[i].name);
-                    }    
-                
+                if(!generalq.equals("")){
+                    result = dba.getSearchResults(con,generalq,AdvancedSearchPage.ASPmood,AdvancedSearchPage.ASPseconds,AdvancedSearchPage.ASPsongText,AdvancedSearchPage.ASPartistText,AdvancedSearchPage.ASPsubMood);
+
+                    for(int i = 0; i<100; i++){
+    //                    if(generalq.equals("prayer")){
+                        if(result[i]==null){
+                        }else{
+                            String moodconvert = Integer.toString(result[i].mood);
+//                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
+                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert}, i);
+
+                            
+                            System.out.println(i + ": " + result[i].name);
+                        }    
+                        
+                    }
+                    primary.setSelectedTab(SeaRPage);
+                }else{
+                    
                 }
-                primary.setSelectedTab(SeaRPage);
             }
         });
         

@@ -263,9 +263,34 @@ public class DatabaseAccess {
         } finally {
             if (stmt != null) { stmt.close(); } //close connection
         }
-        return "\\home\\mitchell\\Music\\Songs\\wav"+dir;
+        return "\\home\\mitchell\\Music\\Songs\\wav\\"+dir;
     }
-
+    ////////////////////////////////////////////////////////////////////////////
+//  RECALLS FILENAME OF SELECTED SONG'S ALBUM IMAGE FOR DISPLAY IN [SearchResultPage] and [SongResultPages]
+    public static String albumPNGDir(Connection con, String newdir, String title, String artistname) throws SQLException{
+        String dir = "";
+        Statement stmt = null;
+        try {
+            stmt = con.createStatement();
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                   ResultSet.CONCUR_UPDATABLE);
+            ResultSet uprs = stmt.executeQuery( //get the results of the query
+            "SELECT DIR FROM SONGTABLE INNER JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE ARTISTNAME = '" + artistname + "' AND TITLE = '"+ title +"'");
+            if (uprs.next()) {
+                if(newdir == null){
+                    dir = uprs.getString("DIR");
+                } else{
+                    uprs.updateString("DIR",newdir);
+                    uprs.updateRow(); //update database
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) { stmt.close(); } //close connection
+        }
+        return "\\home\\mitchell\\Music\\Album Art\\"+dir;
+    }
     ////////////////////////////////////////////////////////////////////////////
 //  SETUP CODE USED TO PLACE AN ANALYZED SONG'S SUBSONG MOOD VALUES INTO THE ORACLE DATABASE TABLE 
 //  NOT ACTIVE IN FINAL GUI PROGRAM  
