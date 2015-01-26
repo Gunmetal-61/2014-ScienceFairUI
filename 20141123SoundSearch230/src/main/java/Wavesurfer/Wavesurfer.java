@@ -99,16 +99,19 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
 
     
     public void loadFile() {
-        System.out.println("loadFile() Java code starts.");
+        System.out.println("'loadFile' method (Wavesurfer.java) started.  Retrieving selected song [" + nameIdentifier + "]'s file.");
         try {
             playThisFile = DatabaseAccess.songdir(con, null, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
-//            playThisFile = DatabaseAccess.songdir(con, null, "no plan b", "manafest");
-
-            System.out.println("fdfefef" + playThisFile);
+            System.out.println("Song file [" + playThisFile + "] retrieved.");
         } catch (SQLException ex) {
+            System.out.println("'loadFile' method (Wavesurfer.java) failed.");
             Logger.getLogger(SearchResultPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         callFunction("fileLoader", playThisFile);  
         callFunction("fileLoader2");
     }      
+    
+    public void playOrPause() {
+        callFunction("pauseOrPlay");
+    }
 }

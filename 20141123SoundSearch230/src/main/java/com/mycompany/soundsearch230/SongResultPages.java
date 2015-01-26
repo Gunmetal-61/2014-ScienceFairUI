@@ -94,10 +94,17 @@ public class SongResultPages {
         Label waveformtitle = new Label("Waveform Readings");
 
         
-        Wavesurfer myWavesurfer = new Wavesurfer();
+        final Wavesurfer myWavesurfer = new Wavesurfer();
         myWavesurfer.setHeight(130, UNITS_PIXELS);
         myWavesurfer.setWidth(900, UNITS_PIXELS);
         myWavesurfer.loadFile();
+        
+        Button D = new Button("fdfe");
+        D.addClickListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                myWavesurfer.playOrPause();
+            }
+        });
         
         
         //Intercept Graph Image
@@ -185,6 +192,8 @@ public class SongResultPages {
     //        ingrid.addComponent(lyricslink);
 //        inNonGrid.addComponent(waveform);
         inNonGrid.addComponent(myWavesurfer);
+        inNonGrid.addComponent(D);
+
         inNonGrid.addComponent(waveformtitle);
 
         inNonGrid.addComponent(intercept);

@@ -38,6 +38,10 @@ Wavesurfer_Wavesurfer =
                 });
             };
             
+            this.pauseOrPlay = function () {
+                wavesurfer.playPause();
+            }
+            
 	    // Handle changes from the server-side.
 	    //
 	    // It looks like when state change happens, this is the function that handles
