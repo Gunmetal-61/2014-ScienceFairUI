@@ -263,7 +263,7 @@ public class DatabaseAccess {
         } finally {
             if (stmt != null) { stmt.close(); } //close connection
         }
-        return "\\home\\mitchell\\Music\\Songs\\wav\\"+dir;
+        return dir;
     }
     ////////////////////////////////////////////////////////////////////////////
 //  RECALLS FILENAME OF SELECTED SONG'S ALBUM IMAGE FOR DISPLAY IN [SearchResultPage] and [SongResultPages]

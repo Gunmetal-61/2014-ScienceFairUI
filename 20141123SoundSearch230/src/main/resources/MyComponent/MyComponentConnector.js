@@ -20,8 +20,14 @@ MyComponent_MyComponent =
 	    // function that is declared in MyComponent.java's class constructor.
 	    var self = this;
 	    mycomponent.click = function() {
-	        self.onClitck(mycomponent.getValue());
+	        self.onClick(mycomponent.getValue());
 	        self.newFunc1();
+	    };
+            
+            // Handle call from server-side Java code.
+	    this.jsMethod = function() {
+	    //    mycomponent.jsMethod();
+                console.log("Invoking jsMethod().");
 	    };
 	};
 	

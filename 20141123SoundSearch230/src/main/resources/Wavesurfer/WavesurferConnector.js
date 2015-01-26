@@ -18,15 +18,25 @@ Wavesurfer_Wavesurfer =
             
             console.log("Call wavesurfer.load() to load music file.");
 //            wavesurfer.load('/mp3/1-01LetthePraiseBegin.m4a');
-            wavesurfer.load('/abc.mp3');
+
+//            var songDirector = new String()
+
+
+//            wavesurfer.load('/abc.mp3');
 //            wavesurfer.load('/117.wav');
 //            wavesurfer.load('/mp3/12 117.m4a');
             
-            wavesurfer.on('ready', function () {
-                wavesurfer.play();
-            });
-
+            this.fileLoader2 = function() {
+                console.log("fileLoader2() starts.");
+            }
             
+            this.fileLoader = function(fileDirector) {
+                console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + fileDirector);
+                wavesurfer.load ('/Songs/wav/' + fileDirector);
+                wavesurfer.on('ready', function() {
+                    wavesurfer.play();
+                });
+            };
             
 	    // Handle changes from the server-side.
 	    //
@@ -38,5 +48,6 @@ Wavesurfer_Wavesurfer =
 	    this.onStateChange = function() {
 //	        mycomponent.setValue(this.getState().value);
 	    };
+            wavesurfer.click 
 	};
 	

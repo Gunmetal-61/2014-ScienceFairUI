@@ -8,6 +8,7 @@ package com.mycompany.soundsearch230;
 
 import Database.DatabaseAccess;
 import Wavesurfer.Wavesurfer;
+import com.google.gwt.user.client.ui.UIObject;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import static com.vaadin.server.Sizeable.UNITS_PIXELS;
@@ -36,6 +37,7 @@ public class SongResultPages {
 //    }
     
     public AbsoluteLayout drawSongRPage() {
+        
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1200, UNITS_PIXELS);
         grid.setWidth(1600, UNITS_PIXELS);
@@ -92,10 +94,10 @@ public class SongResultPages {
         Label waveformtitle = new Label("Waveform Readings");
 
         
-//        Wavesurfer myWavesurfer = new Wavesurfer();
-//        myWavesurfer.setHeight(130, UNITS_PIXELS);
-//        myWavesurfer.setWidth(900, UNITS_PIXELS);
-
+        Wavesurfer myWavesurfer = new Wavesurfer();
+        myWavesurfer.setHeight(130, UNITS_PIXELS);
+        myWavesurfer.setWidth(900, UNITS_PIXELS);
+        myWavesurfer.loadFile();
         
         
         //Intercept Graph Image
@@ -182,7 +184,7 @@ public class SongResultPages {
         inNonGrid.addComponent(songgenre);
     //        ingrid.addComponent(lyricslink);
 //        inNonGrid.addComponent(waveform);
-//        inNonGrid.addComponent(myWavesurfer);
+        inNonGrid.addComponent(myWavesurfer);
         inNonGrid.addComponent(waveformtitle);
 
         inNonGrid.addComponent(intercept);

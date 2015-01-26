@@ -660,7 +660,10 @@
 
 /**
  *
- * @group table
+ *
+ * @param {string} $primaryStyleName (v-escalator) - 
+ *
+ * @group escalator
  */
 
 /**
@@ -900,7 +903,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "7.4.0.alpha13";
+	content: "7.3.5";
 }
 
 .v-widget {
@@ -4030,18 +4033,18 @@ div.v-layout.v-horizontal.v-widget {
 	margin-left: 7px;
 }
 
-.mytheme .v-grid {
+.mytheme .v-escalator {
 	position: relative;
 	background-color: white;
 }
 
-.mytheme .v-grid-scroller {
+.mytheme .v-escalator-scroller {
 	position: absolute;
 	overflow: auto;
 	z-index: 20;
 }
 
-.mytheme .v-grid-scroller-horizontal {
+.mytheme .v-escalator-scroller-horizontal {
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -4049,7 +4052,7 @@ div.v-layout.v-horizontal.v-widget {
 	-ms-overflow-y: hidden;
 }
 
-.mytheme .v-grid-scroller-vertical {
+.mytheme .v-escalator-scroller-vertical {
 	right: 0;
 	top: 0;
 	bottom: 0;
@@ -4057,62 +4060,62 @@ div.v-layout.v-horizontal.v-widget {
 	-ms-overflow-x: hidden;
 }
 
-.mytheme .v-grid-tablewrapper {
+.mytheme .v-escalator-tablewrapper {
 	position: absolute;
 	overflow: hidden;
 }
 
-.mytheme .v-grid-tablewrapper > table {
+.mytheme .v-escalator-tablewrapper > table {
 	border-spacing: 0;
 	table-layout: fixed;
 	width: inherit;
 }
 
-.mytheme .v-grid-header, .mytheme .v-grid-body, .mytheme .v-grid-footer {
+.mytheme .v-escalator-header, .mytheme .v-escalator-body, .mytheme .v-escalator-footer {
 	position: absolute;
 	left: 0;
 	width: inherit;
 	z-index: 10;
 }
 
-.mytheme .v-grid-header {
+.mytheme .v-escalator-header {
 	top: 0;
 }
 
-.mytheme .v-grid-footer {
+.mytheme .v-escalator-footer {
 	bottom: 0;
 }
 
-.mytheme .v-grid-body {
+.mytheme .v-escalator-body {
 	z-index: 0;
 	top: 0;
 }
 
-.mytheme .v-grid-body .v-grid-row {
+.mytheme .v-escalator-body .v-escalator-row {
 	position: absolute;
 	top: 0;
 	left: 0;
 }
 
-.mytheme .v-grid-row {
+.mytheme .v-escalator-row {
 	display: block;
 }
 
-.v-ie8 .mytheme .v-grid-row, .v-ie9 .mytheme .v-grid-row {
+.v-ie8 .mytheme .v-escalator-row {
 	float: left;
 	clear: left;
 	margin-top: 0;
 }
 
-.mytheme .v-grid-row  > td, .mytheme .v-grid-row  > th {
+.mytheme .v-escalator-row  > td, .mytheme .v-escalator-row  > th {
 	background-color: white;
 }
 
-.mytheme .v-grid-row {
+.mytheme .v-escalator-row {
 	width: inherit;
 }
 
-.mytheme .v-grid-cell {
+.mytheme .v-escalator-cell {
 	display: block;
 	float: left;
 	border: 1px solid #aaa;
@@ -4120,132 +4123,11 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: nowrap;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	overflow: hidden;
-	font-size: $font-size;
 }
 
-.mytheme .v-grid-cell.frozen {
+.mytheme .v-escalator-cell.frozen {
 	position: relative;
-	z-index: 1;
-}
-
-.mytheme .v-grid th {
-	position: relative;
-}
-
-.mytheme .v-grid th.sort-asc:after {
-	content: "\f0dd" attr(sort-order);
-	font-family: FontAwesome;
-	float: right;
-}
-
-.mytheme .v-grid th.sort-desc:after {
-	content: "\f0de" attr(sort-order);
-	font-family: FontAwesome;
-	float: right;
-}
-
-.mytheme .v-grid:after {
-	background-color: #fafafa;
-	background-image: -webkit-linear-gradient(top, #fafafa 2%, #efefef 98%);
-	background-image: linear-gradient(to bottom,#fafafa 2%, #efefef 98%);
-	content: "";
-	width: 100%;
-	height: 15px;
-	position: absolute;
-	bottom: 0;
-	border: 1px solid #d4d4d4;
-	border-top: none;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.mytheme .v-grid-row-selected > td {
-	background: #197de1;
-}
-
-.mytheme .v-grid-row th, .mytheme .v-grid-row td {
-	background: none;
-	border: none;
-	border-left: 1px solid #d4d4d4;
-}
-
-.mytheme .v-grid-row th:first-child, .mytheme .v-grid-row td:first-child {
-	border-left: none;
-}
-
-.mytheme .v-grid-cell {
-	float: none;
-	display: inline-block;
-}
-
-.mytheme .v-grid-cell.frozen {
-	-webkit-box-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
-	box-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
-}
-
-.mytheme .v-grid-cell.v-grid-cell-active {
-	-webkit-box-shadow: inset 2px 2px 0px #77aeee, inset -2px -2px 0px #77aeee;
-	box-shadow: inset 2px 2px 0px #77aeee, inset -2px -2px 0px #77aeee;
-}
-
-.mytheme .v-grid-tablewrapper {
-	border: 1px solid #d4d4d4;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.mytheme .v-grid-header .v-grid-cell {
-	background-color: #fafafa;
-	background-image: -webkit-linear-gradient(top, #fafafa 2%, #efefef 98%);
-	background-image: linear-gradient(to bottom,#fafafa 2%, #efefef 98%);
-	border-bottom: 1px solid #d4d4d4;
-}
-
-.mytheme .v-grid-header th {
-	font-weight: inherit;
-	font-size: 14px;
-	padding: 12px 12px 11px;
-	line-height: 1;
-}
-
-.mytheme .v-grid-footer .v-grid-cell {
-	background-color: #fafafa;
-	background-image: -webkit-linear-gradient(top, #fafafa 2%, #efefef 98%);
-	background-image: linear-gradient(to bottom,#fafafa 2%, #efefef 98%);
-	border-top: 1px solid #d4d4d4;
-}
-
-.mytheme .v-grid-footer td {
-	font-weight: inherit;
-	font-size: 14px;
-}
-
-.mytheme .v-grid-body .v-grid-cell {
-	line-height: 1;
-	padding: 11px 12px;
-}
-
-.mytheme .v-grid-body .v-grid-row {
-	border-bottom: 1px solid #d4d4d4;
-}
-
-.mytheme .v-grid-body .v-grid-row:nth-child(odd) td {
-	background-color: #f5f5f5;
-}
-
-.mytheme .v-grid-body .v-grid-row:nth-child(even) td {
-	background-color: white;
-}
-
-.mytheme .v-grid-body .v-grid-row.v-grid-row-active td {
-	background-color: #197de1;
-	background-image: -webkit-linear-gradient(top, #1b87e3 2%, #166ed5 98%);
-	background-image: linear-gradient(to bottom,#1b87e3 2%, #166ed5 98%);
-	color: white;
-	border-color: #1d69b4;
+	z-index: 0;
 }
 
 .mytheme .v-textfield {
@@ -11818,6 +11700,7 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 37px 0 19px;
 	cursor: pointer;
 	position: relative;
+	overflow: hidden;
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
 	-webkit-transition: background-color 300ms, color 60ms;
 	-moz-transition: background-color 300ms, color 60ms;
@@ -12129,6 +12012,7 @@ div.v-layout.v-horizontal.v-widget {
 	height: 37px !important;
 	padding-top: 0;
 	padding-bottom: 0;
+	-webkit-backface-visibility: hidden;
 }
 
 .mytheme .v-ui[width-range~="0-800px"] .valo-menu .v-menubar-user-menu {
@@ -12141,6 +12025,7 @@ div.v-layout.v-horizontal.v-widget {
 	height: 37px;
 	color: #97bee5;
 	max-width: 30%;
+	-webkit-backface-visibility: hidden;
 }
 
 .mytheme .v-ui[width-range~="0-800px"] .valo-menu .v-menubar-user-menu .v-menubar-menuitem {

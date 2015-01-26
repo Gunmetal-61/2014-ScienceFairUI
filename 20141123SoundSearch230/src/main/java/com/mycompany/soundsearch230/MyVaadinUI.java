@@ -78,12 +78,14 @@ public class MyVaadinUI extends UI
         
         MyComponent myComponent = new MyComponent();
         overlord.addComponent(myComponent);
+        myComponent.jsMethod();
         
-        final Wavesurfer myWavesurfer = new Wavesurfer();
-        myWavesurfer.setHeight(130, UNITS_PIXELS);
-        myWavesurfer.setWidth(900, UNITS_PIXELS);
-        overlord.addComponent(myWavesurfer);
- /////////////////////////       
+//        final Wavesurfer myWavesurfer = new Wavesurfer();
+//        myWavesurfer.setHeight(130, UNITS_PIXELS);
+//        myWavesurfer.setWidth(900, UNITS_PIXELS);
+//        overlord.addComponent(myWavesurfer);
+
+        /////////////////////////       
         final String[] anArray;
         
         anArray = new String[10];
@@ -218,6 +220,7 @@ public class MyVaadinUI extends UI
 
                
         
+
         
         
         

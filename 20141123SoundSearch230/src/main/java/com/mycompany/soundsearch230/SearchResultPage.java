@@ -40,11 +40,10 @@ public class SearchResultPage {
     public Table resultTable = new Table();
     Connection con = DatabaseAccess.startconnection("orcl"); 
     int[] moodarray;
-    public static String nameIdentifier = "";
-    public static String artistIdentifier = "adsf";
+    public static String nameIdentifier = "one more night";
+    public static String artistIdentifier = "maroon 5";
 
     public DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, "", moodarray, 0, "", "", 0);
-
     Label stConvert;
     Label saConvert;
     AbsoluteLayout SRPingrid;
@@ -141,7 +140,6 @@ public class SearchResultPage {
         final String generalq = "";
         
         
-        
         resultTable.addItemClickListener(new ItemClickEvent.ItemClickListener () {
             @Override
             public void itemClick(ItemClickEvent event) {
@@ -163,10 +161,12 @@ public class SearchResultPage {
                 AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
                 other.addTab(SonRPage, "Song Results");   
                 other.setSelectedTab(SonRPage);
+                 
             }
         });
         
         ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
+        
         
         
         

@@ -25,7 +25,7 @@ public class MyComponent extends AbstractJavaScriptComponent {
 		// been registered.
 	    this.addFunction("onClick", new JavaScriptFunction() {
 			@Override
-			public void call(JsonArray arguments) {
+			public void call(JSONArray arguments) throws JSONException {
 				System.out.println("Invoking server-side onClick() method.");				
 				getState().value = arguments.getString(0);
 //	            getState().setValue(arguments.getString(0));
@@ -36,7 +36,7 @@ public class MyComponent extends AbstractJavaScriptComponent {
 	    
 	    addFunction("newFunc1", new JavaScriptFunction() {
 			@Override
-			public void call(JsonArray arguments) {
+			public void call(JSONArray arguments) {
 				System.out.println("Invoking server-side newFunc1() method.");				
 			}	    	
 	    });
@@ -71,4 +71,8 @@ public class MyComponent extends AbstractJavaScriptComponent {
     public String getValue() {
         return getState().value;
     }
+    
+    public void jsMethod() {
+        callFunction("jsMethod");  // the name of the function here has to match with the
+    }                              // name that is specified in the connector
 }
