@@ -28,20 +28,41 @@ Wavesurfer_Wavesurfer =
             
             this.fileLoader2 = function() {
                 console.log("fileLoader2() starts.");
-            }
+            };
             
-            this.fileLoader = function(fileDirector) {
-                console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + fileDirector);
-                wavesurfer.load ('/Songs/wav/' + fileDirector);
+            this.fileLoader = function(playThisFile) {
+                console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + playThisFile);
+                wavesurfer.load ('/Songs/wav/' + playThisFile);
                 wavesurfer.on('ready', function() {
-                    wavesurfer.play();
                 });
             };
             
             this.pauseOrPlay = function () {
                 wavesurfer.playPause();
-            }
+            };
             
+//            this.trackerTime = function () {
+//                wavesurfer.getCurrentTime(d);
+//                return d;
+//            }
+//            
+            this.silenceMute = function () {
+                wavesurfer.toggleMute();
+            };
+//            
+            this.resetStop = function () {
+                wavesurfer.stop();
+            };
+            
+            this.setterVolume = function (newVolume) {
+                wavesurfer.setVolume(newVolume);
+            };
+            
+//            
+//            this.speedPlay = function (rate) {
+//                wavesurfer.setPlaybackRate(rate);
+//            }
+//            
 	    // Handle changes from the server-side.
 	    //
 	    // It looks like when state change happens, this is the function that handles

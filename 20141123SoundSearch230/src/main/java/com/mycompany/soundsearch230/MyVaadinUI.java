@@ -72,123 +72,52 @@ public class MyVaadinUI extends UI
         VerticalLayout overlord = new VerticalLayout();
         final HorizontalLayout toolbar = new HorizontalLayout();
         final TabSheet primary = new TabSheet();
-        
-        
-        Label derp = new Label("sdfhuwhe");
-        
-        MyComponent myComponent = new MyComponent();
-        overlord.addComponent(myComponent);
-        myComponent.jsMethod();
-        
-//        final Wavesurfer myWavesurfer = new Wavesurfer();
-//        myWavesurfer.setHeight(130, UNITS_PIXELS);
-//        myWavesurfer.setWidth(900, UNITS_PIXELS);
-//        overlord.addComponent(myWavesurfer);
+        setContent(overlord);
+        overlord.addComponent(toolbar);
 
-        /////////////////////////       
-        final String[] anArray;
         
-        anArray = new String[10];
-        anArray[0] = "";
-        anArray[1] = "derper";
-        anArray[2] = "derpest";
-        anArray[3] = "deep";
-        anArray[4] = "deeper";
-        anArray[5] = "deepest";
-        anArray[6] = "so deep Adele is rolling in it";
-        anArray[7] = "I need coffee.";
-        anArray[8] = "nnneed cofffeee";
-        anArray[9] = "zzzzzzzzzzzzzzz...";
-       
-        Button button = new Button("Search");
         
         
         final TextField generalSearchBox = new TextField();
         generalSearchBox.setDescription("Search for a Song");
+        Button commenceSearchButton = new Button("Search");
         
+        toolbar.addComponent(generalSearchBox);
+        toolbar.addComponent(commenceSearchButton);
         
         
         
         
         /////////////////////////
-        setContent(overlord);
-        overlord.addComponent(toolbar);
-        toolbar.addComponent(generalSearchBox);
-       // overlord.addComponent(table);
-        toolbar.addComponent(button);
-        overlord.addComponent(primary);
+        
+
+        
         
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 1: Home Page
         HomePage homePage = new HomePage();
         AbsoluteLayout Homage = homePage.drawHomePage();
-        primary.addTab(Homage, "Home");
         
         
-        
-        ////////////////////////////////////////////////////////////////////////        
-//      Tab #2
-        
-        final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        
-//        Button button = new Button("Click Me");
-//        button.addClickListener(new Button.ClickListener() {
-//            public void buttonClick(ClickEvent event) {
-//                layout.addComponent(new Label("Thank you for clicking"));
-//            }
-//        });
-//        layout.addComponent(button);
-
         
         
 
-        
-//        CssLayout layout = new CssLayout() {
-////            @Override
-//            protected String getCss(Component c) {
-//                if (c instanceof Label) {
-//                    // Color the boxes with random colors
-//                    int rgb = (int) (Math.random()*(1<<24));
-//                    return "background: #" + Integer.toHexString(rgb);
-//                }
-//                return null;
-//            }
-//        };
-//        layout.setWidth("400px"); // Causes to wrap the contents
-//
-//        // Add boxes of various sizes
-//        for (int i=0; i<40; i++) {
-//            Label box = new Label("&nbsp;", ContentMode.HTML);
-//            box.addStyleName("flowbox");
-//            box.setWidth((float) Math.random()*50,
-//                         Sizeable.UNITS_PIXELS);
-//            box.setHeight((float) Math.random()*50,
-//                          Sizeable.UNITS_PIXELS);
-//            layout.addComponent(box);
-//        }
-        primary.addTab(layout, "Example");
-        
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 2: Song Results Page
         
-             
-//        
-//        Button startSearchButton = new Button("test button");
-//        SonRPage.addComponent(startSearchButton);
+   
         
         ////////////////////////////////////////////////////////////////////////
 //      TAB 3: Search Results Page        
         searchResultPage = new SearchResultPage(primary);
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
-        primary.addTab(SeaRPage, "Search Results");  
-//        SeaRPage.setVisible(false);
+
               
         ////////////////////////////////////////////////////////////////////////
 //      TAB 4: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
-        primary.addTab(AdvSPage, "Advanced Search");
+        
  
         Button startSearchButton2 = new Button("test button");
         AdvSPage.addComponent(startSearchButton2);
@@ -198,40 +127,8 @@ public class MyVaadinUI extends UI
         
         
         
-        
-        
-        
-        
-        
-        
-//        static File[] allwavfiles;
-//        static File songfile = null;
-//        Clip clip = null;
-//        boolean x = true;
-//        Thread thread = new Thread(new thread1());
-//        long playloc = 0;
-//        static DatabaseAccess dba = new DatabaseAccess();
 
-//        static AudioWaveformCreator awc = new AudioWaveformCreator();
-//        DBRow[] result = new DBRow[25];
-//        int[] subsong = new int[31];
-//        String lyricsr = "";
-        
-
-               
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        button.addClickListener(new Button.ClickListener() {
+        commenceSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 searchResultPage.resultTable.removeAllItems();
                 String generalq = generalSearchBox.getValue();
@@ -259,8 +156,12 @@ public class MyVaadinUI extends UI
             }
         });
         
+        primary.addTab(Homage, "Home");
+        primary.addTab(SeaRPage, "Search Results");  
+        primary.addTab(AdvSPage, "Advanced Search");
         
-        
+        overlord.addComponent(primary);
+
         
    }
 }

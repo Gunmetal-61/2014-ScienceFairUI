@@ -114,4 +114,24 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
     public void playOrPause() {
         callFunction("pauseOrPlay");
     }
+    
+//    public void timeTracker() {
+//        callFunction("trackerTime", );
+//        return ;
+//    }
+    public void muteSilence() {
+        callFunction("silenceMute");
+    }
+    public void stopReset() {
+        callFunction("resetStop");
+    }
+
+    
+    public void volumeSetter(double newVolume) {
+        callFunction("setterVolume", newVolume);
+    }
+//    public void playSpeed() {
+//        callFunction("speedPlay", rate);
+//        return ;
+//    }
 }
