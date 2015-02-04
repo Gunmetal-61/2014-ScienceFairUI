@@ -107,6 +107,11 @@
 	  <version>20080701</version>
 	  <type>jar</type>
 	 </dependency>
+	 <dependency>
+	  <groupId>mp3agic</groupId>
+	  <artifactId>MP3AGIC</artifactId>
+	  <version>0.8.3</version>
+	 </dependency>
 	</dependencies>
 
 	<build>

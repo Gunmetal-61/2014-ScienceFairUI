@@ -50,33 +50,10 @@ public class SearchResultPage {
     TabSheet other;
     //AbsoluteLayout alternate;
     public SearchResultPage(TabSheet primary) {
-//        stConvert = songtitle;
-//        saConvert = songartist;
-//        SRPingrid = ingrid;
         other = primary;
-        //alternate = SonRPage;
     }
     
-    public File loadsong(String name, String artist){
-        File out = null;
-        try{
-            out = new File(MyVaadinUI.dba.songdir(MyVaadinUI.con,null,name,artist));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-//        playloc = 0;
-//        currenttime.setText("0:00");
-//        audioProgressSlider1.setValue(0);
-//        playpause1.setText("Play");
-//        x = true;
-//        if(!thread.isInterrupted()){
-//            thread.interrupt();
-//        }
-//        if(clip != null){
-//            clip.close();
-//        }
-        return out;
-    }
+    
     public AbsoluteLayout drawSearchRPage(){
         
         
@@ -159,7 +136,7 @@ public class SearchResultPage {
 //                other.removeTab(SonRPage);
                 SongResultPages songResultPage2 = new SongResultPages();
                 AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
-                other.addTab(SonRPage, "Song Results");   
+                other.addTab(SonRPage);   
                 other.setSelectedTab(SonRPage);
                  
             }
@@ -215,48 +192,7 @@ public class SearchResultPage {
 ////        ingrid.addComponent(waveformtitle, "left: 40px; top: 260px;");
 //        
 //////////////////////////////////////////////////////////////////////////////////        
-//        
-//        
-//        
-//        
-//        //Intercept Graph Image
-//        Image intercept = new Image("",waveformf);
-//        intercept.setWidth(600, UNITS_PIXELS);
-//        intercept.setHeight(67, UNITS_PIXELS);
-//        
-//        Label intercepttitle = new Label("Intercept Waveform Visuals");
-//        
-//        //OLD USELESS STUFF (FOR NOW AT LEAST)
-//        TextField name = new TextField("Name");
-//        
-////        Button button = new Button("Click Me");
-////        button.addClickListener(new Button.ClickListener() {
-////            public void buttonClick(Button.ClickEvent event) {
-////                ingrid.addComponent(new Label("Thank you for clicking"));
-////            }
-////        });
-//        
-        //Play the Song (Audio)
-        File songFilePointer = loadsong("Rolling in the Deep", "Adele");
-        
-        FileResource songFile = new FileResource(new File("C:\\Users\\Mitchell\\Music\\13 Immortal Empire.wav"));
-        //FileResource songfile = new FileResource(new File("C:\\Users\\Mitchell\\Documents\\NetBeansProjects\\20141111SoundSearch210\\src\\main\\webapp\\WEB-INF\\audio\\13 Immortal Empire.wav"));
-        Audio song = new Audio("",songFile);
-        //song.setAutoplay(true);
-        song.setShowControls(true);
-    //    song.
-        
-        
-        
-        
-//        //ADD TO VERTICAL LAYOUT WITHIN BOARD
-//////      
-////        
-////          ingrid.addComponent(name, "left: 260px; top: 0px;");
-//        ingrid.addComponent(intercept, "left: 30px; top: 430px");
-////        ingrid.addComponent(intercepttitle, "left: 40px; top: 400px;");
-////        ingrid.addComponent(song, "left: 30px; top: 540px;");
-        
+
         return grid;
     }
     

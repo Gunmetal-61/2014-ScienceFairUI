@@ -7,6 +7,7 @@
 package com.mycompany.soundsearch230;
 
 import Database.DatabaseAccess;
+import MP3Pull.IDEExtract;
 import Wavesurfer.Wavesurfer;
 import com.google.gwt.user.client.ui.UIObject;
 import com.vaadin.server.ExternalResource;
@@ -36,10 +37,12 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Slider.ValueOutOfBoundsException;
+import java.io.RandomAccessFile;
 
 /**
  *
@@ -57,9 +60,19 @@ public class SongResultPages {
         grid.setWidth(1600, UNITS_PIXELS);
         
         final VerticalLayout inNonGrid = new VerticalLayout();
+        
+        HorizontalLayout generalInfoContainer = new HorizontalLayout();
+        HorizontalLayout albumArtContainer = new HorizontalLayout();
+        VerticalLayout generalSongDataContainer = new VerticalLayout();
+        VerticalLayout detailedInfoContainer = new VerticalLayout();
+        HorizontalLayout mediaControlContainer = new HorizontalLayout();
 
         grid.addComponent(inNonGrid, "left: 320px; top: 0px;");
-        
+        inNonGrid.addComponent(generalInfoContainer);
+        generalInfoContainer.addComponent(albumArtContainer);
+        generalInfoContainer.addComponent(generalSongDataContainer);
+        inNonGrid.addComponent(detailedInfoContainer);
+
         
         ////////////////////////////////////////////////////////////////////////
 //      LABELS
@@ -83,36 +96,34 @@ public class SongResultPages {
 
 
 
-        ////////////////////////////////////////////////////////////////////////
-//      Album Image
-        FileResource resource = new FileResource(new File("C:\\Common Directory\\SoundSearch\\Images\\Maroon-5-Overexposed-Cover.jpg"));
 
-        Image albumimage = new Image("",resource);
-        albumimage.setWidth(200, UNITS_PIXELS);
-        albumimage.setHeight(200, UNITS_PIXELS);
 
         ////////////////////////////////////////////////////////////////////////        
 //      Waveform Graph Image
-        FileResource waveformf = new FileResource(new File("C:\\Common Directory\\SoundSearch\\Images\\stock graph image jpeg.jpg"));
 
-        Image waveform = new Image("",waveformf);
-//        waveform.
-        waveform.setWidth(900, UNITS_PIXELS);
-        waveform.setHeight(100, UNITS_PIXELS);
 
         Label waveformtitle = new Label("Waveform Readings");
-
+        
+        IDEExtract ideExtract = new IDEExtract();
+        String playThisFile = ideExtract.findFile();
+        RandomAccessFile coverArt = ideExtract.getAlbumArt(playThisFile);
+        
+        
         
         final Wavesurfer myWavesurfer = new Wavesurfer();
         myWavesurfer.setHeight(130, UNITS_PIXELS);
         myWavesurfer.setWidth(900, UNITS_PIXELS);
-        myWavesurfer.loadFile();
+        myWavesurfer.loadPlayFile(playThisFile);
         
+        ////////////////////////////////////////////////////////////////////////
+//      Album Image
+        FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
+
+        Image albumimage = new Image("",resource);
+        albumimage.setWidth(200, UNITS_PIXELS);
+        albumimage.setHeight(200, UNITS_PIXELS);
         
-        
-    //    if()
-//        Button togglePlayPause = new Button(playPauseState);
-        
+        ////////////////////////////////////////////////////////////////////////
 
         final Button toggleMute = new Button("Mute");
         toggleMute.addClickListener(new Button.ClickListener() {
@@ -195,19 +206,20 @@ public class SongResultPages {
         
         
 
-        inNonGrid.addComponent(albumimage);
-        inNonGrid.addComponent(songtitle);
-        inNonGrid.addComponent(songartist);
-        inNonGrid.addComponent(songyear);
-        inNonGrid.addComponent(songlength);
-        inNonGrid.addComponent(songgenre);
-        inNonGrid.addComponent(myWavesurfer);
-        inNonGrid.addComponent(togglePlayPause);
-        inNonGrid.addComponent(toggleMute);
-        inNonGrid.addComponent(toggleStopReset);
-        inNonGrid.addComponent(waveformtitle);
-        inNonGrid.addComponent(volumeLevelSlider);
-        inNonGrid.addComponent(speedValue);
+        albumArtContainer.addComponent(albumimage);
+        generalSongDataContainer.addComponent(songtitle);
+        generalSongDataContainer.addComponent(songartist);
+        generalSongDataContainer.addComponent(songyear);
+        generalSongDataContainer.addComponent(songlength);
+        generalSongDataContainer.addComponent(songgenre);
+        detailedInfoContainer.addComponent(waveformtitle);
+        detailedInfoContainer.addComponent(myWavesurfer);   
+        detailedInfoContainer.addComponent(mediaControlContainer);
+        mediaControlContainer.addComponent(togglePlayPause);
+        mediaControlContainer.addComponent(toggleMute);
+        mediaControlContainer.addComponent(toggleStopReset);
+        mediaControlContainer.addComponent(volumeLevelSlider);
+        mediaControlContainer.addComponent(speedValue);
 
       
         return grid;

@@ -80,15 +80,14 @@ public class MyVaadinUI extends UI
         
         final TextField generalSearchBox = new TextField();
         generalSearchBox.setDescription("Search for a Song");
+                
         Button commenceSearchButton = new Button("Search");
+        Label siteLogo = new Label("SoundSearch");
         
+
+        toolbar.addComponent(siteLogo);
         toolbar.addComponent(generalSearchBox);
         toolbar.addComponent(commenceSearchButton);
-        
-        
-        
-        
-        /////////////////////////
         
 
         
@@ -101,31 +100,10 @@ public class MyVaadinUI extends UI
         
         
         
-
-        ////////////////////////////////////////////////////////////////////////        
-//      TAB 2: Song Results Page
-        
-   
-        
         ////////////////////////////////////////////////////////////////////////
-//      TAB 3: Search Results Page        
+//      TAB 2: Search Results Page        
         searchResultPage = new SearchResultPage(primary);
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
-
-              
-        ////////////////////////////////////////////////////////////////////////
-//      TAB 4: Advanced Search Page
-        AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
-        AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
-        
- 
-        Button startSearchButton2 = new Button("test button");
-        AdvSPage.addComponent(startSearchButton2);
-
-        
-////////////////////////////////////////////////////////////////////////////////
-        
-        
         
 
         commenceSearchButton.addClickListener(new Button.ClickListener() {
@@ -137,7 +115,6 @@ public class MyVaadinUI extends UI
                     result = dba.getSearchResults(con,generalq,AdvancedSearchPage.ASPmood,AdvancedSearchPage.ASPseconds,AdvancedSearchPage.ASPsongText,AdvancedSearchPage.ASPartistText,AdvancedSearchPage.ASPsubMood);
 
                     for(int i = 0; i<100; i++){
-    //                    if(generalq.equals("prayer")){
                         if(result[i]==null){
                         }else{
                             String moodconvert = Integer.toString(result[i].mood);
@@ -155,11 +132,34 @@ public class MyVaadinUI extends UI
                 }
             }
         });
+ 
+
+              
+        ////////////////////////////////////////////////////////////////////////
+//      TAB 3: Advanced Search Page
+        AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
+        AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
+
+        
+                
+        ////////////////////////////////////////////////////////////////////////        
+//      TAB 4: Song Results Page        
+//      Code not here or instantiated here, please see SearchResultPage.java and
+//      the bulk of the code which is in SongResultPages.java .
+////////////////////////////////////////////////////////////////////////////////
+
+        
+   
+        
+        
+        
+
         
         primary.addTab(Homage, "Home");
-        primary.addTab(SeaRPage, "Search Results");  
+
         primary.addTab(AdvSPage, "Advanced Search");
         
+        primary.addTab(SeaRPage);
         overlord.addComponent(primary);
 
         

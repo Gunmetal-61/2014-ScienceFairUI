@@ -10,8 +10,8 @@ Wavesurfer_Wavesurfer =
 //	    var mycomponent = new mylibrary.MyComponent(this.getElement());
 	    wavesurfer.init({
                 container: this.getElement(),
-                waveColor: 'violet',
-                progressColor: 'purple',
+                waveColor: 'LightSkyBlue',
+                progressColor: 'RoyalBlue',
                 scrollParent: false,
                 hideScrollbar: true
             });
@@ -32,7 +32,7 @@ Wavesurfer_Wavesurfer =
             
             this.fileLoader = function(playThisFile) {
                 console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + playThisFile);
-                wavesurfer.load ('/Songs/wav/' + playThisFile);
+                wavesurfer.load ('/Songs/mp3/' + playThisFile);
                 wavesurfer.on('ready', function() {
                 });
             };
