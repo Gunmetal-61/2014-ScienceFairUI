@@ -49,7 +49,7 @@ public class IDEExtract {
         Mp3File mp3file = null;
         RandomAccessFile file = null;
         try {
-            mp3file = new Mp3File("/usr/local/apache-tomcat-7.0.41/webapps/ROOT/Songs/mp3/" + playThisFile);
+            mp3file = new Mp3File("G:\\dev\\apache-tomcat-8.0.17\\webapps\\ROOT\\Songs\\mp3\\" + playThisFile);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("wuioegbefghweoufgiwerufiowehguiweypgiow");
@@ -63,7 +63,7 @@ public class IDEExtract {
               // Write image to file - can determine appropriate file extension from the mime type
 
                 try {
-                    file = new RandomAccessFile("/home/mitchell/Documents/album-artwork", "rw");
+                    file = new RandomAccessFile("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork", "rw");
                     file.write(data);
                     file.close();
                 } catch (Exception ex) {
