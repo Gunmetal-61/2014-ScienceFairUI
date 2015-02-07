@@ -22,11 +22,12 @@ import java.util.logging.Logger;
 
 //@JavaScript({"/VAADIN/MyComponent.js", "/VAADIN/MyComponentConnector.js"})
 //@JavaScript(value = {"vaadin://MyComponent.js", "vaadin://MyComponentConnector.js"})
-@JavaScript(value = {"wavesurfer.js", "drawer.js", "drawer.canvas.js", "audioelement.js", "webaudio.js", "WavesurferConnector.js"})
+@JavaScript(value = {"wavesurfer.js", "drawer.js", "drawer.canvas.js", "audioelement.js", "webaudio.js", "WavesurferConnector.js", "wavesurfer.timeline.js"})
 public class Wavesurfer extends AbstractJavaScriptComponent {
 	
     Connection con = DatabaseAccess.startconnection("orcl"); 
     public Wavesurfer() {
+        
         
 //	    this.addFunction("onClitck", new JavaScriptFunction() {
 //			@Override
@@ -122,8 +123,11 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
     public void volumeSetter(double newVolume) {
         callFunction("setterVolume", newVolume);
     }
-//    public void playSpeed() {
-//        callFunction("speedPlay", rate);
-//        return ;
-//    }
+    
+    String rate;
+    
+    public void playSpeed() {
+        callFunction("speedPlay", rate);
+        return ;
+    }
 }

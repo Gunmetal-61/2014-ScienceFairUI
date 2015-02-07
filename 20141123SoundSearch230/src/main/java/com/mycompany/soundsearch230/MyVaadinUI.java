@@ -59,7 +59,7 @@ public class MyVaadinUI extends UI
 {
     public static DBRow[] result = new DBRow[100];
     static DatabaseAccess dba = new DatabaseAccess(); 
-    static Connection con = dba.startconnection("orcl");
+    public static Connection con = dba.startconnection("orcl");
     public static SearchResultPage searchResultPage;
          
     @WebServlet(value = "/*", asyncSupported = true)

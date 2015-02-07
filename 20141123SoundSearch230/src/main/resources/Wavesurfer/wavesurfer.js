@@ -12,7 +12,7 @@ var WaveSurfer = WaveSurfer || {};
 
 WaveSurfer = {
     defaultParams: {
-        height        : 128,
+        height        : 160,
         waveColor     : '#999',
         progressColor : '#555',
         cursorColor   : '#333',

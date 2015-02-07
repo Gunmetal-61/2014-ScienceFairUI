@@ -7,7 +7,7 @@
 package com.mycompany.soundsearch230;
 
 import Database.DatabaseAccess;
-import MP3Pull.IDEExtract;
+import IDEPull.IDEExtract;
 import Wavesurfer.Wavesurfer;
 import com.google.gwt.user.client.ui.UIObject;
 import com.vaadin.server.ExternalResource;
@@ -42,6 +42,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Slider.ValueOutOfBoundsException;
+import com.vaadin.ui.TextArea;
 import java.io.RandomAccessFile;
 
 /**
@@ -60,8 +61,9 @@ public class SongResultPages {
         grid.setWidth(1600, UNITS_PIXELS);
         
         final VerticalLayout inNonGrid = new VerticalLayout();
-        
+//        inNonGrid.setSpacing(true);
         HorizontalLayout generalInfoContainer = new HorizontalLayout();
+        generalInfoContainer.setSpacing(true);
         HorizontalLayout albumArtContainer = new HorizontalLayout();
         VerticalLayout generalSongDataContainer = new VerticalLayout();
         VerticalLayout detailedInfoContainer = new VerticalLayout();
@@ -111,7 +113,7 @@ public class SongResultPages {
         
         
         final Wavesurfer myWavesurfer = new Wavesurfer();
-        myWavesurfer.setHeight(130, UNITS_PIXELS);
+        myWavesurfer.setHeight(180, UNITS_PIXELS);
         myWavesurfer.setWidth(900, UNITS_PIXELS);
         myWavesurfer.loadPlayFile(playThisFile);
         
@@ -198,10 +200,18 @@ public class SongResultPages {
             }
         });
         
-
-
-
-     
+        
+        String lyricsText = null;
+        try {
+            lyricsText = DatabaseAccess.retrievelyrics(MyVaadinUI.con, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
+        } catch (SQLException ex) {
+            Logger.getLogger(SongResultPages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        TextArea lyricsDisplayed = new TextArea("Song Lyrics");
+        lyricsDisplayed.setValue(lyricsText);
+        lyricsDisplayed.setHeight(300, UNITS_PIXELS);
+        lyricsDisplayed.setWidth(600, UNITS_PIXELS);
+        
 
         
         
@@ -220,6 +230,7 @@ public class SongResultPages {
         mediaControlContainer.addComponent(toggleStopReset);
         mediaControlContainer.addComponent(volumeLevelSlider);
         mediaControlContainer.addComponent(speedValue);
+        detailedInfoContainer.addComponent(lyricsDisplayed);
 
       
         return grid;

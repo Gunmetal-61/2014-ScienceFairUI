@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 
-package MP3Pull;
+package IDEPull;
 
 import Database.DatabaseAccess;
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.Mp3File;
+import com.mycompany.soundsearch230.MyVaadinUI;
 import com.mycompany.soundsearch230.SearchResultPage;
 import static com.mycompany.soundsearch230.SearchResultPage.nameIdentifier;
 import java.io.File;
@@ -25,8 +26,7 @@ import java.util.logging.Logger;
 
 public class IDEExtract {
     //needs the mp3agic library: https://github.com/mpatric/mp3agic
-    
-    Connection con = DatabaseAccess.startconnection("orcl"); 
+     
     public IDEExtract() {
         
     }
@@ -35,7 +35,7 @@ public class IDEExtract {
         String playThisFile = null;
         System.out.println("'findFile' method (Wavesurfer.java) started.  Retrieving selected song [" + nameIdentifier + "]'s file.");
         try {
-            playThisFile = DatabaseAccess.songdir(con, null, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
+            playThisFile = DatabaseAccess.songdir(MyVaadinUI.con, null, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
             System.out.println("Song file [" + playThisFile + "] retrieved.");
         } catch (SQLException ex) {
             System.out.println("'findFile' method (Wavesurfer.java) failed.");

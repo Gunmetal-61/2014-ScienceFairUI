@@ -16,40 +16,43 @@ Wavesurfer_Wavesurfer =
                 hideScrollbar: true
             });
             
-            console.log("Call wavesurfer.load() to load music file.");
-//            wavesurfer.load('/mp3/1-01LetthePraiseBegin.m4a');
+            waveContainer = this.getElement();
+            
+            wavesurfer.on('ready', function() {
+                var timeline = Object.create(WaveSurfer.Timeline);
 
-//            var songDirector = new String()
+            console.log("Element = " + waveContainer);
 
-
-//            wavesurfer.load('/abc.mp3');
-//            wavesurfer.load('/117.wav');
-//            wavesurfer.load('/mp3/12 117.m4a');
+                timeline.init({
+                    wavesurfer: wavesurfer,
+                    container: waveContainer
+                });
+            });
             
             this.fileLoader2 = function() {
                 console.log("fileLoader2() starts.");
             };
             
             this.fileLoader = function(playThisFile) {
+                
+                
                 console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + playThisFile);
                 wavesurfer.load ('/Songs/mp3/' + playThisFile);
-                wavesurfer.on('ready', function() {
-                });
             };
             
             this.pauseOrPlay = function () {
                 wavesurfer.playPause();
             };
             
-//            this.trackerTime = function () {
-//                wavesurfer.getCurrentTime(d);
-//                return d;
-//            }
-//            
+            this.trackerTime = function (timeProgress) {
+                wavesurfer.getCurrentTime(timeProgress);
+
+            }
+            
             this.silenceMute = function () {
                 wavesurfer.toggleMute();
             };
-//            
+            
             this.resetStop = function () {
                 wavesurfer.stop();
             };
@@ -58,11 +61,11 @@ Wavesurfer_Wavesurfer =
                 wavesurfer.setVolume(newVolume);
             };
             
-//            
-//            this.speedPlay = function (rate) {
-//                wavesurfer.setPlaybackRate(rate);
-//            }
-//            
+            
+            this.speedPlay = function (rate) {
+                wavesurfer.setPlaybackRate(rate);
+            }
+            
 	    // Handle changes from the server-side.
 	    //
 	    // It looks like when state change happens, this is the function that handles
