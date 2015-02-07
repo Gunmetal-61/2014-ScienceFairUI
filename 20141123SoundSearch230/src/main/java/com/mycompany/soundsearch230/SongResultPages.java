@@ -116,10 +116,11 @@ public class SongResultPages {
         myWavesurfer.setHeight(180, UNITS_PIXELS);
         myWavesurfer.setWidth(900, UNITS_PIXELS);
         myWavesurfer.loadPlayFile(playThisFile);
+        myWavesurfer.loadRegions();
         
         ////////////////////////////////////////////////////////////////////////
 //      Album Image
-        FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
+        FileResource resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
 
         Image albumimage = new Image("",resource);
         albumimage.setWidth(200, UNITS_PIXELS);
@@ -156,6 +157,7 @@ public class SongResultPages {
         togglePlayPause.addClickListener(new Button.ClickListener() {
             int playBinaryIndicator = 0;
             public void buttonClick(ClickEvent event) {
+                myWavesurfer.loadRegions();
                 toggleStopReset.setCaption("Reset");
                 if (playBinaryIndicator == 0) {
                     myWavesurfer.playOrPause();

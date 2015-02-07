@@ -9,6 +9,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -328,5 +331,52 @@ public class DatabaseAccess {
         } finally {
             if (stmt != null) { stmt.close(); } //close connection
         }
-    }    
+    }
+    
+    /**
+     * 
+     * @param con Database connection
+     * @param title Title of the song
+     * @param artistname Song artist name
+     * @return Subsong segments int[i][j] where i is the detail of each section (0=sequence,1=mood,2=length) and j is the number of sections
+     */
+    public static int[][] retrieveSubSong(Connection con, String title, String artistname){
+        ArrayList<Integer> sequence = new ArrayList<Integer>();
+        ArrayList<Integer> mood = new ArrayList<Integer>();
+        ArrayList<Integer> length = new ArrayList<Integer>();
+        
+        Statement stmt = null;
+        String query =
+                "SELECT SEQUENCE, MOOD, LENGTH FROM SUBSONGTABLE INNER JOIN ARTISTS ON SUBSONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE ARTISTNAME = '" + artistname + "' AND TITLE = '"+ title +"' ORDER BY SEQUENCE";
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()) {
+                sequence.add(rs.getInt("SEQUENCE"));
+                mood.add(rs.getInt("MOOD"));
+                length.add((int)rs.getFloat("LENGTH"));
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+            if (stmt != null) { try {stmt.close();} catch (SQLException ex) {ex.printStackTrace();}} //close connection
+        }
+        
+        int[][] output = new int[3][sequence.size()];
+        //convert arraylist to
+        output[0]=convertIntegers(sequence);
+        output[1]=convertIntegers(mood);
+        output[2]=convertIntegers(length);
+        return output;
+    }
+    
+    public static int[] convertIntegers(List<Integer> integers){
+        int[] ret = new int[integers.size()];
+        Iterator<Integer> iterator = integers.iterator();
+        for (int i = 0; i < ret.length; i++)
+        {
+            ret[i] = iterator.next().intValue();
+        }
+        return ret;
+    }
 }

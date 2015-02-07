@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 //@JavaScript({"/VAADIN/MyComponent.js", "/VAADIN/MyComponentConnector.js"})
 //@JavaScript(value = {"vaadin://MyComponent.js", "vaadin://MyComponentConnector.js"})
-@JavaScript(value = {"wavesurfer.js", "drawer.js", "drawer.canvas.js", "audioelement.js", "webaudio.js", "WavesurferConnector.js", "wavesurfer.timeline.js"})
+@JavaScript(value = {"wavesurfer.js", "drawer.js", "drawer.canvas.js", "wavesurfer.regions.js", "audioelement.js", "webaudio.js", "WavesurferConnector.js", "wavesurfer.timeline.js"})
 public class Wavesurfer extends AbstractJavaScriptComponent {
 	
     Connection con = DatabaseAccess.startconnection("orcl"); 
@@ -129,5 +129,15 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
     public void playSpeed() {
         callFunction("speedPlay", rate);
         return ;
+    }
+    
+    public void loadRegions(){
+        int time = 0; //cumulative time
+        int[][] subsong = DatabaseAccess.retrieveSubSong(con, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
+        for(int i = 0; i<subsong[0].length; i++){
+            callFunction("addRegion",time,time+subsong[2][i],subsong[1][i]);
+            time += subsong[2][i];
+            System.out.println(time);
+        }
     }
 }
