@@ -20,8 +20,8 @@ Wavesurfer_Wavesurfer =
             
             wavesurfer.on('ready', function() {
                 var timeline = Object.create(WaveSurfer.Timeline);
-
-            console.log("Element = " + waveContainer);
+                
+                console.log("Element = " + waveContainer);
 
                 timeline.init({
                     wavesurfer: wavesurfer,
@@ -42,6 +42,14 @@ Wavesurfer_Wavesurfer =
             
             this.pauseOrPlay = function () {
                 wavesurfer.playPause();
+            };
+            
+            this.play = function () {
+                wavesurfer.play();
+            };
+            
+            this.pause = function() {
+                wavesurfer.pause();
             };
             
             this.trackerTime = function (timeProgress) {
@@ -99,12 +107,14 @@ Wavesurfer_Wavesurfer =
                     break;
                 }
                 console.log(color);
-                wavesurfer.addRegion({
-                    start: start,
-                    end: end,
-                    drag: false,
-                    resize: false,
-                    color: color
+                wavesurfer.on('ready', function() {
+                    wavesurfer.addRegion({
+                        start: start,
+                        end: end,
+                        drag: false,
+                        resize: false,
+                        color: color
+                    });
                 });
             }
             

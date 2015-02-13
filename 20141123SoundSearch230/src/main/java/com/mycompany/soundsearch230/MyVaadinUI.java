@@ -33,6 +33,15 @@ import java.io.File;
 import java.sql.SQLException;
 import Database.DatabaseAccess;
 import Wavesurfer.Wavesurfer;
+import static com.mycompany.soundsearch230.SearchResultPage.nameIdentifier;
+import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.event.FieldEvents.FocusEvent;
+import com.vaadin.event.FieldEvents.FocusListener;
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import java.io.BufferedInputStream;  
 import java.io.File;
 import java.io.FileInputStream;  
@@ -51,6 +60,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import org.apache.commons.lang3.text.WordUtils;
 
 
 @Theme("mytheme")
@@ -72,26 +82,24 @@ public class MyVaadinUI extends UI
         VerticalLayout overlord = new VerticalLayout();
         final HorizontalLayout toolbar = new HorizontalLayout();
         final TabSheet primary = new TabSheet();
+        getPage().setTitle("Aura");
         setContent(overlord);
         overlord.addComponent(toolbar);
 
-        
-        
-        
+    
         final TextField generalSearchBox = new TextField();
         generalSearchBox.setDescription("Search for a Song");
-                
-        Button commenceSearchButton = new Button("Search");
-        Label siteLogo = new Label("SoundSearch");
-        
-
+             
+        final Button commenceSearchButton = new Button("Search");
+        Label siteLogo = new Label("Aura");
+        toolbar.setMargin(new MarginInfo(false, true, false, true));
         toolbar.addComponent(siteLogo);
+        toolbar.setComponentAlignment(siteLogo, Alignment.MIDDLE_LEFT);
         toolbar.addComponent(generalSearchBox);
         toolbar.addComponent(commenceSearchButton);
         
 
-        
-        
+  
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 1: Home Page
         HomePage homePage = new HomePage();
@@ -105,13 +113,30 @@ public class MyVaadinUI extends UI
         searchResultPage = new SearchResultPage(primary);
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
         
-
+        //enter key handlers from: https://vaadin.com/forum/#!/thread/77601/8315545
+        //if enter button is pressed
+        generalSearchBox.addFocusListener(new FocusListener() {
+            //What will be done when your Text Field is active is Enter Key is pressed
+            public void focus(final FocusEvent event) {
+                //Whatever you want to do on Enter Key pressed
+                commenceSearchButton.setClickShortcut(KeyCode.ENTER);
+            }
+        });    
+        generalSearchBox.addBlurListener(new BlurListener() {
+             // To control waht happens when your Text Field looses focus
+            @Override
+            public void blur(final BlurEvent event) {
+                commenceSearchButton.removeClickShortcut();
+            }
+        });
+        
+        //if search button is pressed
         commenceSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 searchResultPage.resultTable.removeAllItems();
                 String generalq = generalSearchBox.getValue();
                 
-                if(!generalq.equals("")){
+                if(!generalq.equals("")){ //if not empty
                     result = dba.getSearchResults(con,generalq,AdvancedSearchPage.ASPmood,AdvancedSearchPage.ASPseconds,AdvancedSearchPage.ASPsongText,AdvancedSearchPage.ASPartistText,AdvancedSearchPage.ASPsubMood);
 
                     for(int i = 0; i<100; i++){
@@ -119,28 +144,22 @@ public class MyVaadinUI extends UI
                         }else{
                             String moodconvert = Integer.toString(result[i].mood);
 //                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert}, i);
-
-                            
+                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert}, i);               
                             System.out.println(i + ": " + result[i].name);
-                        }    
-                        
+                        }                
                     }
                     primary.setSelectedTab(SeaRPage);
-                }else{
-                    
                 }
             }
         });
  
-
+                
               
         ////////////////////////////////////////////////////////////////////////
 //      TAB 3: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
-
-        
+     
                 
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 4: Song Results Page        
@@ -148,13 +167,7 @@ public class MyVaadinUI extends UI
 //      the bulk of the code which is in SongResultPages.java .
 ////////////////////////////////////////////////////////////////////////////////
 
-        
-   
-        
-        
-        
 
-        
         primary.addTab(Homage, "Home");
 
         primary.addTab(AdvSPage, "Advanced Search");
@@ -162,6 +175,6 @@ public class MyVaadinUI extends UI
         primary.addTab(SeaRPage);
         overlord.addComponent(primary);
 
-        
+
    }
 }

@@ -98,14 +98,21 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
     
    
 
-    
+    /**
+     * Load song to play
+     * @param playThisFile 
+     */
     public void loadPlayFile(String playThisFile) {
         callFunction("fileLoader", playThisFile);  
         callFunction("fileLoader2");
     }      
     
-    public void playOrPause() {
-        callFunction("pauseOrPlay");
+    public void playOrPause(boolean play) {
+        if(play){
+            callFunction("play");
+        } else {
+            callFunction("pause");
+        }
     }
     
 //    public void timeTracker() {
@@ -119,21 +126,33 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
         callFunction("resetStop");
     }
 
-    
+    /**
+     * Change playback volume
+     * 0 is mute, 1 is max
+     * @param newVolume 
+     */
     public void volumeSetter(double newVolume) {
         callFunction("setterVolume", newVolume);
     }
     
-    String rate;
-    
-    public void playSpeed() {
+    /**
+     * Change playback rate
+     * 0.5 is half speed, 2 is double
+     * @param rate 
+     */
+    public void playSpeed(double rate) {
         callFunction("speedPlay", rate);
         return ;
     }
     
-    public void loadRegions(){
+    /**
+     * Load Subsong Regions
+     * @param title Title of song
+     * @param artist Artist of song
+     */
+    public void loadRegions(String title, String artist){
         int time = 0; //cumulative time
-        int[][] subsong = DatabaseAccess.retrieveSubSong(con, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
+        int[][] subsong = DatabaseAccess.retrieveSubSong(con, title, artist);
         for(int i = 0; i<subsong[0].length; i++){
             callFunction("addRegion",time,time+subsong[2][i],subsong[1][i]);
             time += subsong[2][i];

@@ -31,11 +31,11 @@ public class IDEExtract {
         
     }
     
-    public String findFile() {
+    public String findFile(String title, String artist) {
         String playThisFile = null;
         System.out.println("'findFile' method (Wavesurfer.java) started.  Retrieving selected song [" + nameIdentifier + "]'s file.");
         try {
-            playThisFile = DatabaseAccess.songdir(MyVaadinUI.con, null, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
+            playThisFile = DatabaseAccess.songdir(MyVaadinUI.con, null, title, artist);
             System.out.println("Song file [" + playThisFile + "] retrieved.");
         } catch (SQLException ex) {
             System.out.println("'findFile' method (Wavesurfer.java) failed.");
