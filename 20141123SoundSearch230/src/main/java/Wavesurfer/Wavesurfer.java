@@ -28,26 +28,12 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
     Connection con = DatabaseAccess.startconnection("orcl"); 
     public Wavesurfer() {
         
-        
-//	    this.addFunction("onClitck", new JavaScriptFunction() {
-//			@Override
-//			public void call(JsonArray arguments) {
-//				System.out.println("Invoking server-side onClick() method.");				
-//				getState().value = arguments.getString(0);
-////	            getState().setValue(arguments.getString(0));
-//	            for (ValueChangeListener listener: listeners)
-//	                listener.valueChange();				
-//			}
-//	    });
-
-
-
-        this.addFunction("onClitck", null);
+        this.addFunction("onClick", null);
             // Implements the onClick method that is to be called by client-side
             // Javascript code in Wavesurfer.js.  It gets the value from 
             // client side and invoke all the value change listeners that have
             // been registered.
-        this.addFunction("onClitck", new JavaScriptFunction() {
+        this.addFunction("onClick", new JavaScriptFunction() {
                     @Override
                     public void call(JSONArray arguments) throws JSONException {
                             System.out.println("Invoking server-side onClick() method.");				
@@ -156,7 +142,7 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
         for(int i = 0; i<subsong[0].length; i++){
             callFunction("addRegion",time,time+subsong[2][i],subsong[1][i]);
             time += subsong[2][i];
-            System.out.println(time);
+            //System.out.println(time);
         }
     }
 }

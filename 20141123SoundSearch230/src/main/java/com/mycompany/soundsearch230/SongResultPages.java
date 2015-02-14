@@ -56,10 +56,7 @@ public class SongResultPages {
         
 //    }
     
-    public AbsoluteLayout drawSongRPage() {
-        final String artist = SearchResultPage.artistIdentifier;
-        final String title = SearchResultPage.nameIdentifier;
-        
+    public AbsoluteLayout drawSongRPage(String artist, String title, int length) {      
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1200, UNITS_PIXELS);
         grid.setWidth(1600, UNITS_PIXELS);
@@ -89,7 +86,7 @@ public class SongResultPages {
         //Year Song was Released
         Label songyear = new Label("2011");
         //Length of Song
-        Label songlength = new Label(time(SearchResultPage.length));
+        Label songlength = new Label(time(length));
         //Song Genre
         Label songgenre = new Label("Pop");
         //Song Lyrics
@@ -182,9 +179,9 @@ public class SongResultPages {
         
         Label speed = new Label("Playback Speed");
         
-        final Slider speedLevelSlider = new Slider(-100, 100);
+        final Slider speedLevelSlider = new Slider(0,2);
         try {
-            speedLevelSlider.setValue(0.0);
+            speedLevelSlider.setValue(1.0);
         } catch (ValueOutOfBoundsException e) {
         }
        
@@ -193,7 +190,7 @@ public class SongResultPages {
             new Property.ValueChangeListener() {
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                    double value = (Double) volumeLevelSlider.getValue() / 100;
+                    double value = volumeLevelSlider.getValue() / 100;
                     myWavesurfer.volumeSetter(value);
                 }
         });
@@ -202,7 +199,7 @@ public class SongResultPages {
             new Property.ValueChangeListener() {
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                    double value = (Double) (((speedLevelSlider.getValue() / 100)+1));
+                    double value = speedLevelSlider.getValue();
                     myWavesurfer.playSpeed(value);
                 }
         });
@@ -210,7 +207,7 @@ public class SongResultPages {
         
         String lyricsText = null;
         try {
-            lyricsText = DatabaseAccess.retrievelyrics(MyVaadinUI.con, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
+            lyricsText = DatabaseAccess.retrievelyrics(MyVaadinUI.con, title, artist);
         } catch (SQLException ex) {
             Logger.getLogger(SongResultPages.class.getName()).log(Level.SEVERE, null, ex);
         }

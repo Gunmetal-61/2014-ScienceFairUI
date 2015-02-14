@@ -33,9 +33,7 @@ Wavesurfer_Wavesurfer =
                 console.log("fileLoader2() starts.");
             };
             
-            this.fileLoader = function(playThisFile) {
-                
-                
+            this.fileLoader = function(playThisFile) {    
                 console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + playThisFile);
                 wavesurfer.load ('/Songs/mp3/' + playThisFile);
             };
@@ -54,7 +52,6 @@ Wavesurfer_Wavesurfer =
             
             this.trackerTime = function (timeProgress) {
                 wavesurfer.getCurrentTime(timeProgress);
-
             }
             
             this.silenceMute = function () {
