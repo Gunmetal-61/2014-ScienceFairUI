@@ -145,13 +145,19 @@ public class MyVaadinUI extends UI
         File[] instantFiles = Page.listFiles();
         String convert = null;
         
+        System.out.println("Number of files = " + instantFiles.length);
+        
         for(int i = 0; i<instantFiles.length; i++){
             System.out.println("1:" + instantFiles[i].toString());
             convert = instantFiles[i].toString();
 //            System.out.println(convert);
-            Page.writeAlbum(con, convert);
+
+            Page.writeArtist(con, convert);
+            
 //            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
         }
+
+        System.out.println("Completed loading songs.");
         
 //        String der = Page.writeAlbum(con, )
 
