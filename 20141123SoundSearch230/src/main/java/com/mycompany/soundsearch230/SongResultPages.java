@@ -123,7 +123,7 @@ public class SongResultPages {
       
         ////////////////////////////////////////////////////////////////////////
 //      Album Image
-        FileResource resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
+        FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
 
         Image albumimage = new Image("",resource);
         albumimage.setWidth(200, UNITS_PIXELS);

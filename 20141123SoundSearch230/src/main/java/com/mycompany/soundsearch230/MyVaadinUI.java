@@ -32,6 +32,7 @@ import com.vaadin.ui.TextField;
 import java.io.File;
 import java.sql.SQLException;
 import Database.DatabaseAccess;
+import IDEPull.IDEWrite;
 import Wavesurfer.Wavesurfer;
 import static com.mycompany.soundsearch230.SearchResultPage.nameIdentifier;
 import com.vaadin.event.FieldEvents.BlurEvent;
@@ -159,7 +160,27 @@ public class MyVaadinUI extends UI
 //      TAB 3: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
-     
+
+
+        IDEWrite Page = new IDEWrite();
+        File[] instantFiles = Page.listFiles();
+        String convert = null;
+        
+        System.out.println("Number of files = " + instantFiles.length);
+        
+        for(int i = 0; i<instantFiles.length; i++){
+            System.out.println("1:" + instantFiles[i].toString());
+            convert = instantFiles[i].toString();
+//            System.out.println(convert);
+
+            Page.writeArtist(con, convert);
+            
+//            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
+        }
+        
+//        String der = Page.writeAlbum(con, )
+
+
                 
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 4: Song Results Page        
