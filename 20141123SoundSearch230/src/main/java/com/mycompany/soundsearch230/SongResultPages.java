@@ -52,11 +52,17 @@ import org.apache.commons.lang3.text.WordUtils;
  * @author Mitchell
  */
 public class SongResultPages {
-//    public File loadsong(String name, String artist){
-        
-//    }
+    String artist;
+    String title;
+    int length;
     
-    public AbsoluteLayout drawSongRPage(String artist, String title, int length) {      
+    public SongResultPages(String title, String artist, int length){
+        this.title =  title;
+        this.artist = artist;
+        this.length = length;
+    }
+    
+    public AbsoluteLayout drawSongRPage() {      
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1200, UNITS_PIXELS);
         grid.setWidth(1600, UNITS_PIXELS);
@@ -241,12 +247,16 @@ public class SongResultPages {
         return grid;
     }
     
+    private void load(){
+        
+    }
+    
     /**
      * Convert seconds into M:SS
      * @param input Seconds
      * @return 
      */
-    public static String time(int input){
+    private static String time(int input){
         String seconds = (input%60>9)?String.valueOf(input%60):"0"+String.valueOf(input%60);
         return input/60 + ":" + seconds;
     }

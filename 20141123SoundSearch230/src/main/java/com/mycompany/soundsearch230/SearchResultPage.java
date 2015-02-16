@@ -137,8 +137,8 @@ public class SearchResultPage {
                 
 //                other.getTab(SonRPage);
 //                other.removeTab(SonRPage);
-                SongResultPages songResultPage2 = new SongResultPages();
-                AbsoluteLayout SonRPage = songResultPage2.drawSongRPage(artistIdentifier,nameIdentifier,length);
+                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,length);
+                AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
                 other.addTab(SonRPage);
                 other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name
                 other.getTab(SonRPage).setClosable(true); //allow user to close tabs

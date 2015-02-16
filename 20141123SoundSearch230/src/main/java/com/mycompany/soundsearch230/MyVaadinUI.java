@@ -153,7 +153,7 @@ public class MyVaadinUI extends UI
             }
         });
  
-                
+        
               
         ////////////////////////////////////////////////////////////////////////
 //      TAB 3: Advanced Search Page
