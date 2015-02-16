@@ -31,11 +31,11 @@ public class IDEExtract {
         
     }
     
-    public String findFile() {
+    public String findFile(String title, String artist) {
         String playThisFile = null;
         System.out.println("'findFile' method (Wavesurfer.java) started.  Retrieving selected song [" + nameIdentifier + "]'s file.");
         try {
-            playThisFile = DatabaseAccess.songdir(MyVaadinUI.con, null, SearchResultPage.nameIdentifier, SearchResultPage.artistIdentifier);
+            playThisFile = DatabaseAccess.songdir(MyVaadinUI.con, null, title, artist);
             System.out.println("Song file [" + playThisFile + "] retrieved.");
         } catch (SQLException ex) {
             System.out.println("'findFile' method (Wavesurfer.java) failed.");
@@ -49,7 +49,7 @@ public class IDEExtract {
         Mp3File mp3file = null;
         RandomAccessFile file = null;
         try {
-            mp3file = new Mp3File("/usr/local/apache-tomcat-7.0.41/webapps/ROOT/Songs/mp3/" + playThisFile);
+            mp3file = new Mp3File("G:\\dev\\apache-tomcat-8.0.17\\webapps\\ROOT\\Songs\\mp3\\" + playThisFile);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("wuioegbefghweoufgiwerufiowehguiweypgiow");
@@ -63,7 +63,7 @@ public class IDEExtract {
               // Write image to file - can determine appropriate file extension from the mime type
 
                 try {
-                    file = new RandomAccessFile("/home/mitchell/Documents/album-artwork", "rw");
+                    file = new RandomAccessFile("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork", "rw");
                     file.write(data);
                     file.close();
                 } catch (Exception ex) {

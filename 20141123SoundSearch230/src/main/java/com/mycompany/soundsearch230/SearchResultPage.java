@@ -30,6 +30,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.text.WordUtils;
 
 /**
  *
@@ -40,8 +41,9 @@ public class SearchResultPage {
     public Table resultTable = new Table();
     Connection con = DatabaseAccess.startconnection("orcl"); 
     int[] moodarray;
-    public static String nameIdentifier = "one more night";
-    public static String artistIdentifier = "maroon 5";
+    public static String nameIdentifier = "";
+    public static String artistIdentifier = "";
+    public static int length = 0;
 
     public DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, "", moodarray, 0, "", "", 0);
     Label stConvert;
@@ -56,7 +58,7 @@ public class SearchResultPage {
     
     public AbsoluteLayout drawSearchRPage(){
         
-        
+
 ////////////////////////////////////////////////////////////////////////////////
         //BASE PANELS/LAYOUTS: 
 //        CssLayout grid = new AbsoluteLayout();
@@ -123,10 +125,11 @@ public class SearchResultPage {
 //                if()
                 
                 // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                System.out.println("SOng: " + MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name);
+                System.out.println("Song: " + MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name);
                 nameIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name;
                 System.out.println("nameidentifier: " + nameIdentifier);
                 artistIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].artist;
+                length = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].length;
 //                stConvert = new Label(nameIdentifier);
 //                saConvert = new Label(artistIdentifier);
 //                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
@@ -134,9 +137,11 @@ public class SearchResultPage {
                 
 //                other.getTab(SonRPage);
 //                other.removeTab(SonRPage);
-                SongResultPages songResultPage2 = new SongResultPages();
+                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,length);
                 AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
-                other.addTab(SonRPage);   
+                other.addTab(SonRPage);
+                other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name
+                other.getTab(SonRPage).setClosable(true); //allow user to close tabs
                 other.setSelectedTab(SonRPage);
                  
             }

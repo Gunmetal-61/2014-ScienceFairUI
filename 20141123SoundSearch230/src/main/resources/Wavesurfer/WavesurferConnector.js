@@ -20,8 +20,8 @@ Wavesurfer_Wavesurfer =
             
             wavesurfer.on('ready', function() {
                 var timeline = Object.create(WaveSurfer.Timeline);
-
-            console.log("Element = " + waveContainer);
+                
+                console.log("Element = " + waveContainer);
 
                 timeline.init({
                     wavesurfer: wavesurfer,
@@ -33,9 +33,7 @@ Wavesurfer_Wavesurfer =
                 console.log("fileLoader2() starts.");
             };
             
-            this.fileLoader = function(playThisFile) {
-                
-                
+            this.fileLoader = function(playThisFile) {    
                 console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + playThisFile);
                 wavesurfer.load ('/Songs/mp3/' + playThisFile);
             };
@@ -44,9 +42,16 @@ Wavesurfer_Wavesurfer =
                 wavesurfer.playPause();
             };
             
+            this.play = function () {
+                wavesurfer.play();
+            };
+            
+            this.pause = function() {
+                wavesurfer.pause();
+            };
+            
             this.trackerTime = function (timeProgress) {
                 wavesurfer.getCurrentTime(timeProgress);
-
             }
             
             this.silenceMute = function () {
@@ -64,6 +69,50 @@ Wavesurfer_Wavesurfer =
             
             this.speedPlay = function (rate) {
                 wavesurfer.setPlaybackRate(rate);
+            }
+            
+            this.addRegion = function (start, end, mood) {
+                console.log("entered function");
+                console.log(start);
+                console.log(end);
+                console.log(mood);
+                var color = "rgba(0,0,0,0.1)";
+                switch(mood){
+                    case 0: //love, inspiration
+                        color = "rgba(25,181,254,0.3)";
+                    break;
+                    case 1: //fascination, admiration
+                        color = "rgba(248,148,6,0.3)";  
+                    break;
+                    case 2: //satisfaction, relaxed
+                        color = "rgba(253,227,167,0.3)";
+                    break;
+                    case 3: //calm, awaiting
+                        color = "rgba(200,147,197,0.3)";
+                    break;
+                    case 4: //boredom, sadness
+                        color = "rgba(191,191,191,0.3)";
+                    break;
+                    case 5: //disappointment, jealousy
+                        color = "rgba(154,18,179,0.3)";
+                    break;
+                    case 6: //irritation, disgust
+                        color = "rgba(242,38,19,0.3)"; //red
+                    break;
+                    case 7: //astonishment, curiosity
+                        color = "rgba(246,71,71,0.3)"; 
+                    break;
+                }
+                console.log(color);
+                wavesurfer.on('ready', function() {
+                    wavesurfer.addRegion({
+                        start: start,
+                        end: end,
+                        drag: false,
+                        resize: false,
+                        color: color
+                    });
+                });
             }
             
 	    // Handle changes from the server-side.
