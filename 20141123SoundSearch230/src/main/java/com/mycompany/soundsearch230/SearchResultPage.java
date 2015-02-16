@@ -43,7 +43,10 @@ public class SearchResultPage {
     int[] moodarray;
     public static String nameIdentifier = "";
     public static String artistIdentifier = "";
+    public static String genre = "";
+    public static String album = "";
     public static int length = 0;
+    public static int year = 0;
 
     public DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, "", moodarray, 0, "", "", 0);
     Label stConvert;
@@ -125,11 +128,12 @@ public class SearchResultPage {
 //                if()
                 
                 // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                System.out.println("Song: " + MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name);
                 nameIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name;
-                System.out.println("nameidentifier: " + nameIdentifier);
                 artistIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].artist;
                 length = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].length;
+                year = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].year;
+                album = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].album;
+                genre = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].genre;
 //                stConvert = new Label(nameIdentifier);
 //                saConvert = new Label(artistIdentifier);
 //                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
@@ -137,7 +141,7 @@ public class SearchResultPage {
                 
 //                other.getTab(SonRPage);
 //                other.removeTab(SonRPage);
-                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,length);
+                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year);
                 AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
                 other.addTab(SonRPage);
                 other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name

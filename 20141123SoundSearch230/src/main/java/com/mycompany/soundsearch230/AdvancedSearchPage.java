@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.text.WordUtils;
 
 /**
  *
@@ -159,7 +160,7 @@ public class AdvancedSearchPage {
                         ASPsongText = "";
                     }else{
                         String moodconverter = Integer.toString(MyVaadinUI.result[i].mood);
-                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{MyVaadinUI.result[i].name, MyVaadinUI.result[i].artist, "Top Hits", "", "", moodconverter}, i);
+                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), MyVaadinUI.result[i].artist, MyVaadinUI.result[i].album, SongResultPages.time(MyVaadinUI.result[i].length), MyVaadinUI.result[i].genre, moodconverter}, i);
                     }    
 
                 }

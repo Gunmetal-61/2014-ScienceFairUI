@@ -34,18 +34,12 @@ public class IDEWrite {
     
     
     public static File[] listFiles() {
-        File songFolder = new File("/home/mitchell/Music/Scan Songs");
-        
+        File songFolder = new File("/home/mitchell/Music/Scan Songs");    
         File[] retrievedFiles = songFolder.listFiles();
-        
-        
+
         for(int i = 0; i<retrievedFiles.length; i++){            
 //            System.out.println("1:" + retrievedFiles[i]);
         }
-        
-        
-        
-        
         return retrievedFiles;
     }
     
@@ -294,6 +288,27 @@ public class IDEWrite {
         
         
         return theArtist;
+    }
+    
+    public static void fixSubsong(Connection con){
+        try{
+            Statement stmt = con.createStatement();
+            ResultSet songTable = stmt.executeQuery("SELECT TITLE, ARTISTID FROM SONGTABLE");
+            
+            int artistid;
+            String title;
+            while(songTable.next()){
+                PreparedStatement update;
+                artistid = songTable.getInt("ARTISTID");
+                title = songTable.getString("TITLE");
+                System.out.println(title);
+                update = con.prepareStatement("UPDATE SUBSONGTABLE SET ARTISTID = "+artistid+" WHERE TITLE = '"+title+"'");
+                update.addBatch();
+                update.executeBatch();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
     
 }
