@@ -54,12 +54,27 @@ import org.apache.commons.lang3.text.WordUtils;
 public class SongResultPages {
     String artist;
     String title;
+    String album;
+    String genre;
     int length;
+    int year;
     
-    public SongResultPages(String title, String artist, int length){
+    /**
+     * 
+     * @param title
+     * @param artist
+     * @param album
+     * @param genre
+     * @param length
+     * @param year 
+     */
+    public SongResultPages(String title, String artist, String album, String genre, int length, int year){
         this.title =  title;
         this.artist = artist;
+        this.album = album;
+        this.genre = genre;
         this.length = length;
+        this.year = year;
     }
     
     public AbsoluteLayout drawSongRPage() {      
@@ -90,11 +105,11 @@ public class SongResultPages {
         //Artist of Song
         Label songartist = new Label(WordUtils.capitalize(title));
         //Year Song was Released
-        Label songyear = new Label("2011");
+        Label songyear = new Label(String.valueOf(year));
         //Length of Song
         Label songlength = new Label(time(length));
         //Song Genre
-        Label songgenre = new Label("Pop");
+        Label songgenre = new Label(genre);
         //Song Lyrics
         Label songlyrics = new Label("");        
         //Link to Lyrics
@@ -123,7 +138,7 @@ public class SongResultPages {
       
         ////////////////////////////////////////////////////////////////////////
 //      Album Image
-        FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
+        FileResource resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
 
         Image albumimage = new Image("",resource);
         albumimage.setWidth(200, UNITS_PIXELS);
@@ -256,7 +271,7 @@ public class SongResultPages {
      * @param input Seconds
      * @return 
      */
-    private static String time(int input){
+    public static String time(int input){
         String seconds = (input%60>9)?String.valueOf(input%60):"0"+String.valueOf(input%60);
         return input/60 + ":" + seconds;
     }

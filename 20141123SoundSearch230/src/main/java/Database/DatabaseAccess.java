@@ -175,7 +175,11 @@ public class DatabaseAccess {
         
         
         String query =
-                "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME FROM SONGTABLE INNER JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID " + generalquery + lengthsquery + moodsquery + namesquery + artistsquery;
+                "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, YEARS.ACTUALYEAR, ALBUMS.ALBUMNAME, GENRES.GENRENAME FROM SONGTABLE "
+                + "INNER JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
+                + "INNER JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
+                + "INNER JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
+                + "INNER JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " + generalquery + lengthsquery + moodsquery + namesquery + artistsquery;
         System.out.println(query);
         try {
             stmt = con.createStatement();
@@ -191,6 +195,9 @@ public class DatabaseAccess {
                 output[i].artist = rs.getString("ARTISTNAME");
                 output[i].mood = rs.getInt("AUDIOMOOD");
                 output[i].length = rs.getInt("SLENGTH");
+                output[i].album = rs.getString("ALBUMNAME");
+                output[i].year = rs.getInt("ACTUALYEAR");
+                output[i].genre = rs.getString("GENRENAME");
                 i++;
             }
         } catch (SQLException e) {

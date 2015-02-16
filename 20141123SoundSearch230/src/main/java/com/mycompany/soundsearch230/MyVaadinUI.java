@@ -140,12 +140,12 @@ public class MyVaadinUI extends UI
                 if(!generalq.equals("")){ //if not empty
                     result = dba.getSearchResults(con,generalq,AdvancedSearchPage.ASPmood,AdvancedSearchPage.ASPseconds,AdvancedSearchPage.ASPsongText,AdvancedSearchPage.ASPartistText,AdvancedSearchPage.ASPsubMood);
 
-                    for(int i = 0; i<100; i++){
+                    for(int i = 0; i<result.length; i++){
                         if(result[i]==null){
                         }else{
                             String moodconvert = Integer.toString(result[i].mood);
 //                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert}, i);               
+                            searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[i].name), result[i].artist, result[i].album, SongResultPages.time(result[i].length), result[i].genre, moodconvert}, i);               
                             System.out.println(i + ": " + result[i].name);
                         }                
                     }
@@ -163,25 +163,20 @@ public class MyVaadinUI extends UI
 
 
         IDEWrite Page = new IDEWrite();
-        File[] instantFiles = Page.listFiles();
+        //File[] instantFiles = Page.listFiles();
         String convert = null;
         
-        System.out.println("Number of files = " + instantFiles.length);
-        
-        for(int i = 0; i<instantFiles.length; i++){
-            System.out.println("1:" + instantFiles[i].toString());
-            convert = instantFiles[i].toString();
-//            System.out.println(convert);
-
-            Page.writeArtist(con, convert);
-            
-//            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
-        }
-        
-//        String der = Page.writeAlbum(con, )
-
-
-                
+        //Page.fixSubsong(con);
+//        System.out.println("Number of files = " + instantFiles.length);
+//        
+//        for(int i = 0; i<instantFiles.length; i++){
+//            System.out.println("1:" + instantFiles[i].toString());
+//            convert = instantFiles[i].toString();
+////            System.out.println(convert);
+//            Page.writeArtist(con, convert);
+////            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
+//        }
+ 
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 4: Song Results Page        
 //      Code not here or instantiated here, please see SearchResultPage.java and
