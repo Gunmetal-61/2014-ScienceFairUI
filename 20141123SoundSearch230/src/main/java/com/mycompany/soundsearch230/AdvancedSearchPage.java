@@ -100,19 +100,14 @@ public class AdvancedSearchPage {
         ingrid.addComponent(subMoodSearchBox);
         
         
-        
-        
-        
-        
+
         Button startSearchButton = new Button("Search");
         ingrid.addComponent(startSearchButton);
         
         startSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 MyVaadinUI.searchResultPage.resultTable.removeAllItems();
-                
-
-                
+                        
                 String generalq = "";
                 ASPsongText = songTextSearchBox.getValue();
                 ASPartistText = artistTextSearchBox.getValue();
@@ -160,18 +155,17 @@ public class AdvancedSearchPage {
                         ASPsongText = "";
                     }else{
                         String moodconverter = Integer.toString(MyVaadinUI.result[i].mood);
-                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), MyVaadinUI.result[i].artist, MyVaadinUI.result[i].album, SongResultPages.time(MyVaadinUI.result[i].length), MyVaadinUI.result[i].genre, moodconverter}, i);
+                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
+                            MyVaadinUI.result[i].artist, 
+                            MyVaadinUI.result[i].album, 
+                            SongResultPages.time(MyVaadinUI.result[i].length), 
+                            MyVaadinUI.result[i].genre, 
+                            moodconverter}, i);
                     }    
-
                 }
                 other.setSelectedTab(alternate);
             }
         });
-        
-        
-        
-        
-        return grid;
-        
+        return grid;   
     }
 }

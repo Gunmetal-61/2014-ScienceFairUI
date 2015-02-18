@@ -77,7 +77,7 @@ public class SongResultPages {
         this.year = year;
     }
     
-    public AbsoluteLayout drawSongRPage() {      
+    public AbsoluteLayout drawSongRPage() {
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1200, UNITS_PIXELS);
         grid.setWidth(1600, UNITS_PIXELS);
@@ -190,8 +190,7 @@ public class SongResultPages {
             }
         });
         
-        Label volume = new Label("Volume");
-        
+        Label volume = new Label("Volume");      
         final Slider volumeLevelSlider = new Slider(0, 100);
         try {
             volumeLevelSlider.setValue(100.0);
@@ -199,14 +198,13 @@ public class SongResultPages {
         }
         
         Label speed = new Label("Playback Speed");
-        
-        final Slider speedLevelSlider = new Slider(0,2);
+        final Slider speedLevelSlider = new Slider(-99,100); //can't go to -100 otherwise playback drop to 0% speed (but the player will go back to normal speed)
         try {
-            speedLevelSlider.setValue(1.0);
+            speedLevelSlider.setValue(0.0);
         } catch (ValueOutOfBoundsException e) {
         }
        
-        // Handle changes in slider value.
+        // Handles volume slider changes
         volumeLevelSlider.addValueChangeListener(
             new Property.ValueChangeListener() {
                 @Override
@@ -216,14 +214,16 @@ public class SongResultPages {
                 }
         });
         
+        //Handles speed slider changes
         speedLevelSlider.addValueChangeListener(
             new Property.ValueChangeListener() {
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                    double value = speedLevelSlider.getValue();
+                    double value = (speedLevelSlider.getValue()+100)/100;
                     myWavesurfer.playSpeed(value);
                 }
         });
+        
         
         
         String lyricsText = null;
@@ -258,7 +258,6 @@ public class SongResultPages {
         mediaControlContainer.setComponentAlignment(speed, Alignment.MIDDLE_LEFT);
         detailedInfoContainer.addComponent(lyricsDisplayed);
         
-
         return grid;
     }
     

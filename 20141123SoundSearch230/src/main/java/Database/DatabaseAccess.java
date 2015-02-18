@@ -49,6 +49,7 @@ public class DatabaseAccess {
     ////////////////////////////////////////////////////////////////////////////
 //  RETRIEVE SELECTED SONG'S SUBSONG MOOD VALUES TO COLOR IT'S WAVEFORM GRAPH APPRORPRIATELY
     /**
+     * Used last year for subsong colors. Deprecated.
      * 
      * @param con
      * @param title
@@ -121,7 +122,6 @@ public class DatabaseAccess {
         }
             
 //        } 
-        
 //        if(!name.equals("")&&!artist.equals("")){
 //            
 //        }
@@ -173,13 +173,12 @@ public class DatabaseAccess {
             }
         }
         
-        
         String query =
                 "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, YEARS.ACTUALYEAR, ALBUMS.ALBUMNAME, GENRES.GENRENAME FROM SONGTABLE "
-                + "INNER JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
-                + "INNER JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
-                + "INNER JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
-                + "INNER JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " + generalquery + lengthsquery + moodsquery + namesquery + artistsquery;
+                + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
+                + "LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
+                + "lEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
+                + "lEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " + generalquery + lengthsquery + moodsquery + namesquery + artistsquery;
         System.out.println(query);
         try {
             stmt = con.createStatement();

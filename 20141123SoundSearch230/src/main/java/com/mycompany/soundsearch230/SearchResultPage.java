@@ -34,7 +34,7 @@ import org.apache.commons.lang3.text.WordUtils;
  */
 public class SearchResultPage {
     
-    public Table resultTable = new Table();
+    public Table resultTable = new Table("Search Results");
     Connection con = DatabaseAccess.startconnection("orcl"); 
     int[] moodarray;
     public static String nameIdentifier = "";
@@ -80,14 +80,14 @@ public class SearchResultPage {
 //        CssLayout grid = new AbsoluteLayout();
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1200, UNITS_PIXELS);
-        grid.setWidth(1600, UNITS_PIXELS);
+        grid.setWidth("100%");
         
         AbsoluteLayout ingrid = new AbsoluteLayout();
         ingrid.setHeight(1200, UNITS_PIXELS);
-        ingrid.setWidth(960, UNITS_PIXELS);
+        ingrid.setWidth("100%");
         
         //primary.addComponent(grid);
-        grid.addComponent(ingrid, "left: 320px; top: 0px;");
+        grid.addComponent(ingrid, "left: 240px; top: 0px;");
 
 ////////////////////////////////////////////////////////////////////////////////        
         //SIDEBAR
@@ -222,20 +222,30 @@ public class SearchResultPage {
         moodarray[5] = 6;
         moodarray[6] = 7;
         
-
+        //expand table
+        resultTable.setSizeFull();
         
+        //add columns
         resultTable.addContainerProperty("Song Name", String.class, null);
         resultTable.addContainerProperty("Artist", String.class, null);
         resultTable.addContainerProperty("Album", String.class, null);
         resultTable.addContainerProperty("Length", String.class, null);
         resultTable.addContainerProperty("Genre", String.class, null);
         resultTable.addContainerProperty("Mood", java.lang.String.class, null);
- //       resultTable.addContainerProperty("Waveform", Wavesurfer.class, null);
+        //resultTable.addContainerProperty("Waveform", Wavesurfer.class, null);
+        
+        //adjust their relative widths
+        resultTable.setColumnExpandRatio("Song Name",3);
+        resultTable.setColumnExpandRatio("Artist",3);
+        resultTable.setColumnExpandRatio("Album",3);
+        resultTable.setColumnExpandRatio("Length",1);
+        resultTable.setColumnExpandRatio("Genre",2);
+        resultTable.setColumnExpandRatio("Mood",1);
         
 
         final String generalq = "";
         
-        
+        //when a row in the table is clicked on
         resultTable.addItemClickListener(new ItemClickEvent.ItemClickListener () {
             @Override
             public void itemClick(ItemClickEvent event) {
