@@ -82,7 +82,7 @@ public class MyVaadinUI extends UI
     protected void init(VaadinRequest request) {
         VerticalLayout overlord = new VerticalLayout();
         final HorizontalLayout toolbar = new HorizontalLayout();
-        final TabSheet primary = new TabSheet();
+        final TabSheet tabs = new TabSheet();
         getPage().setTitle("Aura");
         setContent(overlord);
         overlord.addComponent(toolbar);
@@ -111,7 +111,7 @@ public class MyVaadinUI extends UI
         
         ////////////////////////////////////////////////////////////////////////
 //      TAB 2: Search Results Page        
-        searchResultPage = new SearchResultPage(primary);
+        searchResultPage = new SearchResultPage(tabs);
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
         
         //enter key handlers from: https://vaadin.com/forum/#!/thread/77601/8315545
@@ -144,12 +144,17 @@ public class MyVaadinUI extends UI
                         if(result[i]==null){
                         }else{
                             String moodconvert = Integer.toString(result[i].mood);
-//                            searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                            searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[i].name), result[i].artist, result[i].album, SongResultPages.time(result[i].length), result[i].genre, moodconvert}, i);               
+                            //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
+                            searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[i].name), 
+                                result[i].artist, 
+                                result[i].album, 
+                                SongResultPages.time(result[i].length), 
+                                result[i].genre, 
+                                moodconvert}, i);               
                             System.out.println(i + ": " + result[i].name);
                         }                
                     }
-                    primary.setSelectedTab(SeaRPage);
+                    tabs.setSelectedTab(SeaRPage);
                 }
             }
         });
@@ -158,7 +163,7 @@ public class MyVaadinUI extends UI
               
         ////////////////////////////////////////////////////////////////////////
 //      TAB 3: Advanced Search Page
-        AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(primary, SeaRPage);
+        AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(tabs, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
 
 
@@ -184,13 +189,10 @@ public class MyVaadinUI extends UI
 ////////////////////////////////////////////////////////////////////////////////
 
 
-        primary.addTab(Homage, "Home");
-
-        primary.addTab(AdvSPage, "Advanced Search");
+        tabs.addTab(Homage, "Home");
+        tabs.addTab(AdvSPage, "Advanced Search");   
+        tabs.addTab(SeaRPage); 
         
-        primary.addTab(SeaRPage);
-        overlord.addComponent(primary);
-
-
+        overlord.addComponent(tabs);
    }
 }
