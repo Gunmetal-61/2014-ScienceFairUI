@@ -6,30 +6,26 @@ package com.mycompany.soundsearch230;
 
 import Database.DBRow;
 import Database.DatabaseAccess;
-import Wavesurfer.Wavesurfer;
+import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPartistText;
+import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPmood;
+import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPseconds;
+import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsongText;
+import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsubMood;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.server.ExternalResource;
-import com.vaadin.server.FileResource;
 import static com.vaadin.server.Sizeable.UNITS_PIXELS;
 import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.Audio;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Image;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Table;
-import java.io.File;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import org.apache.commons.lang3.text.WordUtils;
 
 /**
@@ -53,9 +49,26 @@ public class SearchResultPage {
     Label saConvert;
     AbsoluteLayout SRPingrid;
     TabSheet other;
-    //AbsoluteLayout alternate;
+    public static String ASPsongText = "";
+    public static String ASPartistText = "";
+    public static int ASPseconds = 0;
+    public static int[] ASPmood = {0,1,2,3,4,5,6,7}; 
+    public static int ASPsubMood = 0;
+    AbsoluteLayout alternate;
+
+    
     public SearchResultPage(TabSheet primary) {
         other = primary;
+    }
+    
+    public static int[] convertIntegers(List<Integer> integers){
+        int[] ret = new int[integers.size()];
+        Iterator<Integer> iterator = integers.iterator();
+        for (int i = 0; i < ret.length; i++)
+        {
+            ret[i] = iterator.next().intValue();
+        }
+        return ret;
     }
     
     
@@ -78,18 +91,119 @@ public class SearchResultPage {
 
 ////////////////////////////////////////////////////////////////////////////////        
         //SIDEBAR
-        Panel sidebar = new Panel();
+        VerticalLayout sidebar = new VerticalLayout();
         sidebar.setHeight(1200, UNITS_PIXELS);
         sidebar.setWidth(200, UNITS_PIXELS);
+        sidebar.setSpacing(false);
  //       sidebar.addStyleName(sidebur);
+        
         ingrid.addComponent(sidebar, "left: 0px; top: 0px;");
         
+        final TextField songTextSearchBox = new TextField("Search By Song Name");
+        final TextField artistTextSearchBox = new TextField("Search By Artist");
+        final TextField albumSearchBox = new TextField("Search By Album");
+        final TextField yearSearchBox = new TextField("Search By Year");
+        final TextField secondSearchBox = new TextField("Search By Song Length");
+        final TextField subMoodSearchBox = new TextField("Search By Subsong Mood");
+        Label moodNote = new Label("Select an Overall Mood");
+        final CheckBox selectMood0 = new CheckBox("0");
+        final CheckBox selectMood1 = new CheckBox("1");
+        final CheckBox selectMood2 = new CheckBox("2");
+        final CheckBox selectMood3 = new CheckBox("3");
+        final CheckBox selectMood4 = new CheckBox("4");
+        final CheckBox selectMood5 = new CheckBox("5");
+        final CheckBox selectMood6 = new CheckBox("6");
+        final CheckBox selectMood7 = new CheckBox("7");
         
         
-//        Panel serp = new Panel();
-//        serp.setHeight(160, UNITS_PIXELS);
-//        serp.setWidth(760, UNITS_PIXELS);
-//        ingrid.addComponent(serp, "left: 200px; top: 160px;");
+        
+ 
+        
+        sidebar.addComponent(songTextSearchBox);
+        sidebar.addComponent(artistTextSearchBox);
+        sidebar.addComponent(albumSearchBox);
+        sidebar.addComponent(yearSearchBox);
+        sidebar.addComponent(secondSearchBox);
+        sidebar.addComponent(moodNote);
+        sidebar.addComponent(selectMood0);
+        sidebar.addComponent(selectMood1);
+        sidebar.addComponent(selectMood2);
+        sidebar.addComponent(selectMood3);
+        sidebar.addComponent(selectMood4);
+        sidebar.addComponent(selectMood5);
+        sidebar.addComponent(selectMood6);
+        sidebar.addComponent(selectMood7);
+        sidebar.addComponent(subMoodSearchBox);
+        
+        
+        
+        
+        
+        
+        Button startSearchButton = new Button("Search");
+        ingrid.addComponent(startSearchButton);
+        
+        startSearchButton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+                MyVaadinUI.searchResultPage.resultTable.removeAllItems();
+                
+
+                
+                String generalq = "";
+                ASPsongText = songTextSearchBox.getValue();
+                ASPartistText = artistTextSearchBox.getValue();
+                ArrayList<Integer> moodsSelected = new ArrayList<Integer>();
+                
+                if(selectMood0.getValue()){
+                    moodsSelected.add(0);
+                }
+                if(selectMood1.getValue()){
+                    moodsSelected.add(1);
+                }
+                if(selectMood2.getValue()){
+                    moodsSelected.add(2);
+                }
+                if(selectMood3.getValue()){
+                    moodsSelected.add(3);
+                }
+                if(selectMood4.getValue()){
+                    moodsSelected.add(4);
+                }
+                if(selectMood5.getValue()){
+                    moodsSelected.add(5);
+                }
+                if(selectMood6.getValue()){
+                    moodsSelected.add(6);
+                }
+                if(selectMood7.getValue()){
+                    moodsSelected.add(7);
+                }
+
+                ASPmood = convertIntegers(moodsSelected);
+                System.out.println(ASPmood);
+                System.out.println("1:" + selectMood1);
+               // ASPsubMood = artistTextSearchBox.getValue();
+                System.out.println(ASPsongText);
+                
+                //ASPmood = moodSearchBox.getValue();
+
+                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,ASPsubMood);
+                
+                for(int i = 0; i<100; i++){
+//                    if(generalq.equals("prayer")){
+                    if(MyVaadinUI.result[i]==null){
+                        //songTextSearchBox.setValue("");
+                        ASPsongText = "";
+                    }else{
+                        String moodconverter = Integer.toString(MyVaadinUI.result[i].mood);
+                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), MyVaadinUI.result[i].artist, MyVaadinUI.result[i].album, SongResultPages.time(MyVaadinUI.result[i].length), MyVaadinUI.result[i].genre, moodconverter}, i);
+                    }    
+
+                }
+            }
+        });
+        
+
         
         
         
@@ -154,53 +268,6 @@ public class SearchResultPage {
         ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
         
         
-        
-        
-//////////////////////////////////////////////////////////////////////////////////    
-//        //MODULAR RESULT PANEL A
-//        VerticalLayout modularA = new VerticalLayout();
-//        modularA.setHeight(160, UNITS_PIXELS);
-//        modularA.setWidth(760, UNITS_PIXELS);
-//        ingrid.addComponent(modularA, "left: 200px; top: 0px;");        
-//        //LABELS
-//        Label songtitle = new Label("One More Night");//Song Title
-//        Label songartist = new Label("Maroon 5");//Artist of Song
-//        Label songyear = new Label("2011");//Year Song was Released
-//        Label songlength = new Label("3:39");//Length of Song
-//        Label songgenre = new Label("Pop");//Song Genre
-//        Label songlyrics = new Label("");//Song Lyrics        
-//        Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));//Link to Lyrics
-//
-//        //Album Image
-//        FileResource resource = new FileResource(new File("C:\\Common Directory\\SoundSearch\\Images\\Maroon-5-Overexposed-Cover.jpg"));
-//        
-//        Image albumimage = new Image("",resource);
-//        albumimage.setWidth(40, UNITS_PIXELS);
-//        albumimage.setHeight(40, UNITS_PIXELS);        
-//        
-//        //Waveform Graph Image
-//        FileResource waveformf = new FileResource(new File("C:\\Common Directory\\SoundSearch\\Images\\stock graph image jpeg.jpg"));
-//        
-//        Image waveform = new Image("",waveformf);
-//        waveform.setWidth(600, UNITS_PIXELS);
-//        waveform.setHeight(67, UNITS_PIXELS);
-//        
-//        Label waveformtitle = new Label("Waveform Readings");
-//        
-//
-////       ingrid.addComponent(button, "left: 260px; top: 0px;");
-//        modularA.addComponent(albumimage);
-//        modularA.addComponent(songtitle);
-//        modularA.addComponent(songartist);
-//        modularA.addComponent(songyear);
-//        modularA.addComponent(songlength);
-//        modularA.addComponent(songgenre);
-////        ingrid.addComponent(lyricslink, "left: 260px; top: 0px;");
-//        modularA.addComponent(waveform);
-////
-////        ingrid.addComponent(waveformtitle, "left: 40px; top: 260px;");
-//        
-//////////////////////////////////////////////////////////////////////////////////        
 
         return grid;
     }
