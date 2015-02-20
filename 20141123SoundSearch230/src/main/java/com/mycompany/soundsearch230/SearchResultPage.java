@@ -44,7 +44,6 @@ public class SearchResultPage {
     public static int length = 0;
     public static int year = 0;
 
-    public DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, "", moodarray, 0, "", "", 0);
     Label stConvert;
     Label saConvert;
     AbsoluteLayout SRPingrid;
@@ -114,10 +113,7 @@ public class SearchResultPage {
         final CheckBox selectMood5 = new CheckBox("5");
         final CheckBox selectMood6 = new CheckBox("6");
         final CheckBox selectMood7 = new CheckBox("7");
-        
-        
-        
- 
+
         
         sidebar.addComponent(songTextSearchBox);
         sidebar.addComponent(artistTextSearchBox);
@@ -135,20 +131,14 @@ public class SearchResultPage {
         sidebar.addComponent(selectMood7);
         sidebar.addComponent(subMoodSearchBox);
         
-        
-        
-        
-        
-        
-        Button startSearchButton = new Button("Search");
-        ingrid.addComponent(startSearchButton);
+
+        Button startSearchButton = new Button("Filter");
+        sidebar.addComponent(startSearchButton);
         
         startSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 MyVaadinUI.searchResultPage.resultTable.removeAllItems();
-                
-
-                
+                                
                 String generalq = "";
                 ASPsongText = songTextSearchBox.getValue();
                 ASPartistText = artistTextSearchBox.getValue();
@@ -196,17 +186,16 @@ public class SearchResultPage {
                         ASPsongText = "";
                     }else{
                         String moodconverter = Integer.toString(MyVaadinUI.result[i].mood);
-                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), MyVaadinUI.result[i].artist, MyVaadinUI.result[i].album, SongResultPages.time(MyVaadinUI.result[i].length), MyVaadinUI.result[i].genre, moodconverter}, i);
+                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
+                            MyVaadinUI.result[i].artist, 
+                            MyVaadinUI.result[i].album, 
+                            SongResultPages.time(MyVaadinUI.result[i].length), 
+                            MyVaadinUI.result[i].genre, 
+                            moodconverter}, i);
                     }    
-
                 }
             }
         });
-        
-
-        
-        
-        
         
         
 ////////////////////////////////////////////////////////////////////////////////
@@ -276,8 +265,6 @@ public class SearchResultPage {
         });
         
         ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
-        
-        
 
         return grid;
     }

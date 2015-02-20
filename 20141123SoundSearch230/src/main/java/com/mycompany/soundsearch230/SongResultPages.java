@@ -32,6 +32,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.event.FieldEvents.FocusEvent;
+import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.shared.ui.MarginInfo;
 //import com.vaadin.data.Property.ValueChangeEvent;
 
@@ -59,7 +63,10 @@ public class SongResultPages {
     int length;
     int year;
     
+    String playThisFile;
+    Image albumImage;
     /**
+     * Instantiate a song result page
      * 
      * @param title
      * @param artist
@@ -75,6 +82,13 @@ public class SongResultPages {
         this.genre = genre;
         this.length = length;
         this.year = year;
+        
+        //Get the album art
+        IDEExtract ideExtract = new IDEExtract();
+        this.playThisFile = ideExtract.findFile(title, artist);
+        albumImage = ideExtract.getAlbumArt(playThisFile);
+        //this.resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
+        //FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
     }
     
     public AbsoluteLayout drawSongRPage() {
@@ -124,12 +138,6 @@ public class SongResultPages {
 
         Label waveformtitle = new Label("Waveform Readings");
         
-        IDEExtract ideExtract = new IDEExtract();
-        String playThisFile = ideExtract.findFile(title, artist);
-        RandomAccessFile coverArt = ideExtract.getAlbumArt(playThisFile);
-        
-        
-        
         final Wavesurfer myWavesurfer = new Wavesurfer();
         myWavesurfer.setHeight(180, UNITS_PIXELS);
         myWavesurfer.setWidth(900, UNITS_PIXELS);
@@ -138,11 +146,12 @@ public class SongResultPages {
       
         ////////////////////////////////////////////////////////////////////////
 //      Album Image
-//        FileResource resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
-        FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
-        Image albumimage = new Image("",resource);
-        albumimage.setWidth(200, UNITS_PIXELS);
-        albumimage.setHeight(200, UNITS_PIXELS);
+        //Image albumimage = new Image("",resource);
+        if(albumImage!=null){
+            albumImage.setWidth(200, UNITS_PIXELS);
+            albumImage.setHeight(200, UNITS_PIXELS);
+            albumArtContainer.addComponent(albumImage);
+        }
         
         ////////////////////////////////////////////////////////////////////////
 
@@ -224,7 +233,7 @@ public class SongResultPages {
                 }
         });
         
-        
+
         
         String lyricsText = null;
         try {
@@ -237,8 +246,6 @@ public class SongResultPages {
         lyricsDisplayed.setHeight(300, UNITS_PIXELS);
         lyricsDisplayed.setWidth(600, UNITS_PIXELS);
         
-
-        albumArtContainer.addComponent(albumimage);
         generalSongDataContainer.addComponent(songtitle);
         generalSongDataContainer.addComponent(songartist);
         generalSongDataContainer.addComponent(songyear);
@@ -256,6 +263,7 @@ public class SongResultPages {
         mediaControlContainer.addComponent(speedLevelSlider);
         mediaControlContainer.setComponentAlignment(volume, Alignment.MIDDLE_LEFT);
         mediaControlContainer.setComponentAlignment(speed, Alignment.MIDDLE_LEFT);
+        mediaControlContainer.setSpacing(true);
         detailedInfoContainer.addComponent(lyricsDisplayed);
         
         return grid;

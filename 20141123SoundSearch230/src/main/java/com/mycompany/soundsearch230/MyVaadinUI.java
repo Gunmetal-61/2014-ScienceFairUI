@@ -42,7 +42,9 @@ import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.Tab;
 import java.io.BufferedInputStream;  
 import java.io.File;
 import java.io.FileInputStream;  
@@ -190,8 +192,29 @@ public class MyVaadinUI extends UI
 
 
         tabs.addTab(Homage, "Home");
-        tabs.addTab(AdvSPage, "Advanced Search");   
+        //tabs.addTab(AdvSPage, "Advanced Search");   
         tabs.addTab(SeaRPage); 
+        
+        tabs.setCloseHandler(new CloseHandler(){
+            @Override
+            public void onTabClose(TabSheet tabsheet, Component tabContent){
+                Tab tab = tabsheet.getTab(tabContent);
+                tabsheet.removeTab(tab);
+            }
+        });
+        
+        tabs.addFocusListener(new FocusListener() {
+            @Override
+            public void focus(final FocusEvent event) {
+                
+            }
+        });    
+        tabs.addBlurListener(new BlurListener() {
+
+            public void blur(final BlurEvent event) {
+                
+            }
+        });
         
         overlord.addComponent(tabs);
    }

@@ -102,108 +102,108 @@ public class DatabaseAccess {
         DBRow[] output = new DBRow[100];//creates an array of 25 rows in the song result table
         
         try{
-        String generalquery = "";//string to create sql query over all types of data
-        String moodsquery = "";//string from mood query checkboxes sent to sql command line
-        String lengthsquery = "";//string from length of song query field (search format: min":"secs) sent to sql command line
-        String namesquery = "";//string from name of song query field sent to sql command line
-        String artistsquery = "";//string from name of artist query field sent to sql command line
-        
-        
-        Statement stmt = null;
-        int upperlength = length + 30;/*for [lengthsquery]; sets a leeway of 30 
-        seconds above the specified time when results are returned (i.e. query
-        for length of 2:30, song is 2:50 long, this will allow it to show up in the results)
-        */
-        ////////////////////////////////////////////////////////////////////////
-//      SQL QUERY FOR SEARCH ACROSS ALL FIELDS
-//        for(){
-        if(!generalq.equals("")){
-            generalquery = "WHERE TITLE LIKE '%" +  generalq + "%' OR ARTISTNAME LIKE '%" + generalq + "%'";
-        }
-            
-//        } 
-//        if(!name.equals("")&&!artist.equals("")){
-//            
-//        }
-        
-        ////////////////////////////////////////////////////////////////////////
-//      SQL QUERY FOR SEARCHING SONGS WITH LENGTH OF SONG             
-        int lowerlength = length - 30;//like [upperlength], sets leeway of -30 seconds
-        if(lowerlength < 0){//i.e. if [lengthquery] is 20 seconds, if statment sets [lowerlength] leeway to -0 seconds
-            lowerlength = 0;
-        }       
-        if(length != 0&&generalquery.equals("")){//if the length of a song is specified
-            lengthsquery = "WHERE SLENGTH BETWEEN " + lowerlength + " AND " + upperlength;//[lengthsquery] becomes an SQL statement that searches for with specified song time as center of a field of +30 or -30 seconds
-        }
-        
-        ////////////////////////////////////////////////////////////////////////
-//      SQL QUERY FOR SEARCHING SONGS WITH MOOD             
-        String moods = "";//new string
-        for(int i = 0; i<mood.length; i++){//new {int} [i] declared as 0, the as long as it is less than the length of the song, +1 value of [i] per cycle
-            moods = moods + mood[i] +  ",";//[moods] 
-        }
-        if(!moods.equals("")){//if mood is blank
-            if(moodlevel == 0){//if the mood level is 0
-                moods = moods.substring(0, moods.lastIndexOf(","));//moods will then equal
-                moodsquery = " AND AUDIOMOOD IN ("+moods+")";
-                if(lengthsquery.equals("")&&generalquery.equals("")){
-                    moodsquery = "WHERE AUDIOMOOD IN ("+moods+")";
+            String generalquery = "";//string to create sql query over all types of data
+            String moodsquery = "";//string from mood query checkboxes sent to sql command line
+            String lengthsquery = "";//string from length of song query field (search format: min":"secs) sent to sql command line
+            String namesquery = "";//string from name of song query field sent to sql command line
+            String artistsquery = "";//string from name of artist query field sent to sql command line
+
+
+            Statement stmt = null;
+            int upperlength = length + 30;/*for [lengthsquery]; sets a leeway of 30 
+            seconds above the specified time when results are returned (i.e. query
+            for length of 2:30, song is 2:50 long, this will allow it to show up in the results)
+            */
+            ////////////////////////////////////////////////////////////////////////
+    //      SQL QUERY FOR SEARCH ACROSS ALL FIELDS
+    //        for(){
+            if(!generalq.equals("")){
+                generalquery = "WHERE TITLE LIKE '%" +  generalq + "%' OR ARTISTNAME LIKE '%" + generalq + "%'";
+            }
+
+    //        } 
+    //        if(!name.equals("")&&!artist.equals("")){
+    //            
+    //        }
+
+            ////////////////////////////////////////////////////////////////////////
+    //      SQL QUERY FOR SEARCHING SONGS WITH LENGTH OF SONG             
+            int lowerlength = length - 30;//like [upperlength], sets leeway of -30 seconds
+            if(lowerlength < 0){//i.e. if [lengthquery] is 20 seconds, if statment sets [lowerlength] leeway to -0 seconds
+                lowerlength = 0;
+            }       
+            if(length != 0&&generalquery.equals("")){//if the length of a song is specified
+                lengthsquery = "WHERE SLENGTH BETWEEN " + lowerlength + " AND " + upperlength;//[lengthsquery] becomes an SQL statement that searches for with specified song time as center of a field of +30 or -30 seconds
+            }
+
+            ////////////////////////////////////////////////////////////////////////
+    //      SQL QUERY FOR SEARCHING SONGS WITH MOOD             
+            String moods = "";//new string
+            for(int i = 0; i<mood.length; i++){//new {int} [i] declared as 0, the as long as it is less than the length of the song, +1 value of [i] per cycle
+                moods = moods + mood[i] +  ",";//[moods] 
+            }
+            if(!moods.equals("")){//if mood is blank
+                if(moodlevel == 0){//if the mood level is 0
+                    moods = moods.substring(0, moods.lastIndexOf(","));//moods will then equal
+                    moodsquery = " AND AUDIOMOOD IN ("+moods+")";
+                    if(lengthsquery.equals("")&&generalquery.equals("")){
+                        moodsquery = "WHERE AUDIOMOOD IN ("+moods+")";
+                    }
+                }
+                if(moodlevel == 1){
+
                 }
             }
-            if(moodlevel == 1){
-                
-            }
-        }
-        
-        ////////////////////////////////////////////////////////////////////////
-//      SQL QUERY FOR SEARCHING SONGS WITH NAME OF SONG             
-        if(!name.equals("")){
-            namesquery = " AND TITLE LIKE '%"+name.toLowerCase()+"%'";
-            if(moodsquery.equals("")&&lengthsquery.equals("")&&generalquery.equals("")){
-                namesquery = "WHERE TITLE LIKE '%"+name.toLowerCase()+"%'";
-            }
-        }
 
-        ////////////////////////////////////////////////////////////////////////
-//      SQL QUERY FOR SEARCHING SONGS WITH ARTIST NAME        
-        if(!artist.equals("")){
-            artistsquery = " AND ARTISTNAME LIKE '%"+artist.toLowerCase()+"%'";
-            if(namesquery.equals("")&&moodsquery.equals("")&&lengthsquery.equals("")&&generalquery.equals("")){
-                artistsquery = "WHERE ARTISTNAME LIKE '%"+artist.toLowerCase()+"%'";
+            ////////////////////////////////////////////////////////////////////////
+    //      SQL QUERY FOR SEARCHING SONGS WITH NAME OF SONG             
+            if(!name.equals("")){
+                namesquery = " AND TITLE LIKE '%"+name.toLowerCase()+"%'";
+                if(moodsquery.equals("")&&lengthsquery.equals("")&&generalquery.equals("")){
+                    namesquery = "WHERE TITLE LIKE '%"+name.toLowerCase()+"%'";
+                }
             }
-        }
-        
-        String query =
-                "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, YEARS.ACTUALYEAR, ALBUMS.ALBUMNAME, GENRES.GENRENAME FROM SONGTABLE "
-                + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
-                + "LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
-                + "lEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
-                + "lEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " + generalquery + lengthsquery + moodsquery + namesquery + artistsquery;
-        System.out.println(query);
-        try {
-            stmt = con.createStatement();
-            long startTime = System.nanoTime();  
-            ResultSet rs = stmt.executeQuery(query);
-            long estimatedTime = System.nanoTime() - startTime;
-            System.out.println(estimatedTime);
-            int i = 0;
-            while(rs.next()&&(i<100)) {
-             //   System.out.println(i+"Hello");
-                output[i] = new DBRow();
-                output[i].name = rs.getString("TITLE");
-                output[i].artist = rs.getString("ARTISTNAME");
-                output[i].mood = rs.getInt("AUDIOMOOD");
-                output[i].length = rs.getInt("SLENGTH");
-                output[i].album = rs.getString("ALBUMNAME");
-                output[i].year = rs.getInt("ACTUALYEAR");
-                output[i].genre = rs.getString("GENRENAME");
-                i++;
+
+            ////////////////////////////////////////////////////////////////////////
+    //      SQL QUERY FOR SEARCHING SONGS WITH ARTIST NAME        
+            if(!artist.equals("")){
+                artistsquery = " AND ARTISTNAME LIKE '%"+artist.toLowerCase()+"%'";
+                if(namesquery.equals("")&&moodsquery.equals("")&&lengthsquery.equals("")&&generalquery.equals("")){
+                    artistsquery = "WHERE ARTISTNAME LIKE '%"+artist.toLowerCase()+"%'";
+                }
             }
-        } catch (SQLException e) {
-            System.err.println(e);
-        } finally {
-            if (stmt != null) { stmt.close(); } //close connection
-        }
+
+            String query =
+                    "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, YEARS.ACTUALYEAR, ALBUMS.ALBUMNAME, GENRES.GENRENAME FROM SONGTABLE "
+                    + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
+                    + "LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
+                    + "LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
+                    + "LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " + generalquery + lengthsquery + moodsquery + namesquery + artistsquery;
+            System.out.println(query);
+            try {
+                stmt = con.createStatement();
+                long startTime = System.nanoTime();  
+                ResultSet rs = stmt.executeQuery(query);
+                long estimatedTime = System.nanoTime() - startTime;
+                System.out.println(estimatedTime);
+                int i = 0;
+                while(rs.next()&&(i<100)) {
+                 //   System.out.println(i+"Hello");
+                    output[i] = new DBRow();
+                    output[i].name = rs.getString("TITLE");
+                    output[i].artist = rs.getString("ARTISTNAME");
+                    output[i].mood = rs.getInt("AUDIOMOOD");
+                    output[i].length = rs.getInt("SLENGTH");
+                    output[i].album = rs.getString("ALBUMNAME");
+                    output[i].year = rs.getInt("ACTUALYEAR");
+                    output[i].genre = rs.getString("GENRENAME");
+                    i++;
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
+            } finally {
+                if (stmt != null) { stmt.close(); } //close connection
+            }
         }catch(Exception e){
             
         }
