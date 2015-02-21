@@ -164,7 +164,7 @@ public class MyVaadinUI extends UI
                             }else{
                                 String moodconvert = Integer.toString(result[primaryCounter].mood);
                                 //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                                searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[primaryCounter].name), 
+                                searchResultPage.resultTable.addItem(new Object[]{
                                     WordUtils.capitalize(result[primaryCounter].name), 
                                     result[primaryCounter].artist, 
                                     result[primaryCounter].album, 

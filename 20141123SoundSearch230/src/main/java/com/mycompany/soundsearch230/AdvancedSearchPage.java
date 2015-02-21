@@ -158,7 +158,7 @@ public class AdvancedSearchPage {
                         MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
                             MyVaadinUI.result[i].artist, 
                             MyVaadinUI.result[i].album, 
-                            SongResultPages.timeIntoSeconds(MyVaadinUI.result[i].length), 
+                            SongResultPages.formatTime(MyVaadinUI.result[i].length), 
                             MyVaadinUI.result[i].genre, 
                             moodconverter}, i);
                     }    
