@@ -42,7 +42,7 @@ public class AdvancedSearchPage {
     }
     
     
-    public static int[] convertIntegers(List<Integer> integers){
+    public static int[] ConvertToIntegers(List<Integer> integers){
         int[] ret = new int[integers.size()];
         Iterator<Integer> iterator = integers.iterator();
         for (int i = 0; i < ret.length; i++)
@@ -138,7 +138,7 @@ public class AdvancedSearchPage {
                     moodsSelected.add(7);
                 }
 
-                ASPmood = convertIntegers(moodsSelected);
+                ASPmood = ConvertToIntegers(moodsSelected);
                 System.out.println(ASPmood);
                 System.out.println("1:" + selectMood1);
                // ASPsubMood = artistTextSearchBox.getValue();
@@ -146,7 +146,7 @@ public class AdvancedSearchPage {
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,ASPsubMood);
+                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","",ASPsubMood);
                 
                 for(int i = 0; i<100; i++){
 //                    if(generalq.equals("prayer")){
@@ -158,7 +158,7 @@ public class AdvancedSearchPage {
                         MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
                             MyVaadinUI.result[i].artist, 
                             MyVaadinUI.result[i].album, 
-                            SongResultPages.time(MyVaadinUI.result[i].length), 
+                            SongResultPages.timeIntoSeconds(MyVaadinUI.result[i].length), 
                             MyVaadinUI.result[i].genre, 
                             moodconverter}, i);
                     }    

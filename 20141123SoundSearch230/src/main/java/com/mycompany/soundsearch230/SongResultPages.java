@@ -107,7 +107,7 @@ public class SongResultPages {
         //Year Song was Released
         Label songyear = new Label(String.valueOf(year));
         //Length of Song
-        Label songlength = new Label(time(length));
+        Label songlength = new Label(timeIntoSeconds(length));
         //Song Genre
         Label songgenre = new Label(genre);
         //Song Lyrics
@@ -261,16 +261,14 @@ public class SongResultPages {
         return grid;
     }
     
-    private void load(){
-        
-    }
+
     
     /**
      * Convert seconds into M:SS
      * @param input Seconds
      * @return 
      */
-    public static String time(int input){
+    public static String timeIntoSeconds(int input){
         String seconds = (input%60>9)?String.valueOf(input%60):"0"+String.valueOf(input%60);
         return input/60 + ":" + seconds;
     }

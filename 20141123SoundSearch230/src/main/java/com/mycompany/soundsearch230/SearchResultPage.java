@@ -43,8 +43,6 @@ public class SearchResultPage {
     public static String album = "";
     public static int length = 0;
     public static int year = 0;
-
-    public DBRow[] resultFeed = DatabaseAccess.getSearchResults(con, "", moodarray, 0, "", "", 0);
     Label stConvert;
     Label saConvert;
     AbsoluteLayout SRPingrid;
@@ -87,7 +85,7 @@ public class SearchResultPage {
         ingrid.setWidth("100%");
         
         //primary.addComponent(grid);
-        grid.addComponent(ingrid, "left: 240px; top: 0px;");
+        grid.addComponent(ingrid, "left: 0px; top: 0px;");
 
 ////////////////////////////////////////////////////////////////////////////////        
         //SIDEBAR
@@ -103,17 +101,18 @@ public class SearchResultPage {
         final TextField artistTextSearchBox = new TextField("Search By Artist");
         final TextField albumSearchBox = new TextField("Search By Album");
         final TextField yearSearchBox = new TextField("Search By Year");
-        final TextField secondSearchBox = new TextField("Search By Song Length");
+        final TextField timeInSecondsSearchBox = new TextField("Search By Song Length");
+        final TextField genreSearchBox = new TextField("Search By Genre");
         final TextField subMoodSearchBox = new TextField("Search By Subsong Mood");
         Label moodNote = new Label("Select an Overall Mood");
-        final CheckBox selectMood0 = new CheckBox("0");
-        final CheckBox selectMood1 = new CheckBox("1");
-        final CheckBox selectMood2 = new CheckBox("2");
-        final CheckBox selectMood3 = new CheckBox("3");
-        final CheckBox selectMood4 = new CheckBox("4");
-        final CheckBox selectMood5 = new CheckBox("5");
-        final CheckBox selectMood6 = new CheckBox("6");
-        final CheckBox selectMood7 = new CheckBox("7");
+        final CheckBox selectMood0 = new CheckBox("0: Inspiration, Desire, Love");
+        final CheckBox selectMood1 = new CheckBox("1: Fascination, Admiration, Joyfulness");
+        final CheckBox selectMood2 = new CheckBox("2: Satisfaction, Softened, Relaxed");
+        final CheckBox selectMood3 = new CheckBox("3: Awaiting, Deferent, Calm");
+        final CheckBox selectMood4 = new CheckBox("4: Boredom, Sadness, Isolation");
+        final CheckBox selectMood5 = new CheckBox("5: Disappointment, Contempt, Jealousy");
+        final CheckBox selectMood6 = new CheckBox("6: Irritation, Disgust, Alarm");
+        final CheckBox selectMood7 = new CheckBox("7: Astonishment, Eagerness, Curiousity");
         
         
         
@@ -123,7 +122,7 @@ public class SearchResultPage {
         sidebar.addComponent(artistTextSearchBox);
         sidebar.addComponent(albumSearchBox);
         sidebar.addComponent(yearSearchBox);
-        sidebar.addComponent(secondSearchBox);
+        sidebar.addComponent(timeInSecondsSearchBox);
         sidebar.addComponent(moodNote);
         sidebar.addComponent(selectMood0);
         sidebar.addComponent(selectMood1);
@@ -187,7 +186,7 @@ public class SearchResultPage {
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,ASPsubMood);
+                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","",ASPsubMood);
                 
                 for(int i = 0; i<100; i++){
 //                    if(generalq.equals("prayer")){
@@ -196,7 +195,7 @@ public class SearchResultPage {
                         ASPsongText = "";
                     }else{
                         String moodconverter = Integer.toString(MyVaadinUI.result[i].mood);
-                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), MyVaadinUI.result[i].artist, MyVaadinUI.result[i].album, SongResultPages.time(MyVaadinUI.result[i].length), MyVaadinUI.result[i].genre, moodconverter}, i);
+                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), MyVaadinUI.result[i].artist, MyVaadinUI.result[i].album, SongResultPages.timeIntoSeconds(MyVaadinUI.result[i].length), MyVaadinUI.result[i].genre, moodconverter}, i);
                     }    
 
                 }

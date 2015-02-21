@@ -33,6 +33,7 @@ import java.io.File;
 import java.sql.SQLException;
 import Database.DatabaseAccess;
 import IDEPull.IDEWrite;
+import SearchSystem.MoodCentral;
 import Wavesurfer.Wavesurfer;
 import static com.mycompany.soundsearch230.SearchResultPage.nameIdentifier;
 import com.vaadin.event.FieldEvents.BlurEvent;
@@ -54,6 +55,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -114,6 +116,8 @@ public class MyVaadinUI extends UI
         searchResultPage = new SearchResultPage(tabs);
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
         
+        ////////////////////////////////////////////////////////////////////////
+//             
         //enter key handlers from: https://vaadin.com/forum/#!/thread/77601/8315545
         //if enter button is pressed
         generalSearchBox.addFocusListener(new FocusListener() {
@@ -131,31 +135,71 @@ public class MyVaadinUI extends UI
             }
         });
         
+        
+        
         //if search button is pressed
         commenceSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 searchResultPage.resultTable.removeAllItems();
-                String generalq = generalSearchBox.getValue();
                 
-                if(!generalq.equals("")){ //if not empty
-                    result = dba.getSearchResults(con,generalq,AdvancedSearchPage.ASPmood,AdvancedSearchPage.ASPseconds,AdvancedSearchPage.ASPsongText,AdvancedSearchPage.ASPartistText,AdvancedSearchPage.ASPsubMood);
+                
+                String generalq = generalSearchBox.getValue();
+                int primaryCounter = 0;
+                MoodCentral translateMoodWords = new MoodCentral();
+                Map theNumberBase = translateMoodWords.MoodKey();
+                if (theNumberBase.containsKey(generalq)) {
+                    int[] theConvertedKey = {(Integer) theNumberBase.get(generalq)};
+                    System.out.println("INteger:" + theConvertedKey);
+                    
+                    if(!generalq.equals("")){ //if not empty
+                        System.out.println("INtegeref:" + theConvertedKey);
+                        result = dba.getSearchResults(con, "", theConvertedKey, 0, "", "", "", "", "", 0);
 
-                    for(int i = 0; i<result.length; i++){
-                        if(result[i]==null){
+                        for(primaryCounter = 0; primaryCounter<result.length; primaryCounter++){
+                            if(result[primaryCounter]==null){
+                                break;
+                            }else{
+                                String moodconvert = Integer.toString(result[primaryCounter].mood);
+                                //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
+                                searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[primaryCounter].name), 
+                                    result[primaryCounter].artist, 
+                                    result[primaryCounter].album, 
+                                    SongResultPages.timeIntoSeconds(result[primaryCounter].length), 
+                                    result[primaryCounter].genre, 
+                                    moodconvert}, primaryCounter);               
+                                System.out.println(primaryCounter + ": " + result[primaryCounter].name);
+                            }                
+                        }
+                    }
+                } 
+                System.out.println(generalq);
+                int otherCounter = primaryCounter;
+                if(!generalq.equals("")){ //if not empty
+                    int[] divertMood = {0,1,2,3,4,5,6,7};
+                    result = dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0);
+                    System.out.println(primaryCounter);
+                    for(int secondaryCounter = 0; secondaryCounter<result.length; secondaryCounter++){
+                        otherCounter++;
+                        if(result[secondaryCounter]==null){
+                            break;
                         }else{
-                            String moodconvert = Integer.toString(result[i].mood);
+                            String moodconvert = Integer.toString(result[secondaryCounter].mood);
                             //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                            searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[i].name), 
-                                result[i].artist, 
-                                result[i].album, 
-                                SongResultPages.time(result[i].length), 
-                                result[i].genre, 
-                                moodconvert}, i);               
-                            System.out.println(i + ": " + result[i].name);
+                            searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[secondaryCounter].name), 
+                                result[secondaryCounter].artist, 
+                                result[secondaryCounter].album, 
+                                SongResultPages.timeIntoSeconds(result[secondaryCounter].length), 
+                                result[secondaryCounter].genre, 
+                                moodconvert}, otherCounter);               
+                            System.out.println(otherCounter + ": " + result[secondaryCounter].name);
                         }                
                     }
                     tabs.setSelectedTab(SeaRPage);
                 }
+
+                
+                
+                
             }
         });
  
