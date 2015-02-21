@@ -12,7 +12,7 @@ import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPseconds;
 import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsongText;
 import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsubMood;
 import com.vaadin.event.ItemClickEvent;
-import static com.vaadin.server.Sizeable.UNITS_PIXELS;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
@@ -72,29 +72,27 @@ public class SearchResultPage {
     
     
     public AbsoluteLayout drawSearchRPage(){
-        
-
 ////////////////////////////////////////////////////////////////////////////////
         //BASE PANELS/LAYOUTS: 
 //        CssLayout grid = new AbsoluteLayout();
         AbsoluteLayout grid = new AbsoluteLayout();
-        grid.setHeight(1200, UNITS_PIXELS);
+        grid.setHeight(1200, Unit.PIXELS);
         grid.setWidth("100%");
         
         AbsoluteLayout ingrid = new AbsoluteLayout();
-        ingrid.setHeight(1200, UNITS_PIXELS);
+        ingrid.setHeight(1200, Unit.PIXELS);
         ingrid.setWidth("100%");
         
         //primary.addComponent(grid);
-        grid.addComponent(ingrid, "left: 240px; top: 0px;");
+        grid.addComponent(ingrid, "left: 15px; top: 0px;");
 
 ////////////////////////////////////////////////////////////////////////////////        
         //SIDEBAR
         VerticalLayout sidebar = new VerticalLayout();
-        sidebar.setHeight(1200, UNITS_PIXELS);
-        sidebar.setWidth(200, UNITS_PIXELS);
-        sidebar.setSpacing(false);
- //       sidebar.addStyleName(sidebur);
+        sidebar.setHeight(1200, Unit.PIXELS);
+        sidebar.setWidth(200, Unit.PIXELS);
+        sidebar.setSpacing(true);
+        //sidebar.addStyleName(sidebur);
         
         ingrid.addComponent(sidebar, "left: 0px; top: 0px;");
         
@@ -113,28 +111,32 @@ public class SearchResultPage {
         final CheckBox selectMood5 = new CheckBox("5");
         final CheckBox selectMood6 = new CheckBox("6");
         final CheckBox selectMood7 = new CheckBox("7");
-
+        
+        Button startSearchButton = new Button("Filter");
+     
+        VerticalLayout moodCheck = new VerticalLayout();
+        moodCheck.addComponent(moodNote);
+        moodCheck.addComponent(selectMood0);
+        moodCheck.addComponent(selectMood1);
+        moodCheck.addComponent(selectMood2);
+        moodCheck.addComponent(selectMood3);
+        moodCheck.addComponent(selectMood4);
+        moodCheck.addComponent(selectMood5);
+        moodCheck.addComponent(selectMood6);
+        moodCheck.addComponent(selectMood7);
+        moodCheck.addComponent(subMoodSearchBox);
+        moodCheck.addComponent(startSearchButton);
         
         sidebar.addComponent(songTextSearchBox);
         sidebar.addComponent(artistTextSearchBox);
         sidebar.addComponent(albumSearchBox);
         sidebar.addComponent(yearSearchBox);
         sidebar.addComponent(secondSearchBox);
-        sidebar.addComponent(moodNote);
-        sidebar.addComponent(selectMood0);
-        sidebar.addComponent(selectMood1);
-        sidebar.addComponent(selectMood2);
-        sidebar.addComponent(selectMood3);
-        sidebar.addComponent(selectMood4);
-        sidebar.addComponent(selectMood5);
-        sidebar.addComponent(selectMood6);
-        sidebar.addComponent(selectMood7);
-        sidebar.addComponent(subMoodSearchBox);
+        sidebar.addComponent(moodCheck);
         
-
-        Button startSearchButton = new Button("Filter");
-        sidebar.addComponent(startSearchButton);
+        sidebar.setExpandRatio(moodCheck,1);
         
+        //when search button button is clicked
         startSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 MyVaadinUI.searchResultPage.resultTable.removeAllItems();
@@ -170,8 +172,6 @@ public class SearchResultPage {
                 }
 
                 ASPmood = convertIntegers(moodsSelected);
-                System.out.println(ASPmood);
-                System.out.println("1:" + selectMood1);
                // ASPsubMood = artistTextSearchBox.getValue();
                 System.out.println(ASPsongText);
                 
@@ -189,10 +189,11 @@ public class SearchResultPage {
                         MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
                             MyVaadinUI.result[i].artist, 
                             MyVaadinUI.result[i].album, 
-                            SongResultPages.time(MyVaadinUI.result[i].length), 
-                            MyVaadinUI.result[i].genre, 
-                            moodconverter}, i);
-                    }    
+                            moodconverter, 
+                            MyVaadinUI.result[i].genre,
+                            SongResultPages.time(MyVaadinUI.result[i].length),
+                            (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)}, i);
+                    }
                 }
             }
         });
@@ -200,8 +201,6 @@ public class SearchResultPage {
         
 ////////////////////////////////////////////////////////////////////////////////
 //      RESULT TABLE
-        
-        
         moodarray = new int[7];
         moodarray[0] = 1;
         moodarray[1] = 2;
@@ -218,19 +217,19 @@ public class SearchResultPage {
         resultTable.addContainerProperty("Song Name", String.class, null);
         resultTable.addContainerProperty("Artist", String.class, null);
         resultTable.addContainerProperty("Album", String.class, null);
-        resultTable.addContainerProperty("Length", String.class, null);
+        resultTable.addContainerProperty("Mood", String.class, null);
         resultTable.addContainerProperty("Genre", String.class, null);
-        resultTable.addContainerProperty("Mood", java.lang.String.class, null);
-        //resultTable.addContainerProperty("Waveform", Wavesurfer.class, null);
+        resultTable.addContainerProperty("Length", String.class, null);
+        resultTable.addContainerProperty("Year", String.class, null);
         
         //adjust their relative widths
         resultTable.setColumnExpandRatio("Song Name",3);
         resultTable.setColumnExpandRatio("Artist",3);
         resultTable.setColumnExpandRatio("Album",3);
-        resultTable.setColumnExpandRatio("Length",1);
-        resultTable.setColumnExpandRatio("Genre",2);
         resultTable.setColumnExpandRatio("Mood",1);
-        
+        resultTable.setColumnExpandRatio("Genre",2);
+        resultTable.setColumnExpandRatio("Length",1);
+        resultTable.setColumnExpandRatio("Year",1);
 
         final String generalq = "";
         
@@ -238,15 +237,14 @@ public class SearchResultPage {
         resultTable.addItemClickListener(new ItemClickEvent.ItemClickListener () {
             @Override
             public void itemClick(ItemClickEvent event) {
-//                if()
+                int selectedRow = Integer.valueOf(event.getItemId().toString());
                 
-                // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                nameIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].name;
-                artistIdentifier = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].artist;
-                length = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].length;
-                year = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].year;
-                album = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].album;
-                genre = MyVaadinUI.result[Integer.valueOf(event.getItemId().toString())].genre;
+                nameIdentifier = MyVaadinUI.result[selectedRow].name;
+                artistIdentifier = MyVaadinUI.result[selectedRow].artist;
+                length = MyVaadinUI.result[selectedRow].length;
+                year = MyVaadinUI.result[selectedRow].year;
+                album = MyVaadinUI.result[selectedRow].album;
+                genre = MyVaadinUI.result[selectedRow].genre;
 //                stConvert = new Label(nameIdentifier);
 //                saConvert = new Label(artistIdentifier);
 //                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");

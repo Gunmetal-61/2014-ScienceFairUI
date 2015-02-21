@@ -82,8 +82,6 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
         return getState().value;
     }
     
-   
-
     /**
      * Load song to play
      * @param playThisFile 
@@ -93,6 +91,10 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
         callFunction("fileLoader2");
     }      
     
+    /**
+     * Play or pause wavesurfer audio playback
+     * @param play If true, play song. If false, pause.
+     */
     public void playOrPause(boolean play) {
         if(play){
             callFunction("play");
@@ -105,9 +107,17 @@ public class Wavesurfer extends AbstractJavaScriptComponent {
 //        callFunction("trackerTime", );
 //        return ;
 //    }
+    
+    /**
+     * Toggle mute
+     */
     public void muteSilence() {
         callFunction("silenceMute");
     }
+    
+    /**
+     * Stops audio playback
+     */
     public void stopReset() {
         callFunction("resetStop");
     }

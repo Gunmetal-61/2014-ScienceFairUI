@@ -49,7 +49,7 @@ public class DatabaseAccess {
     ////////////////////////////////////////////////////////////////////////////
 //  RETRIEVE SELECTED SONG'S SUBSONG MOOD VALUES TO COLOR IT'S WAVEFORM GRAPH APPRORPRIATELY
     /**
-     * Used last year for subsong colors. Deprecated.
+     * @deprecated 
      * 
      * @param con
      * @param title
@@ -304,6 +304,7 @@ public class DatabaseAccess {
 //  SETUP CODE USED TO PLACE AN ANALYZED SONG'S SUBSONG MOOD VALUES INTO THE ORACLE DATABASE TABLE 
 //  NOT ACTIVE IN FINAL GUI PROGRAM  
     /**
+     * @deprecated
      * 
      * @param con
      * @param title

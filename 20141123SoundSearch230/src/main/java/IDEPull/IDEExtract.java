@@ -38,6 +38,13 @@ public class IDEExtract {
         
     }
     
+    /**
+     * Gets the file name for a specific song
+     * 
+     * @param title Title of song
+     * @param artist Artist of song
+     * @return 
+     */
     public String findFile(String title, String artist) {
         String playThisFile = null;
         System.out.println("'findFile' method (Wavesurfer.java) started.  Retrieving selected song [" + nameIdentifier + "]'s file.");

@@ -92,6 +92,7 @@ public class MyVaadinUI extends UI
     
         final TextField generalSearchBox = new TextField();
         generalSearchBox.setDescription("Search for a Song");
+        generalSearchBox.setWidth(200, Unit.PIXELS);
              
         final Button commenceSearchButton = new Button("Search");
         Label siteLogo = new Label("Aura");
@@ -146,13 +147,14 @@ public class MyVaadinUI extends UI
                         if(result[i]==null){
                         }else{
                             String moodconvert = Integer.toString(result[i].mood);
-                            //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                            searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[i].name), 
+                            searchResultPage.resultTable.addItem(new Object[]{
+                                WordUtils.capitalize(result[i].name), 
                                 result[i].artist, 
                                 result[i].album, 
-                                SongResultPages.time(result[i].length), 
+                                moodconvert, 
                                 result[i].genre, 
-                                moodconvert}, i);               
+                                SongResultPages.time(result[i].length),
+                                (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)}, i);               
                             System.out.println(i + ": " + result[i].name);
                         }                
                     }
@@ -193,7 +195,7 @@ public class MyVaadinUI extends UI
 
         tabs.addTab(Homage, "Home");
         //tabs.addTab(AdvSPage, "Advanced Search");   
-        tabs.addTab(SeaRPage); 
+        tabs.addTab(SeaRPage, "Search Results"); 
         
         tabs.setCloseHandler(new CloseHandler(){
             @Override

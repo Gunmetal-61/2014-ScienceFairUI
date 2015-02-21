@@ -12,7 +12,6 @@ import Wavesurfer.Wavesurfer;
 import com.google.gwt.user.client.ui.UIObject;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
-import static com.vaadin.server.Sizeable.UNITS_PIXELS;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Audio;
 import com.vaadin.ui.Button;
@@ -36,6 +35,7 @@ import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.event.FieldEvents.FocusEvent;
 import com.vaadin.event.FieldEvents.FocusListener;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.MarginInfo;
 //import com.vaadin.data.Property.ValueChangeEvent;
 
@@ -93,8 +93,8 @@ public class SongResultPages {
     
     public AbsoluteLayout drawSongRPage() {
         AbsoluteLayout grid = new AbsoluteLayout();
-        grid.setHeight(1200, UNITS_PIXELS);
-        grid.setWidth(1600, UNITS_PIXELS);
+        grid.setHeight(1200, Unit.PIXELS);
+        grid.setWidth(1600, Unit.PIXELS);
         
         final VerticalLayout inNonGrid = new VerticalLayout();
 //        inNonGrid.setSpacing(true);
@@ -123,9 +123,7 @@ public class SongResultPages {
         //Length of Song
         Label songlength = new Label(time(length));
         //Song Genre
-        Label songgenre = new Label(genre);
-        //Song Lyrics
-        Label songlyrics = new Label("");        
+        Label songgenre = new Label(genre);    
         //Link to Lyrics
         Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));
         
@@ -134,13 +132,11 @@ public class SongResultPages {
 
         ////////////////////////////////////////////////////////////////////////        
 //      Waveform Graph Image
-
-
         Label waveformtitle = new Label("Waveform Readings");
         
         final Wavesurfer myWavesurfer = new Wavesurfer();
-        myWavesurfer.setHeight(180, UNITS_PIXELS);
-        myWavesurfer.setWidth(900, UNITS_PIXELS);
+        myWavesurfer.setHeight(180, Unit.PIXELS);
+        myWavesurfer.setWidth(900, Unit.PIXELS);
         myWavesurfer.loadPlayFile(playThisFile);
         myWavesurfer.loadRegions(title, artist);
       
@@ -148,8 +144,8 @@ public class SongResultPages {
 //      Album Image
         //Image albumimage = new Image("",resource);
         if(albumImage!=null){
-            albumImage.setWidth(200, UNITS_PIXELS);
-            albumImage.setHeight(200, UNITS_PIXELS);
+            albumImage.setWidth(200, Unit.PIXELS);
+            albumImage.setHeight(200, Unit.PIXELS);
             albumArtContainer.addComponent(albumImage);
         }
         
@@ -243,8 +239,8 @@ public class SongResultPages {
         }
         TextArea lyricsDisplayed = new TextArea("Song Lyrics");
         lyricsDisplayed.setValue(lyricsText);
-        lyricsDisplayed.setHeight(300, UNITS_PIXELS);
-        lyricsDisplayed.setWidth(600, UNITS_PIXELS);
+        lyricsDisplayed.setHeight(300, Unit.PIXELS);
+        lyricsDisplayed.setWidth(600, Unit.PIXELS);
         
         generalSongDataContainer.addComponent(songtitle);
         generalSongDataContainer.addComponent(songartist);
