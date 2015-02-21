@@ -34,7 +34,7 @@ Wavesurfer_Wavesurfer =
             };
             
             this.fileLoader = function(playThisFile) {    
-                console.log("ERIOHGOIERHGOERHGLERHGIOHRGHEROIGHOSDNVNEFGHLSZJLNVHKLDSJGKLSNGOWEHIOWRJGJFKLHGILFDJBKLDFJBKLXCVHL;BJDNGOAWHTIOEWJGLKDFNBGJIOERHGOJEFKLGHWRIOAGJLDFKBHIOERHGKLANGEFIGJKLWRGNMKLFBHIOREJBVK.CXHBILXDJBKLEFJGHERPIOGJHERIOGLERJGERHGIOERJGKLFJLOER" + playThisFile);
+                console.log("argument:" + playThisFile);
                 wavesurfer.load ('/Songs/mp3/' + playThisFile);
             };
             

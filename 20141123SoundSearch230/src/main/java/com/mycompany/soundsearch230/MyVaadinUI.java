@@ -43,7 +43,9 @@ import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.Tab;
 import java.io.BufferedInputStream;  
 import java.io.File;
 import java.io.FileInputStream;  
@@ -92,6 +94,7 @@ public class MyVaadinUI extends UI
     
         final TextField generalSearchBox = new TextField();
         generalSearchBox.setDescription("Search for a Song");
+        generalSearchBox.setWidth(200, Unit.PIXELS);
              
         final Button commenceSearchButton = new Button("Search");
         Label siteLogo = new Label("Aura");
@@ -162,11 +165,13 @@ public class MyVaadinUI extends UI
                                 String moodconvert = Integer.toString(result[primaryCounter].mood);
                                 //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
                                 searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[primaryCounter].name), 
+                                    WordUtils.capitalize(result[primaryCounter].name), 
                                     result[primaryCounter].artist, 
                                     result[primaryCounter].album, 
-                                    SongResultPages.timeIntoSeconds(result[primaryCounter].length), 
+                                    moodconvert, 
                                     result[primaryCounter].genre, 
-                                    moodconvert}, primaryCounter);               
+                                    SongResultPages.formatTime(result[primaryCounter].length),
+                                    (MyVaadinUI.result[primaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[primaryCounter].year)}, primaryCounter);              
                                 System.out.println(primaryCounter + ": " + result[primaryCounter].name);
                             }                
                         }
@@ -184,22 +189,19 @@ public class MyVaadinUI extends UI
                             break;
                         }else{
                             String moodconvert = Integer.toString(result[secondaryCounter].mood);
-                            //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                            searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(result[secondaryCounter].name), 
+                            searchResultPage.resultTable.addItem(new Object[]{
+                                WordUtils.capitalize(result[secondaryCounter].name), 
                                 result[secondaryCounter].artist, 
                                 result[secondaryCounter].album, 
-                                SongResultPages.timeIntoSeconds(result[secondaryCounter].length), 
+                                moodconvert, 
                                 result[secondaryCounter].genre, 
-                                moodconvert}, otherCounter);               
+                                SongResultPages.formatTime(result[secondaryCounter].length),
+                                (MyVaadinUI.result[secondaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[secondaryCounter].year)}, otherCounter);               
                             System.out.println(otherCounter + ": " + result[secondaryCounter].name);
                         }                
                     }
                     tabs.setSelectedTab(SeaRPage);
-                }
-
-                
-                
-                
+                }        
             }
         });
  
@@ -234,8 +236,29 @@ public class MyVaadinUI extends UI
 
 
         tabs.addTab(Homage, "Home");
-        tabs.addTab(AdvSPage, "Advanced Search");   
-        tabs.addTab(SeaRPage); 
+        //tabs.addTab(AdvSPage, "Advanced Search");   
+        tabs.addTab(SeaRPage, "Search Results"); 
+        
+        tabs.setCloseHandler(new CloseHandler(){
+            @Override
+            public void onTabClose(TabSheet tabsheet, Component tabContent){
+                Tab tab = tabsheet.getTab(tabContent);
+                tabsheet.removeTab(tab);
+            }
+        });
+        
+        tabs.addFocusListener(new FocusListener() {
+            @Override
+            public void focus(final FocusEvent event) {
+                
+            }
+        });    
+        tabs.addBlurListener(new BlurListener() {
+
+            public void blur(final BlurEvent event) {
+                
+            }
+        });
         
         overlord.addComponent(tabs);
    }

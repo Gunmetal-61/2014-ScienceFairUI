@@ -49,7 +49,7 @@ public class DatabaseAccess {
     ////////////////////////////////////////////////////////////////////////////
 //  RETRIEVE SELECTED SONG'S SUBSONG MOOD VALUES TO COLOR IT'S WAVEFORM GRAPH APPRORPRIATELY
     /**
-     * Used last year for subsong colors. Deprecated.
+     * @deprecated 
      * 
      * @param con
      * @param title
@@ -101,6 +101,7 @@ public class DatabaseAccess {
     //  Declare Query Strings  
         DBRow[] output = new DBRow[100];//creates an array of 25 rows in the song result table
         
+
         try {
             String generalQuery = "";//string to create sql query over all types of data
             String namesQuery = "";//string from name of song query field sent to sql command line
@@ -118,6 +119,7 @@ public class DatabaseAccess {
             artist = artist.toLowerCase();
             album = album.toLowerCase();
             genre = genre.toLowerCase();
+
 
             Statement stmt = null;
             int upperlength = length + 30;/*for [lengthsquery]; sets a leeway of 30 
@@ -357,6 +359,7 @@ public class DatabaseAccess {
 //  SETUP CODE USED TO PLACE AN ANALYZED SONG'S SUBSONG MOOD VALUES INTO THE ORACLE DATABASE TABLE 
 //  NOT ACTIVE IN FINAL GUI PROGRAM  
     /**
+     * @deprecated
      * 
      * @param con
      * @param title

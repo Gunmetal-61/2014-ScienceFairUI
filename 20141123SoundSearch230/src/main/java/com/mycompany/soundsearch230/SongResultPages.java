@@ -12,7 +12,6 @@ import Wavesurfer.Wavesurfer;
 import com.google.gwt.user.client.ui.UIObject;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
-import static com.vaadin.server.Sizeable.UNITS_PIXELS;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Audio;
 import com.vaadin.ui.Button;
@@ -32,6 +31,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.event.FieldEvents.FocusEvent;
+import com.vaadin.event.FieldEvents.FocusListener;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.MarginInfo;
 //import com.vaadin.data.Property.ValueChangeEvent;
 
@@ -59,7 +63,10 @@ public class SongResultPages {
     int length;
     int year;
     
+    String playThisFile;
+    Image albumImage;
     /**
+     * Instantiate a song result page
      * 
      * @param title
      * @param artist
@@ -75,12 +82,19 @@ public class SongResultPages {
         this.genre = genre;
         this.length = length;
         this.year = year;
+        
+        //Get the album art
+        IDEExtract ideExtract = new IDEExtract();
+        this.playThisFile = ideExtract.findFile(title, artist);
+        albumImage = ideExtract.getAlbumArt(playThisFile);
+        //this.resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
+        //FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
     }
     
     public AbsoluteLayout drawSongRPage() {
         AbsoluteLayout grid = new AbsoluteLayout();
-        grid.setHeight(1200, UNITS_PIXELS);
-        grid.setWidth(1600, UNITS_PIXELS);
+        grid.setHeight(1200, Unit.PIXELS);
+        grid.setWidth(1600, Unit.PIXELS);
         
         final VerticalLayout inNonGrid = new VerticalLayout();
 //        inNonGrid.setSpacing(true);
@@ -107,11 +121,9 @@ public class SongResultPages {
         //Year Song was Released
         Label songyear = new Label(String.valueOf(year));
         //Length of Song
-        Label songlength = new Label(timeIntoSeconds(length));
+        Label songlength = new Label(formatTime(length));
         //Song Genre
-        Label songgenre = new Label(genre);
-        //Song Lyrics
-        Label songlyrics = new Label("");        
+        Label songgenre = new Label(genre);    
         //Link to Lyrics
         Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));
         
@@ -120,29 +132,22 @@ public class SongResultPages {
 
         ////////////////////////////////////////////////////////////////////////        
 //      Waveform Graph Image
-
-
         Label waveformtitle = new Label("Waveform Readings");
         
-        IDEExtract ideExtract = new IDEExtract();
-        String playThisFile = ideExtract.findFile(title, artist);
-        RandomAccessFile coverArt = ideExtract.getAlbumArt(playThisFile);
-        
-        
-        
         final Wavesurfer myWavesurfer = new Wavesurfer();
-        myWavesurfer.setHeight(180, UNITS_PIXELS);
-        myWavesurfer.setWidth(900, UNITS_PIXELS);
+        myWavesurfer.setHeight(180, Unit.PIXELS);
+        myWavesurfer.setWidth(900, Unit.PIXELS);
         myWavesurfer.loadPlayFile(playThisFile);
         myWavesurfer.loadRegions(title, artist);
       
         ////////////////////////////////////////////////////////////////////////
 //      Album Image
-//        FileResource resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
-        FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
-        Image albumimage = new Image("",resource);
-        albumimage.setWidth(200, UNITS_PIXELS);
-        albumimage.setHeight(200, UNITS_PIXELS);
+        //Image albumimage = new Image("",resource);
+        if(albumImage!=null){
+            albumImage.setWidth(200, Unit.PIXELS);
+            albumImage.setHeight(200, Unit.PIXELS);
+            albumArtContainer.addComponent(albumImage);
+        }
         
         ////////////////////////////////////////////////////////////////////////
 
@@ -224,7 +229,7 @@ public class SongResultPages {
                 }
         });
         
-        
+
         
         String lyricsText = null;
         try {
@@ -234,11 +239,9 @@ public class SongResultPages {
         }
         TextArea lyricsDisplayed = new TextArea("Song Lyrics");
         lyricsDisplayed.setValue(lyricsText);
-        lyricsDisplayed.setHeight(300, UNITS_PIXELS);
-        lyricsDisplayed.setWidth(600, UNITS_PIXELS);
+        lyricsDisplayed.setHeight(300, Unit.PIXELS);
+        lyricsDisplayed.setWidth(600, Unit.PIXELS);
         
-
-        albumArtContainer.addComponent(albumimage);
         generalSongDataContainer.addComponent(songtitle);
         generalSongDataContainer.addComponent(songartist);
         generalSongDataContainer.addComponent(songyear);
@@ -256,6 +259,7 @@ public class SongResultPages {
         mediaControlContainer.addComponent(speedLevelSlider);
         mediaControlContainer.setComponentAlignment(volume, Alignment.MIDDLE_LEFT);
         mediaControlContainer.setComponentAlignment(speed, Alignment.MIDDLE_LEFT);
+        mediaControlContainer.setSpacing(true);
         detailedInfoContainer.addComponent(lyricsDisplayed);
         
         return grid;
@@ -268,7 +272,7 @@ public class SongResultPages {
      * @param input Seconds
      * @return 
      */
-    public static String timeIntoSeconds(int input){
+    public static String formatTime(int input){
         String seconds = (input%60>9)?String.valueOf(input%60):"0"+String.valueOf(input%60);
         return input/60 + ":" + seconds;
     }
