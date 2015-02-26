@@ -147,7 +147,7 @@ public class MyVaadinUI extends UI
                 
                 
                 String generalq = generalSearchBox.getValue();
-                int primaryCounter = 0;
+                int counter = 0;
                 MoodCentral translateMoodWords = new MoodCentral();
                 Map theNumberBase = translateMoodWords.MoodKey();
                 if (theNumberBase.containsKey(generalq)) {
@@ -158,33 +158,31 @@ public class MyVaadinUI extends UI
                         System.out.println("INtegeref:" + theConvertedKey);
                         result = dba.getSearchResults(con, "", theConvertedKey, 0, "", "", "", "", "", 0);
 
-                        for(primaryCounter = 0; primaryCounter<result.length; primaryCounter++){
-                            if(result[primaryCounter]==null){
+                        for(counter = 0; counter<result.length; counter++){
+                            if(result[counter]==null){
                                 break;
                             }else{
-                                String moodconvert = Integer.toString(result[primaryCounter].mood);
+                                String moodconvert = Integer.toString(result[counter].mood);
                                 //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
                                 searchResultPage.resultTable.addItem(new Object[]{
-                                    WordUtils.capitalize(result[primaryCounter].name), 
-                                    result[primaryCounter].artist, 
-                                    result[primaryCounter].album, 
+                                    WordUtils.capitalize(result[counter].name), 
+                                    result[counter].artist, 
+                                    result[counter].album, 
                                     moodconvert, 
-                                    result[primaryCounter].genre, 
-                                    SongResultPages.formatTime(result[primaryCounter].length),
-                                    (MyVaadinUI.result[primaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[primaryCounter].year)}, primaryCounter);              
-                                System.out.println(primaryCounter + ": " + result[primaryCounter].name);
+                                    result[counter].genre, 
+                                    SongResultPages.formatTime(result[counter].length),
+                                    (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, counter);              
+                                System.out.println(counter + ": " + result[counter].name);
                             }                
                         }
                     }
                 } 
                 System.out.println(generalq);
-                int otherCounter = primaryCounter;
                 if(!generalq.equals("")){ //if not empty
                     int[] divertMood = {0,1,2,3,4,5,6,7};
                     result = dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0);
-                    System.out.println(primaryCounter);
+                    System.out.println(counter);
                     for(int secondaryCounter = 0; secondaryCounter<result.length; secondaryCounter++){
-                        otherCounter++;
                         if(result[secondaryCounter]==null){
                             break;
                         }else{
@@ -196,9 +194,10 @@ public class MyVaadinUI extends UI
                                 moodconvert, 
                                 result[secondaryCounter].genre, 
                                 SongResultPages.formatTime(result[secondaryCounter].length),
-                                (MyVaadinUI.result[secondaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[secondaryCounter].year)}, otherCounter);               
-                            System.out.println(otherCounter + ": " + result[secondaryCounter].name);
-                        }                
+                                (MyVaadinUI.result[secondaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[secondaryCounter].year)}, counter);               
+                            System.out.println(counter + ": " + result[secondaryCounter].name);
+                        }
+                        counter++;
                     }
                     tabs.setSelectedTab(SeaRPage);
                 }        
