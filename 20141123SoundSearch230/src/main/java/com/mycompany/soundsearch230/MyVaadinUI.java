@@ -147,17 +147,17 @@ public class MyVaadinUI extends UI
                 
                 
                 String generalq = generalSearchBox.getValue();
-                int counter = 0;
+                int counter = 0; //id of row
                 MoodCentral translateMoodWords = new MoodCentral();
                 Map theNumberBase = translateMoodWords.MoodKey();
-                if (theNumberBase.containsKey(generalq)) {
+                if (theNumberBase.containsKey(generalq)) { //if there was a mood word found
                     int[] theConvertedKey = {(Integer) theNumberBase.get(generalq)};
-                    System.out.println("INteger:" + theConvertedKey);
+                    System.out.println("Integer:" + theConvertedKey[0]);
                     
                     if(!generalq.equals("")){ //if not empty
-                        System.out.println("INtegeref:" + theConvertedKey);
-                        result = dba.getSearchResults(con, "", theConvertedKey, 0, "", "", "", "", "", 0);
-
+                        System.out.println("Integeref:" + theConvertedKey[0]);
+                        result = dba.getSearchResults(con, "", theConvertedKey, 0, "", "", "", "", ""); //get mood results
+                        System.out.println("Length of mood results:" + result.length);
                         for(counter = 0; counter<result.length; counter++){
                             if(result[counter]==null){
                                 break;
@@ -176,11 +176,11 @@ public class MyVaadinUI extends UI
                             }                
                         }
                     }
-                } 
+                }
                 System.out.println(generalq);
                 if(!generalq.equals("")){ //if not empty
                     int[] divertMood = {0,1,2,3,4,5,6,7};
-                    result = dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0);
+                    result = dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", ""); //get normal text results
                     System.out.println(counter);
                     for(int secondaryCounter = 0; secondaryCounter<result.length; secondaryCounter++){
                         if(result[secondaryCounter]==null){
@@ -197,7 +197,7 @@ public class MyVaadinUI extends UI
                                 (MyVaadinUI.result[secondaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[secondaryCounter].year)}, counter);               
                             System.out.println(counter + ": " + result[secondaryCounter].name);
                         }
-                        counter++;
+                        counter++; //continue to add the other results to the table
                     }
                     tabs.setSelectedTab(SeaRPage);
                 }        

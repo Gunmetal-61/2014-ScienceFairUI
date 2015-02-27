@@ -88,10 +88,6 @@ public class IDEExtract {
                                 return new ByteArrayInputStream(data);
                             }
                         }, ""));
-                    //file = new RandomAccessFile("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork", "rw");
-                    //file = new RandomAccessFile("/home/mitchell/Documents/album-artwork", "rw");
-                    //file.write(data);
-                    //file.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

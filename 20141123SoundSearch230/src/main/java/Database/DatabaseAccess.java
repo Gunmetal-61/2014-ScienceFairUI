@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -83,21 +85,22 @@ public class DatabaseAccess {
         }
         return song;
     }
-    
-    ////////////////////////////////////////////////////////////////////////////
-//  EXECUTE QUERIES BY THE USER   
+      
     /**
+     * Gets search results based on user queries
      * 
-     * @param con
-     * @param generalq
-     * @param mood
-     * @param length
-     * @param name
-     * @param artist
-     * @param moodlevel
+     * @param con Database connection
+     * @param generalq General query
+     * @param mood Array of moods in the output
+     * @param length Length of the song in seconds
+     * @param name Name of the song
+     * @param artist Artist of song
+     * @param album Song album
+     * @param genre Genre of song
+     * @param year Song release year
      * @return
      */
-    public static DBRow[] getSearchResults(Connection con, String generalq, int[] mood, int length, String name, String artist, String album, String genre, String year, int moodlevel){
+    public static DBRow[] getSearchResults(Connection con, String generalq, int[] mood, int length, String name, String artist, String album, String genre, String year){
     //  Declare Query Strings  
         DBRow[] output = new DBRow[100];//creates an array of 25 rows in the song result table
         
@@ -114,7 +117,7 @@ public class DatabaseAccess {
             String lyricsQuery = "";
             
             generalq = generalq.toLowerCase();
-            System.out.println("ef:" + generalq);
+            System.out.println("General Query:" + generalq);
             name = name.toLowerCase();
             artist = artist.toLowerCase();
             album = album.toLowerCase();
@@ -200,16 +203,11 @@ public class DatabaseAccess {
             for(int i = 0; i<mood.length; i++){//new {int} [i] declared as 0, the as long as it is less than the length of the song, +1 value of [i] per cycle
                 moods = moods + mood[i] +  ",";//[moods] 
             }
-            if(!moods.equals("")){//if mood is blank
-                if(moodlevel == 0){//if the mood level is 0
-                    moods = moods.substring(0, moods.lastIndexOf(","));//moods will then equal
-                    moodsQuery = " AND AUDIOMOOD IN ("+moods+")";
-                    if(genresQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&albumsQuery.equals("")&&namesQuery.equals("")&&artistsQuery.equals("")){
-                        moodsQuery = "WHERE AUDIOMOOD IN ("+moods+")";
-                    }
-                }
-                if(moodlevel == 1){
-
+            if(!moods.equals("")){//if mood isn't blank
+                moods = moods.substring(0, moods.lastIndexOf(","));//moods will then equal
+                moodsQuery = " AND AUDIOMOOD IN ("+moods+")";
+                if(genresQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&albumsQuery.equals("")&&namesQuery.equals("")&&artistsQuery.equals("")){
+                    moodsQuery = "WHERE AUDIOMOOD IN ("+moods+")";
                 }
             }
             
@@ -222,7 +220,7 @@ public class DatabaseAccess {
 //            database for search.
             
             String query =
-                    "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
+                    "SELECT DISTINCT SONGTABLE.RANKING, SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
                     + "SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, "
                     + "YEARS.ACTUALYEAR, ALBUMS.ALBUMNAME, GENRES.GENRENAME FROM SONGTABLE "
                     + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
@@ -230,9 +228,12 @@ public class DatabaseAccess {
                     + "LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
                     + "LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " 
                     + generalQuery + namesQuery + artistsQuery + albumsQuery 
-                    + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery ;
+                    + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery;
             
-
+            if(!moods.equals("0,1,2,3,4,5,6,7")){
+                query = query + " ORDER BY RANKING DESC";
+            }
+            
             System.out.println(query);
             try {
                 stmt = con.createStatement();
@@ -409,7 +410,7 @@ public class DatabaseAccess {
         
         Statement stmt = null;
         String query =
-                "SELECT SEQUENCE, MOOD, LENGTH FROM SUBSONGTABLE INNER JOIN ARTISTS ON SUBSONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE ARTISTNAME = '" + artistname + "' AND TITLE = '"+ title +"' ORDER BY SEQUENCE";
+                "SELECT SEQUENCE, MOOD, LENGTH FROM SUBSONGTABLE LEFT JOIN ARTISTS ON SUBSONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE ARTISTNAME = '" + artistname + "' AND TITLE = '"+ title +"' ORDER BY SEQUENCE";
         try {
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -430,6 +431,33 @@ public class DatabaseAccess {
         output[1]=convertIntegers(mood);
         output[2]=convertIntegers(length);
         return output;
+    }
+    
+    /**
+     * Updates the rank of a song
+     * 
+     * @param con
+     * @param title
+     * @param artistname
+     * @param rankChange 
+     */
+    public static void updateRank(Connection con, String title, String artistname, int rankChange){
+        Statement stmt = null;
+        try {
+            stmt = con.createStatement();
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                   ResultSet.CONCUR_UPDATABLE);
+            ResultSet uprs = stmt.executeQuery("SELECT RANKING FROM SONGTABLE LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE TITLE = '" + title + "' AND ARTISTNAME = '" + artistname + "'");
+            while (uprs.next()) {
+                int lastRank = uprs.getInt("RANKING");
+                uprs.updateInt("RANKING", lastRank + rankChange);
+                uprs.updateRow(); //update database
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+            if (stmt != null) { try {stmt.close();} catch (SQLException ex) {ex.printStackTrace();}} //close connection
+        }
     }
     
     public static int[] convertIntegers(List<Integer> integers){

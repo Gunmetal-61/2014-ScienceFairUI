@@ -10,7 +10,6 @@ import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPartistText;
 import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPmood;
 import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPseconds;
 import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsongText;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsubMood;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbsoluteLayout;
@@ -52,7 +51,6 @@ public class SearchResultPage {
     public static String ASPartistText = "";
     public static int ASPseconds = 0;
     public static int[] ASPmood = {0,1,2,3,4,5,6,7}; 
-    public static int ASPsubMood = 0;
     AbsoluteLayout alternate;
 
     
@@ -179,7 +177,7 @@ public class SearchResultPage {
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","",ASPsubMood);
+                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","");
                 
                 for(int i = 0; i<100; i++){
 //                    if(generalq.equals("prayer")){

@@ -47,7 +47,7 @@ public class MoodMap {
         moodMap.put("fascination", 1);
         moodMap.put("admiration", 1);
         moodMap.put("joyfulness", 1);
-        moodMap.put("love", 1);
+        moodMap.put("", 1);
         moodMap.put("", 1);
         moodMap.put("", 1);
         moodMap.put("", 1);
