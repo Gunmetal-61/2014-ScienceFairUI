@@ -6,6 +6,7 @@ package Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -230,7 +231,7 @@ public class DatabaseAccess {
                     + generalQuery + namesQuery + artistsQuery + albumsQuery 
                     + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery;
             
-            if(!moods.equals("0,1,2,3,4,5,6,7")){
+            if(!moods.equals("0,1,2,3,4,5,6,7")){ //if it isn't a general search
                 query = query + " ORDER BY RANKING DESC";
             }
             
@@ -434,30 +435,53 @@ public class DatabaseAccess {
     }
     
     /**
-     * Updates the rank of a song
+     * Updates the rank of a song (or gets the rank of a song)
      * 
      * @param con
      * @param title
      * @param artistname
      * @param rankChange 
      */
-    public static void updateRank(Connection con, String title, String artistname, int rankChange){
+    public static float updateRank(Connection con, String title, String artistname, int newLike){
+        title = title.replaceAll("'", "''");
+        artistname = artistname.replaceAll("'", "''");
+        
+        double lowerBound = 0;
         Statement stmt = null;
         try {
             stmt = con.createStatement();
-            stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                   ResultSet.CONCUR_UPDATABLE);
-            ResultSet uprs = stmt.executeQuery("SELECT RANKING FROM SONGTABLE LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE TITLE = '" + title + "' AND ARTISTNAME = '" + artistname + "'");
-            while (uprs.next()) {
-                int lastRank = uprs.getInt("RANKING");
-                uprs.updateInt("RANKING", lastRank + rankChange);
-                uprs.updateRow(); //update database
+            ResultSet rs = stmt.executeQuery("SELECT LIKES, DISLIKES FROM SONGTABLE LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
+                    + "WHERE TITLE = '" + title + "' AND ARTISTNAME = '" + artistname + "'");         
+            float likes = 0;
+            float dislikes = 0;
+            while (rs.next()) {
+                likes = rs.getInt("LIKES");
+                dislikes = rs.getInt("DISLIKES");
+            }  
+                        
+            if(newLike==1){
+                ++likes;
             }
+            if(newLike==-1){
+                ++dislikes;
+            }
+
+            float sampleSize = likes+dislikes;
+            float p = likes/sampleSize;
+            lowerBound = p - 1.96*Math.sqrt((p*(1.0-p))/sampleSize); //calculate lower bound of 95% confidence interval
+            //double upperBound = p + 1.96*Math.sqrt((p*(1-p))/sampleSize);
+            System.out.println(title + ": " + lowerBound);
+            System.out.println(p);
+            
+            stmt.executeQuery("UPDATE SONGTABLE SET RANKING="+lowerBound+", LIKES="+likes+", DISLIKES="+dislikes+" "
+                    + "WHERE TITLE = '"+title+"' "
+                    + "AND ARTISTID = (SELECT ARTISTID FROM ARTISTS WHERE ARTISTNAME = '"+artistname+"')");
         } catch (SQLException e) {
             System.err.println(e);
         } finally {
             if (stmt != null) { try {stmt.close();} catch (SQLException ex) {ex.printStackTrace();}} //close connection
         }
+        return (float)lowerBound;
     }
     
     public static int[] convertIntegers(List<Integer> integers){

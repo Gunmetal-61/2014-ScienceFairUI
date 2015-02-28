@@ -65,6 +65,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 
@@ -150,12 +151,12 @@ public class MyVaadinUI extends UI
                 int counter = 0; //id of row
                 MoodCentral translateMoodWords = new MoodCentral();
                 Map theNumberBase = translateMoodWords.MoodKey();
+                System.out.println(generalq);             
                 if (theNumberBase.containsKey(generalq)) { //if there was a mood word found
                     int[] theConvertedKey = {(Integer) theNumberBase.get(generalq)};
                     System.out.println("Integer:" + theConvertedKey[0]);
                     
                     if(!generalq.equals("")){ //if not empty
-                        System.out.println("Integeref:" + theConvertedKey[0]);
                         result = dba.getSearchResults(con, "", theConvertedKey, 0, "", "", "", "", ""); //get mood results
                         System.out.println("Length of mood results:" + result.length);
                         for(counter = 0; counter<result.length; counter++){
@@ -163,7 +164,6 @@ public class MyVaadinUI extends UI
                                 break;
                             }else{
                                 String moodconvert = Integer.toString(result[counter].mood);
-                                //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
                                 searchResultPage.resultTable.addItem(new Object[]{
                                     WordUtils.capitalize(result[counter].name), 
                                     result[counter].artist, 
@@ -171,33 +171,34 @@ public class MyVaadinUI extends UI
                                     moodconvert, 
                                     result[counter].genre, 
                                     SongResultPages.formatTime(result[counter].length),
-                                    (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, counter);              
+                                    (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, 
+                                    counter);              
                                 System.out.println(counter + ": " + result[counter].name);
                             }                
                         }
                     }
                 }
-                System.out.println(generalq);
+
                 if(!generalq.equals("")){ //if not empty
                     int[] divertMood = {0,1,2,3,4,5,6,7};
-                    result = dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", ""); //get normal text results
+                    result = ArrayUtils.addAll(result,dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "")); //get normal text results
                     System.out.println(counter);
-                    for(int secondaryCounter = 0; secondaryCounter<result.length; secondaryCounter++){
-                        if(result[secondaryCounter]==null){
+                    for(counter = counter; counter<result.length; counter++){
+                        if(result[counter]==null){
                             break;
                         }else{
-                            String moodconvert = Integer.toString(result[secondaryCounter].mood);
+                            String moodconvert = Integer.toString(result[counter].mood);
                             searchResultPage.resultTable.addItem(new Object[]{
-                                WordUtils.capitalize(result[secondaryCounter].name), 
-                                result[secondaryCounter].artist, 
-                                result[secondaryCounter].album, 
+                                WordUtils.capitalize(result[counter].name), 
+                                result[counter].artist, 
+                                result[counter].album, 
                                 moodconvert, 
-                                result[secondaryCounter].genre, 
-                                SongResultPages.formatTime(result[secondaryCounter].length),
-                                (MyVaadinUI.result[secondaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[secondaryCounter].year)}, counter);               
-                            System.out.println(counter + ": " + result[secondaryCounter].name);
+                                result[counter].genre, 
+                                SongResultPages.formatTime(result[counter].length),
+                                (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, 
+                                counter);               
+                            System.out.println(counter + ": " + result[counter].name);
                         }
-                        counter++; //continue to add the other results to the table
                     }
                     tabs.setSelectedTab(SeaRPage);
                 }        

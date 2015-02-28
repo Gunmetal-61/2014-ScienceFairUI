@@ -65,6 +65,8 @@ public class SongResultPages {
     
     String playThisFile;
     Image albumImage;
+    
+    int likeState = 0;
     /**
      * Instantiate a song result page
      * 
@@ -155,6 +157,9 @@ public class SongResultPages {
         final Button toggleStopReset = new Button("Reset");
         final Button togglePlayPause = new Button("Play");
         
+        final Button likeButton = new Button("Like");
+        final Button dislikeButton = new Button("Dislike");
+        
         //mute listener
         toggleMute.addClickListener(new Button.ClickListener() {
             int muteBinaryIndicator = 0;
@@ -192,6 +197,23 @@ public class SongResultPages {
                     myWavesurfer.playOrPause(false); //pause
                     togglePlayPause.setCaption("Play");
                 }  
+            }
+        });
+        
+        
+        likeButton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                    DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,1);
+                    likeButton.setEnabled(false);
+                    dislikeButton.setEnabled(false);
+            }
+        });
+        
+        dislikeButton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,-1);
+                likeButton.setEnabled(false);
+                dislikeButton.setEnabled(false);
             }
         });
         
@@ -257,6 +279,8 @@ public class SongResultPages {
         mediaControlContainer.addComponent(volumeLevelSlider);
         mediaControlContainer.addComponent(speed);
         mediaControlContainer.addComponent(speedLevelSlider);
+        mediaControlContainer.addComponent(likeButton);
+        mediaControlContainer.addComponent(dislikeButton);
         mediaControlContainer.setComponentAlignment(volume, Alignment.MIDDLE_LEFT);
         mediaControlContainer.setComponentAlignment(speed, Alignment.MIDDLE_LEFT);
         mediaControlContainer.setSpacing(true);
