@@ -131,7 +131,6 @@ public class SongResultPages {
         
    
 
-
         ////////////////////////////////////////////////////////////////////////        
 //      Waveform Graph Image
         Label waveformtitle = new Label("Waveform Readings");
@@ -200,7 +199,7 @@ public class SongResultPages {
             }
         });
         
-        
+        //if the like button is pressed
         likeButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                     DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,1);
@@ -209,6 +208,7 @@ public class SongResultPages {
             }
         });
         
+        //if the dislike button is pressed
         dislikeButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,-1);

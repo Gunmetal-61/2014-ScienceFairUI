@@ -15,11 +15,9 @@ import static com.mycompany.soundsearch230.SearchResultPage.nameIdentifier;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.ui.Image;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -95,5 +93,4 @@ public class IDEExtract {
         }
         return img;
     }
-    
 }

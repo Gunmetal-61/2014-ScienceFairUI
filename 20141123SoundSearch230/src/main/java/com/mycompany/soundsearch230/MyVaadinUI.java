@@ -73,7 +73,7 @@ import org.apache.commons.lang3.text.WordUtils;
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
-    public static DBRow[] result = new DBRow[100];
+    public static DBRow[] result = null;
     static DatabaseAccess dba = new DatabaseAccess(); 
     public static Connection con = dba.startconnection("orcl");
     public static SearchResultPage searchResultPage;
@@ -144,25 +144,36 @@ public class MyVaadinUI extends UI
         //if search button is pressed
         commenceSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
-                searchResultPage.resultTable.removeAllItems();
-                
+                result = null; //clear the results
+                searchResultPage.resultTable.removeAllItems(); //clear the table
                 
                 String generalq = generalSearchBox.getValue();
                 int counter = 0; //id of row
                 MoodCentral translateMoodWords = new MoodCentral();
                 Map theNumberBase = translateMoodWords.MoodKey();
-                System.out.println(generalq);             
-                if (theNumberBase.containsKey(generalq)) { //if there was a mood word found
-                    int[] theConvertedKey = {(Integer) theNumberBase.get(generalq)};
-                    System.out.println("Integer:" + theConvertedKey[0]);
-                    
-                    if(!generalq.equals("")){ //if not empty
-                        result = dba.getSearchResults(con, "", theConvertedKey, 0, "", "", "", "", ""); //get mood results
-                        System.out.println("Length of mood results:" + result.length);
-                        for(counter = 0; counter<result.length; counter++){
-                            if(result[counter]==null){
-                                break;
-                            }else{
+                
+                System.out.println("Query: " + generalq);
+                String[] splitQuery = generalq.split("\\s+"); //split up the general query into separate words (that were separated by spaces)
+                
+                boolean moodSearch = false;
+                ArrayList<Integer> moods = new ArrayList<Integer>();
+                for(String word : splitQuery){ //iterate through all words
+                    if(theNumberBase.containsKey(word)){ //if the word is a mood word
+                        System.out.println("Mood word: " + word);
+                        if(!moods.contains((Integer) theNumberBase.get(word))){ //and if the mood isn't already in the list
+                            moods.add((Integer) theNumberBase.get(word)); //add it
+                        }
+                        moodSearch = true;
+                    }
+                }
+                int[] allMoods = DatabaseAccess.convertIntegers(moods); //convert from ArrayList to integer array
+                
+                if(!generalq.isEmpty()){ //if query isn't empty
+                    if(moodSearch) { //if there was a mood word found                    
+                        result = dba.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 0); //get mood results
+                        System.out.println("Number of mood results:" + result.length);
+                        if(result!=null){
+                            for(counter = 0; counter<result.length; counter++){
                                 String moodconvert = Integer.toString(result[counter].mood);
                                 searchResultPage.resultTable.addItem(new Object[]{
                                     WordUtils.capitalize(result[counter].name), 
@@ -174,19 +185,17 @@ public class MyVaadinUI extends UI
                                     (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, 
                                     counter);              
                                 System.out.println(counter + ": " + result[counter].name);
-                            }                
+                            }
                         }
                     }
-                }
 
-                if(!generalq.equals("")){ //if not empty
                     int[] divertMood = {0,1,2,3,4,5,6,7};
-                    result = ArrayUtils.addAll(result,dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "")); //get normal text results
-                    System.out.println(counter);
-                    for(counter = counter; counter<result.length; counter++){
-                        if(result[counter]==null){
-                            break;
-                        }else{
+                    //get normal text results and add it on to the mood results
+                    result = ArrayUtils.addAll(result,dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0));
+                    System.out.println("Counter: " + counter);
+                    System.out.println(result.length);
+                    if(result!=null){
+                        for(counter = counter; counter<result.length; counter++){ //continue counting from where the mood search left off
                             String moodconvert = Integer.toString(result[counter].mood);
                             searchResultPage.resultTable.addItem(new Object[]{
                                 WordUtils.capitalize(result[counter].name), 
@@ -195,13 +204,13 @@ public class MyVaadinUI extends UI
                                 moodconvert, 
                                 result[counter].genre, 
                                 SongResultPages.formatTime(result[counter].length),
-                                (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, 
+                                (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, //if the year is zero display nothing
                                 counter);               
                             System.out.println(counter + ": " + result[counter].name);
                         }
                     }
                     tabs.setSelectedTab(SeaRPage);
-                }        
+                }    
             }
         });
  
@@ -211,7 +220,6 @@ public class MyVaadinUI extends UI
 //      TAB 3: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(tabs, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
-
 
         IDEWrite Page = new IDEWrite();
         //File[] instantFiles = Page.listFiles();
@@ -247,6 +255,7 @@ public class MyVaadinUI extends UI
             }
         });
         
+        //tab change listeners
         tabs.addFocusListener(new FocusListener() {
             @Override
             public void focus(final FocusEvent event) {

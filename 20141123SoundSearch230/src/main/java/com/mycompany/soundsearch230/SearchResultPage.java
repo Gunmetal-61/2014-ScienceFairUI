@@ -177,10 +177,9 @@ public class SearchResultPage {
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","");
+                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","", 0);
                 
-                for(int i = 0; i<100; i++){
-//                    if(generalq.equals("prayer")){
+                for(int i = 0; i<MyVaadinUI.result.length; i++){
                     if(MyVaadinUI.result[i]==null){
                         //songTextSearchBox.setValue("");
                         ASPsongText = "";
@@ -193,7 +192,8 @@ public class SearchResultPage {
                             moodconverter, 
                             MyVaadinUI.result[i].genre,
                             SongResultPages.formatTime(MyVaadinUI.result[i].length),
-                            (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)}, i);
+                            (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)},
+                            i);
                     }
                 }
             }

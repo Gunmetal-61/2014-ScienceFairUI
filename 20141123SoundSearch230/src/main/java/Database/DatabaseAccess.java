@@ -21,6 +21,12 @@ import java.util.logging.Logger;
  * @author Jeffrey
  */
 public class DatabaseAccess {
+    /**
+     * Gets a connection to the database
+     * 
+     * @param database Name of the database
+     * @return 
+     */
      public static Connection startconnection(String database){ //connection code is from http://www.mkyong.com/jdbc/connect-to-oracle-db-via-jdbc-driver-java/
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -49,9 +55,9 @@ public class DatabaseAccess {
 	}
         return connection;
     }
-    ////////////////////////////////////////////////////////////////////////////
-//  RETRIEVE SELECTED SONG'S SUBSONG MOOD VALUES TO COLOR IT'S WAVEFORM GRAPH APPRORPRIATELY
+
     /**
+     * Retrieve selected song's subsong mood values to color it's waveform graph appropriately
      * @deprecated 
      * 
      * @param con
@@ -99,13 +105,12 @@ public class DatabaseAccess {
      * @param album Song album
      * @param genre Genre of song
      * @param year Song release year
+     * @param moodLevel For specifying full song or subsong mood search (0 is full song, 1 is subsong)
      * @return
      */
-    public static DBRow[] getSearchResults(Connection con, String generalq, int[] mood, int length, String name, String artist, String album, String genre, String year){
-    //  Declare Query Strings  
-        DBRow[] output = new DBRow[100];//creates an array of 25 rows in the song result table
-        
-
+    public static DBRow[] getSearchResults(Connection con, String generalq, int[] mood, int length, String name, String artist, String album, String genre, String year, int moodLevel){
+        DBRow[] output = null;
+        //  Declare Query Strings  
         try {
             String generalQuery = "";//string to create sql query over all types of data
             String namesQuery = "";//string from name of song query field sent to sql command line
@@ -118,7 +123,7 @@ public class DatabaseAccess {
             String lyricsQuery = "";
             
             generalq = generalq.toLowerCase();
-            System.out.println("General Query:" + generalq);
+            System.out.println("General Query: " + generalq);
             name = name.toLowerCase();
             artist = artist.toLowerCase();
             album = album.toLowerCase();
@@ -220,6 +225,14 @@ public class DatabaseAccess {
 //            will be added to a single statement assembled here to address the
 //            database for search.
             
+            String countQuery = "SELECT COUNT(*) AS \"ResultLength\" FROM SONGTABLE "
+                    + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
+                    + "LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
+                    + "LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
+                    + "LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " 
+                    + generalQuery + namesQuery + artistsQuery + albumsQuery 
+                    + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery;
+            
             String query =
                     "SELECT DISTINCT SONGTABLE.RANKING, SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
                     + "SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, "
@@ -238,13 +251,23 @@ public class DatabaseAccess {
             System.out.println(query);
             try {
                 stmt = con.createStatement();
-                long startTime = System.nanoTime();  
-                ResultSet rs = stmt.executeQuery(query);
-                long estimatedTime = System.nanoTime() - startTime;
+                long startTime = System.nanoTime();
+                ResultSet rs = stmt.executeQuery(countQuery);//find how many results there will be
+                int resultSize = 0;
+                if(rs.next()){
+                    resultSize = rs.getInt("ResultLength");
+                }
+                if(resultSize != 0){ //if there will be results
+                    rs = stmt.executeQuery(query); //run the actual query
+                } else {
+                    return output;
+                }
+                long estimatedTime = System.nanoTime() - startTime; //see how long the process took
                 System.out.println(estimatedTime);
-                int i = 0;
-                while(rs.next()&&(i<100)) {
-                 //   System.out.println(i+"Hello");
+                
+                output = new DBRow[resultSize];
+                int i = 0;  
+                while(rs.next()&&(i<resultSize)) {
                     output[i] = new DBRow();
                     output[i].name = rs.getString("TITLE");
                     output[i].artist = rs.getString("ARTISTNAME");
@@ -261,15 +284,14 @@ public class DatabaseAccess {
                 if (stmt != null) { stmt.close(); } //close connection
             }
         }catch(Exception e){
-                
+            e.printStackTrace();
         }
         
         return output;
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-//  RETRIEVE LYRICS OF SELECTED SONG TO BE DISPLAYED IN GUI BOX        
     /**
+     * Retrieve lyrics of selected song to be displayed in GUI box
      * 
      * @param con
      * @param title
@@ -295,10 +317,9 @@ public class DatabaseAccess {
         }
         return lyrics;
     }
-    
-    ////////////////////////////////////////////////////////////////////////////
-//  RECALLS FILENAME OF SELECTED SONG FROM DATABASE TO BRING UP FOR PLAYING IN GUI    
+      
     /**
+     * Recalls filename of selected song from database to bring up for playing in GUI
      * 
      * @param con
      * @param newdir if null, then we want to get the directory stored in the database; else fill database with new directory
@@ -357,10 +378,10 @@ public class DatabaseAccess {
         }
         return "\\home\\mitchell\\Music\\Album Art\\"+dir;
     }
-    ////////////////////////////////////////////////////////////////////////////
-//  SETUP CODE USED TO PLACE AN ANALYZED SONG'S SUBSONG MOOD VALUES INTO THE ORACLE DATABASE TABLE 
-//  NOT ACTIVE IN FINAL GUI PROGRAM  
+
     /**
+     * SETUP CODE USED TO PLACE AN ANALYZED SONG'S SUBSONG MOOD VALUES INTO THE ORACLE DATABASE TABLE 
+     * NOT ACTIVE IN FINAL GUI PROGRAM  
      * @deprecated
      * 
      * @param con
@@ -398,6 +419,7 @@ public class DatabaseAccess {
     }
     
     /**
+     * Gets the subsong details of a song
      * 
      * @param con Database connection
      * @param title Title of the song
@@ -435,12 +457,13 @@ public class DatabaseAccess {
     }
     
     /**
-     * Updates the rank of a song (or gets the rank of a song)
+     * Updates the rank of a song (and gets the rank of a song)
      * 
      * @param con
      * @param title
      * @param artistname
-     * @param rankChange 
+     * @param newLike
+     * @return  Song rank
      */
     public static float updateRank(Connection con, String title, String artistname, int newLike){
         title = title.replaceAll("'", "''");

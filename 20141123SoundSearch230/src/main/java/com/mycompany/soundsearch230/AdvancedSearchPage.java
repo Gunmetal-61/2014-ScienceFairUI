@@ -146,7 +146,7 @@ public class AdvancedSearchPage {
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","");
+                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","",0);
                 
                 for(int i = 0; i<100; i++){
 //                    if(generalq.equals("prayer")){
