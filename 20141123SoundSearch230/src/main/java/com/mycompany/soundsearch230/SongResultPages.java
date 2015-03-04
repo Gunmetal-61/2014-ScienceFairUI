@@ -123,7 +123,7 @@ public class SongResultPages {
         //Year Song was Released
         Label songyear = new Label(String.valueOf(year));
         //Length of Song
-        Label songlength = new Label(formatTime(length));
+        Label songlength = new Label(Utilities.formatTime(length));
         //Song Genre
         Label songgenre = new Label(genre);    
         //Link to Lyrics
@@ -202,7 +202,7 @@ public class SongResultPages {
         //if the like button is pressed
         likeButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
-                    DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,1);
+                    DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,1); 
                     likeButton.setEnabled(false);
                     dislikeButton.setEnabled(false);
             }
@@ -287,17 +287,5 @@ public class SongResultPages {
         detailedInfoContainer.addComponent(lyricsDisplayed);
         
         return grid;
-    }
-    
-
-    
-    /**
-     * Convert seconds into M:SS
-     * @param input Seconds
-     * @return 
-     */
-    public static String formatTime(int input){
-        String seconds = (input%60>9)?String.valueOf(input%60):"0"+String.valueOf(input%60);
-        return input/60 + ":" + seconds;
     }
 }

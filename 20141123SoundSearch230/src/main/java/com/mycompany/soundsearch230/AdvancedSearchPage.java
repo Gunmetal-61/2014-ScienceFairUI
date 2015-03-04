@@ -6,6 +6,7 @@
 
 package com.mycompany.soundsearch230;
 
+import Database.DatabaseAccess;
 import static com.vaadin.server.Sizeable.UNITS_PIXELS;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -40,18 +41,7 @@ public class AdvancedSearchPage {
         other = primary;
         alternate = SeaRPage;
     }
-    
-    
-    public static int[] ConvertToIntegers(List<Integer> integers){
-        int[] ret = new int[integers.size()];
-        Iterator<Integer> iterator = integers.iterator();
-        for (int i = 0; i < ret.length; i++)
-        {
-            ret[i] = iterator.next().intValue();
-        }
-        return ret;
-    }
-    
+        
     public AbsoluteLayout drawAdvancedSPage(){
         AbsoluteLayout grid = new AbsoluteLayout();
         grid.setHeight(1200, UNITS_PIXELS);
@@ -138,7 +128,7 @@ public class AdvancedSearchPage {
                     moodsSelected.add(7);
                 }
 
-                ASPmood = ConvertToIntegers(moodsSelected);
+                ASPmood = Utilities.convertIntegers(moodsSelected);
                 System.out.println(ASPmood);
                 System.out.println("1:" + selectMood1);
                // ASPsubMood = artistTextSearchBox.getValue();
@@ -146,7 +136,7 @@ public class AdvancedSearchPage {
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","",0);
+                MyVaadinUI.result = DatabaseAccess.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","",0);
                 
                 for(int i = 0; i<100; i++){
 //                    if(generalq.equals("prayer")){
@@ -158,7 +148,7 @@ public class AdvancedSearchPage {
                         MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
                             MyVaadinUI.result[i].artist, 
                             MyVaadinUI.result[i].album, 
-                            SongResultPages.formatTime(MyVaadinUI.result[i].length), 
+                            Utilities.formatTime(MyVaadinUI.result[i].length), 
                             MyVaadinUI.result[i].genre, 
                             moodconverter}, i);
                     }    

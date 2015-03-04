@@ -6,10 +6,6 @@ package com.mycompany.soundsearch230;
 
 import Database.DBRow;
 import Database.DatabaseAccess;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPartistText;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPmood;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPseconds;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsongText;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbsoluteLayout;
@@ -57,17 +53,6 @@ public class SearchResultPage {
     public SearchResultPage(TabSheet primary) {
         other = primary;
     }
-    
-    public static int[] convertIntegers(List<Integer> integers){
-        int[] ret = new int[integers.size()];
-        Iterator<Integer> iterator = integers.iterator();
-        for (int i = 0; i < ret.length; i++)
-        {
-            ret[i] = iterator.next().intValue();
-        }
-        return ret;
-    }
-    
     
     public AbsoluteLayout drawSearchRPage(){
 ////////////////////////////////////////////////////////////////////////////////
@@ -171,13 +156,13 @@ public class SearchResultPage {
                     moodsSelected.add(7);
                 }
 
-                ASPmood = convertIntegers(moodsSelected);
+                ASPmood = Utilities.convertIntegers(moodsSelected);
                // ASPsubMood = artistTextSearchBox.getValue();
                 System.out.println(ASPsongText);
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","", 0);
+                MyVaadinUI.result = DatabaseAccess.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","", 0);
                 
                 for(int i = 0; i<MyVaadinUI.result.length; i++){
                     if(MyVaadinUI.result[i]==null){
@@ -191,7 +176,7 @@ public class SearchResultPage {
                             MyVaadinUI.result[i].album, 
                             moodconverter, 
                             MyVaadinUI.result[i].genre,
-                            SongResultPages.formatTime(MyVaadinUI.result[i].length),
+                            Utilities.formatTime(MyVaadinUI.result[i].length),
                             (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)},
                             i);
                     }

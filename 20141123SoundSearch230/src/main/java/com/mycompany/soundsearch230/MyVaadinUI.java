@@ -74,8 +74,7 @@ import org.apache.commons.lang3.text.WordUtils;
 public class MyVaadinUI extends UI
 {
     public static DBRow[] result = null;
-    static DatabaseAccess dba = new DatabaseAccess(); 
-    public static Connection con = dba.startconnection("orcl");
+    public static Connection con = DatabaseAccess.startconnection("orcl");
     public static SearchResultPage searchResultPage;
          
     @WebServlet(value = "/*", asyncSupported = true)
@@ -166,11 +165,11 @@ public class MyVaadinUI extends UI
                         moodSearch = true;
                     }
                 }
-                int[] allMoods = DatabaseAccess.convertIntegers(moods); //convert from ArrayList to integer array
+                int[] allMoods = Utilities.convertIntegers(moods); //convert from ArrayList to integer array
                 
                 if(!generalq.isEmpty()){ //if query isn't empty
                     if(moodSearch) { //if there was a mood word found                    
-                        result = dba.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 0); //get mood results
+                        result = DatabaseAccess.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 0); //get mood results
                         System.out.println("Number of mood results:" + result.length);
                         if(result!=null){
                             for(counter = 0; counter<result.length; counter++){
@@ -181,7 +180,7 @@ public class MyVaadinUI extends UI
                                     result[counter].album, 
                                     moodconvert, 
                                     result[counter].genre, 
-                                    SongResultPages.formatTime(result[counter].length),
+                                    Utilities.formatTime(result[counter].length),
                                     (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, 
                                     counter);              
                                 System.out.println(counter + ": " + result[counter].name);
@@ -191,7 +190,7 @@ public class MyVaadinUI extends UI
 
                     int[] divertMood = {0,1,2,3,4,5,6,7};
                     //get normal text results and add it on to the mood results
-                    result = ArrayUtils.addAll(result,dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0));
+                    result = ArrayUtils.addAll(result,DatabaseAccess.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0));
                     System.out.println("Counter: " + counter);
                     System.out.println(result.length);
                     if(result!=null){
@@ -203,7 +202,7 @@ public class MyVaadinUI extends UI
                                 result[counter].album, 
                                 moodconvert, 
                                 result[counter].genre, 
-                                SongResultPages.formatTime(result[counter].length),
+                                Utilities.formatTime(result[counter].length),
                                 (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, //if the year is zero display nothing
                                 counter);               
                             System.out.println(counter + ": " + result[counter].name);
