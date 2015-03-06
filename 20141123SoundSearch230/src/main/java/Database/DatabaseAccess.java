@@ -220,6 +220,7 @@ public class DatabaseAccess {
 //            will be added to a single statement assembled here to address the
 //            database for search.
             
+            //counts the number results that will be returned
             String countQuery = "SELECT COUNT(*) AS \"ResultLength\" FROM SONGTABLE "
                     + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
                     + "LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
@@ -228,6 +229,7 @@ public class DatabaseAccess {
                     + generalQuery + namesQuery + artistsQuery + albumsQuery 
                     + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery;
             
+            //actual query
             String query =
                     "SELECT DISTINCT SONGTABLE.RANKING, SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
                     + "SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, "
@@ -256,6 +258,7 @@ public class DatabaseAccess {
                 }
             }
             
+            //counts number of results that will be returned by a subsong query
             String subsongCountQuery = 
                     "SELECT COUNT(*) AS \"ResultLength\" FROM SONGTABLE " 
                     + " LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID " 
@@ -272,14 +275,13 @@ public class DatabaseAccess {
                     + "     for MOOD in (0,1,2,3,4,5,6,7)" 
                     + "   ) pvt" 
                     + "   WHERE " + subMoodsWhere 
-                    + "   ORDER BY RELEVANTSECTIONS DESC" 
                     + " ) output " 
-                    + " ON SONGTABLE.TITLE = output.TITLE OR SONGTABLE.ARTISTID = output.ARTISTID" 
-                    + " WHERE RELEVANTSECTIONS >= 1" 
-                    + " ORDER BY RELEVANTSECTIONS DESC, RANKING "
+                    + " ON SONGTABLE.TITLE = output.TITLE AND SONGTABLE.ARTISTID = output.ARTISTID" 
+                    + " WHERE RELEVANTSECTIONS >= 1 " 
                     + generalQuery + namesQuery + artistsQuery + albumsQuery 
                     + lengthsQuery + yearsQuery + genresQuery + lyricsQuery;
-                    
+            
+            //actual subsong query
             String subsongQuery = 
                     "SELECT DISTINCT OUTPUT.RELEVANTSECTIONS, SONGTABLE.RANKING, SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
                     + "SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, "
@@ -288,21 +290,21 @@ public class DatabaseAccess {
                     + " LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID " 
                     + " LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID " 
                     + " LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " 
-                    + " LEFT JOIN (\n" 
+                    + " LEFT JOIN (" //This is the table that retrieves the songs with the correct subsong sections
                     + " SELECT TITLE, ARTISTID, \"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", (" + subMoodsRelevant + ") \"RELEVANTSECTIONS\" from (" 
                     + " select TITLE, ARTISTID, MOOD" 
                     + " from SUBSONGTABLE" 
                     + "   ) slt" 
-                    + "   pivot (" 
-                    + "     COUNT(MOOD)" 
-                    + "     for MOOD in (0,1,2,3,4,5,6,7)" 
+                    + "   pivot (" //pivot table on moods
+                    + "     COUNT(MOOD)" //count how many times a certain mood appears
+                    + "     for MOOD in (0,1,2,3,4,5,6,7)" //these are moods values to count over (list how many of each type of mood there are in a song)
                     + "   ) pvt" 
                     + "   WHERE " + subMoodsWhere 
                     + "   ORDER BY RELEVANTSECTIONS DESC" 
                     + " ) output " 
-                    + " ON SONGTABLE.TITLE = output.TITLE OR SONGTABLE.ARTISTID = output.ARTISTID" 
-                    + " WHERE RELEVANTSECTIONS >= 1" 
-                    + " ORDER BY RELEVANTSECTIONS DESC, RANKING "
+                    + " ON SONGTABLE.TITLE = output.TITLE AND SONGTABLE.ARTISTID = output.ARTISTID" 
+                    + " WHERE RELEVANTSECTIONS >= 1" //only get rows where there are relevant sections
+                    + " ORDER BY RELEVANTSECTIONS DESC, RANKING DESC " //first order by number of relevant sections, and then by ranking
                     + generalQuery + namesQuery + artistsQuery + albumsQuery 
                     + lengthsQuery + yearsQuery + genresQuery + lyricsQuery;
             

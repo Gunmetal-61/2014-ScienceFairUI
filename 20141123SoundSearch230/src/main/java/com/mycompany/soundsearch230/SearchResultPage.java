@@ -31,14 +31,14 @@ public class SearchResultPage {
     
     public Table resultTable = new Table("Search Results");
     Connection con = DatabaseAccess.startconnection("orcl"); 
-    int[] moodarray;
     public static String nameIdentifier = "";
     public static String artistIdentifier = "";
     public static String genre = "";
     public static String album = "";
     public static int length = 0;
     public static int year = 0;
-
+    public static int mood = -1;
+    
     Label stConvert;
     Label saConvert;
     AbsoluteLayout SRPingrid;
@@ -155,8 +155,19 @@ public class SearchResultPage {
                 if(selectMood7.getValue()){
                     moodsSelected.add(7);
                 }
-
-                ASPmood = Utilities.convertIntegers(moodsSelected);
+                
+                if(moodsSelected.isEmpty()){
+                    ASPmood[0] = 0;
+                    ASPmood[1] = 1;
+                    ASPmood[2] = 2;
+                    ASPmood[3] = 3;
+                    ASPmood[4] = 4;
+                    ASPmood[5] = 5;
+                    ASPmood[6] = 6;
+                    ASPmood[7] = 7;
+                } else {
+                    ASPmood = Utilities.convertIntegers(moodsSelected);
+                }
                // ASPsubMood = artistTextSearchBox.getValue();
                 System.out.println(ASPsongText);
                 
@@ -169,12 +180,11 @@ public class SearchResultPage {
                         //songTextSearchBox.setValue("");
                         ASPsongText = "";
                     }else{
-                        String moodconverter = Integer.toString(MyVaadinUI.result[i].mood);
-
-                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
+                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{
+                            WordUtils.capitalize(MyVaadinUI.result[i].name), 
                             MyVaadinUI.result[i].artist, 
                             MyVaadinUI.result[i].album, 
-                            moodconverter, 
+                            Integer.toString(MyVaadinUI.result[i].mood), 
                             MyVaadinUI.result[i].genre,
                             Utilities.formatTime(MyVaadinUI.result[i].length),
                             (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)},
@@ -186,16 +196,7 @@ public class SearchResultPage {
         
         
 ////////////////////////////////////////////////////////////////////////////////
-//      RESULT TABLE
-        moodarray = new int[7];
-        moodarray[0] = 1;
-        moodarray[1] = 2;
-        moodarray[2] = 3;
-        moodarray[3] = 4;
-        moodarray[4] = 5;
-        moodarray[5] = 6;
-        moodarray[6] = 7;
-        
+//      RESULT TABLE        
         //expand table
         resultTable.setSizeFull();
         
@@ -231,6 +232,7 @@ public class SearchResultPage {
                 year = MyVaadinUI.result[selectedRow].year;
                 album = MyVaadinUI.result[selectedRow].album;
                 genre = MyVaadinUI.result[selectedRow].genre;
+                mood = MyVaadinUI.result[selectedRow].mood;
 //                stConvert = new Label(nameIdentifier);
 //                saConvert = new Label(artistIdentifier);
 //                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
@@ -238,7 +240,7 @@ public class SearchResultPage {
                 
 //                other.getTab(SonRPage);
 //                other.removeTab(SonRPage);
-                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year);
+                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year,mood);
                 AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
                 other.addTab(SonRPage);
                 other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name

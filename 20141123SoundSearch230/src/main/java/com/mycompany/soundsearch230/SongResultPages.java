@@ -62,6 +62,7 @@ public class SongResultPages {
     String genre;
     int length;
     int year;
+    int mood;
     
     String playThisFile;
     Image albumImage;
@@ -76,14 +77,16 @@ public class SongResultPages {
      * @param genre
      * @param length
      * @param year 
+     * @param mood 
      */
-    public SongResultPages(String title, String artist, String album, String genre, int length, int year){
+    public SongResultPages(String title, String artist, String album, String genre, int length, int year, int mood){
         this.title =  title;
         this.artist = artist;
         this.album = album;
         this.genre = genre;
         this.length = length;
         this.year = year;
+        this.mood = mood;
         
         //Get the album art
         IDEExtract ideExtract = new IDEExtract();
@@ -202,9 +205,10 @@ public class SongResultPages {
         //if the like button is pressed
         likeButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
-                    DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,1); 
-                    likeButton.setEnabled(false);
-                    dislikeButton.setEnabled(false);
+                DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,1);
+                MyVaadinUI.likedResultPage.addEntry(title, artist, album, genre, length, year, mood);
+                likeButton.setEnabled(false);
+                dislikeButton.setEnabled(false);
             }
         });
         

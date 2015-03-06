@@ -43,6 +43,7 @@ import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
@@ -76,6 +77,7 @@ public class MyVaadinUI extends UI
     public static DBRow[] result = null;
     public static Connection con = DatabaseAccess.startconnection("orcl");
     public static SearchResultPage searchResultPage;
+    public static LikedResultPage likedResultPage;
          
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, widgetset = "com.mycompany.soundsearch230.AppWidgetSet")
@@ -97,21 +99,23 @@ public class MyVaadinUI extends UI
         generalSearchBox.setWidth(200, Unit.PIXELS);
              
         final Button commenceSearchButton = new Button("Search");
+        final CheckBox subSong = new CheckBox("Subsong");
         Label siteLogo = new Label("Aura");
+        
         toolbar.setMargin(new MarginInfo(false, true, false, true));
+        toolbar.setSpacing(true);
         toolbar.addComponent(siteLogo);
         toolbar.setComponentAlignment(siteLogo, Alignment.MIDDLE_LEFT);
         toolbar.addComponent(generalSearchBox);
         toolbar.addComponent(commenceSearchButton);
-        
+        toolbar.addComponent(subSong);
+        toolbar.setComponentAlignment(subSong, Alignment.MIDDLE_LEFT);
 
   
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 1: Home Page
         HomePage homePage = new HomePage();
-        AbsoluteLayout Homage = homePage.drawHomePage();
-        
-        
+        AbsoluteLayout HomePage = homePage.drawHomePage();
         
         
         ////////////////////////////////////////////////////////////////////////
@@ -120,7 +124,10 @@ public class MyVaadinUI extends UI
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
         
         ////////////////////////////////////////////////////////////////////////
-//             
+//      TAB 3: Liked Results Page
+        likedResultPage = new LikedResultPage(tabs);
+        final AbsoluteLayout LikePage = likedResultPage.drawLikedPage();
+        
         //enter key handlers from: https://vaadin.com/forum/#!/thread/77601/8315545
         //if enter button is pressed
         generalSearchBox.addFocusListener(new FocusListener() {
@@ -138,8 +145,7 @@ public class MyVaadinUI extends UI
             }
         });
         
-        
-        
+ 
         //if search button is pressed
         commenceSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
@@ -168,17 +174,20 @@ public class MyVaadinUI extends UI
                 int[] allMoods = Utilities.convertIntegers(moods); //convert from ArrayList to integer array
                 
                 if(!generalq.isEmpty()){ //if query isn't empty
-                    if(moodSearch) { //if there was a mood word found                    
-                        result = DatabaseAccess.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 0); //get mood results
+                    if(moodSearch) { //if there was a mood word found
+                        if(subSong.getValue()){
+                            result = DatabaseAccess.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 1); //get subsong mood results
+                        } else {
+                            result = DatabaseAccess.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 0); //get mood results
+                        }  
                         System.out.println("Number of mood results:" + result.length);
                         if(result!=null){
                             for(counter = 0; counter<result.length; counter++){
-                                String moodconvert = Integer.toString(result[counter].mood);
                                 searchResultPage.resultTable.addItem(new Object[]{
                                     WordUtils.capitalize(result[counter].name), 
                                     result[counter].artist, 
                                     result[counter].album, 
-                                    moodconvert, 
+                                    Integer.toString(result[counter].mood), 
                                     result[counter].genre, 
                                     Utilities.formatTime(result[counter].length),
                                     (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, 
@@ -195,12 +204,11 @@ public class MyVaadinUI extends UI
                     System.out.println(result.length);
                     if(result!=null){
                         for(counter = counter; counter<result.length; counter++){ //continue counting from where the mood search left off
-                            String moodconvert = Integer.toString(result[counter].mood);
                             searchResultPage.resultTable.addItem(new Object[]{
                                 WordUtils.capitalize(result[counter].name), 
                                 result[counter].artist, 
                                 result[counter].album, 
-                                moodconvert, 
+                                Integer.toString(result[counter].mood), 
                                 result[counter].genre, 
                                 Utilities.formatTime(result[counter].length),
                                 (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, //if the year is zero display nothing
@@ -242,9 +250,11 @@ public class MyVaadinUI extends UI
 ////////////////////////////////////////////////////////////////////////////////
 
 
-        tabs.addTab(Homage, "Home");
+        tabs.addTab(HomePage, "Home");
         //tabs.addTab(AdvSPage, "Advanced Search");   
         tabs.addTab(SeaRPage, "Search Results"); 
+        tabs.addTab(LikePage, "Liked Results");
+        
         
         tabs.setCloseHandler(new CloseHandler(){
             @Override
