@@ -69,8 +69,8 @@ public class IDEExtract {
         //RandomAccessFile file = null;
         Image img = null;
         try {
-            mp3file = new Mp3File("G:\\dev\\apache-tomcat-8.0.17\\webapps\\ROOT\\Songs\\mp3\\" + playThisFile);
-//            mp3file = new Mp3File("/usr/local/apache-tomcat-7.0.41/webapps/ROOT/Songs/mp3/" + playThisFile);
+//            mp3file = new Mp3File("G:\\dev\\apache-tomcat-8.0.17\\webapps\\ROOT\\Songs\\mp3\\" + playThisFile);
+            mp3file = new Mp3File("/usr/local/apache-tomcat-7.0.41/webapps/ROOT/Songs/mp3/" + playThisFile);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("MP3 couldn't be loaded");

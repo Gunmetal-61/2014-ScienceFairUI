@@ -7,14 +7,16 @@
 package com.mycompany.soundsearch230;
 
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  *
  * @author Mitchell
  */
 public class HomePage {
-    public static AbsoluteLayout drawHomePage(){
-        AbsoluteLayout grid = new AbsoluteLayout();
+    public static VerticalLayout drawHomePage(){
+        VerticalLayout grid = new VerticalLayout();
+
         return grid;
     }
 }

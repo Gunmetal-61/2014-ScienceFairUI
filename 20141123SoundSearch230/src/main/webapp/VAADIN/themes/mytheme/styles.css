@@ -1457,6 +1457,24 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: top;
 }
 
+@font-face {
+	font-family: MicrogrammaBold;
+	font-weight: normal;
+	font-style: normal;
+	src: url(../valo/util/bourbon/css3/../../../../mytheme/fonts/25963.eot);
+	src: url(../valo/util/bourbon/css3/../../../../mytheme/fonts/25963.eot?#iefix) format("embedded-opentype"), url(../valo/util/bourbon/css3/../../../../mytheme/fonts/25963.woff) format("woff"), url(../valo/util/bourbon/css3/../../../../mytheme/fonts/25963.ttf) format("truetype"), url(../valo/util/bourbon/css3/../../../../mytheme/fonts/25963.svg#MicrogrammaBold) format("svg");
+}
+
+.MicrogrammaBold {
+	font-family: MicrogrammaBold;
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	display: inline-block;
+	text-align: center;
+}
+
 .mytheme.v-app, .mytheme.v-app-loading {
 	font: 300 16px/1.55 "Open Sans", sans-serif;
 	color: #464646;
@@ -12086,4 +12104,97 @@ div.v-layout.v-horizontal.v-widget {
 	display: inline-block;
 	width: 19px;
 	overflow: hidden;
+}
+
+.mytheme .homeimage {
+	background: url("img/MusicListening.jpg");
+}
+
+.mytheme .overlordbackground {
+	background-color: #2E4986;
+}
+
+.mytheme .overlaybackground {
+	background-color: #22313F;
+}
+
+.mytheme .whitebackground {
+	background-color: white;
+}
+
+.mytheme .v-label-headlabel {
+	font-family: "MicrogrammaBold";
+	font-size: 50px;
+	color: white;
+}
+
+.mytheme .v-label-coloredwhitefontlabel {
+	font-family: "Open Sans", monospace;
+	font-weight: bold;
+	color: white;
+}
+
+.mytheme .v-caption-coloredwhitefontcaption {
+	font-family: "Open Sans", monospace;
+	font-weight: bold;
+	color: white;
+}
+
+.mytheme .coloredwhitefontsmall .v-checkbox .v-caption {
+	font-family: "Open Sans", monospace;
+	font-weight: bold;
+	font-size: 10pt;
+	color: white;
+}
+
+.mytheme .tabtitle .v-tabsheet-tabitem .v-captiontext {
+	font-weight: bold;
+	color: white;
+}
+
+.mytheme .borderbackground {
+	background-color: #001A4C;
+}
+
+.mytheme .standardmarginleft .v-margin-left {
+	padding-left: 20px;
+}
+
+.mytheme .standardmarginright .v-margin-right {
+	padding-right: 20px;
+}
+
+.mytheme .standardmargintop .v-margin-top {
+	padding-top: 20px;
+}
+
+.mytheme .standardmarginbottom .v-margin-bottom {
+	padding-bottom: 20px;
+}
+
+.mytheme .v-table-header {
+	background: #FDE3A7;
+	color: black;
+}
+
+.mytheme .v-table-row {
+	background: #E4F1FE;
+	color: black;
+}
+
+.mytheme .v-table-row-odd {
+	background: white;
+	color: black;
+}
+
+.mytheme .v-table .v-selected[class*="-row"] {
+	background: black;
+	color: white;
+	outline: 0px solid white;
+	outline-offset: 0px;
+}
+
+.mytheme .v-table .v-selected[class*="-row"] .v-table-cell-content {
+	padding: 0;
+	border-color: white;
 }

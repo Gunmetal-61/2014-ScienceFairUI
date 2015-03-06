@@ -10,8 +10,8 @@ Wavesurfer_Wavesurfer =
 //	    var mycomponent = new mylibrary.MyComponent(this.getElement());
 	    wavesurfer.init({
                 container: this.getElement(),
-                waveColor: 'LightSkyBlue',
-                progressColor: 'RoyalBlue',
+                waveColor: 'black',
+                progressColor: 'black',
                 scrollParent: false,
                 hideScrollbar: true
             });

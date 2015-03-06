@@ -85,31 +85,50 @@ public class MyVaadinUI extends UI
     @Override
     protected void init(VaadinRequest request) {
         VerticalLayout overlord = new VerticalLayout();
+        overlord.setSizeFull();
+        overlord.setPrimaryStyleName("overlordbackground");
+        VerticalLayout figureHead = new VerticalLayout();
+        overlord.addComponent(figureHead);
         final HorizontalLayout toolbar = new HorizontalLayout();
+        toolbar.setHeight(100, Unit.PIXELS);
+        toolbar.setSizeFull();
+        HorizontalLayout toolbarSearchCluster = new HorizontalLayout();
         final TabSheet tabs = new TabSheet();
         getPage().setTitle("Aura");
+//        overlord.setStyleName("homeimage");
+
         setContent(overlord);
-        overlord.addComponent(toolbar);
+        figureHead.addComponent(toolbar);
 
     
         final TextField generalSearchBox = new TextField();
         generalSearchBox.setDescription("Search for a Song");
-        generalSearchBox.setWidth(200, Unit.PIXELS);
+        generalSearchBox.setWidth(400, Unit.PIXELS);
              
         final Button commenceSearchButton = new Button("Search");
-        Label siteLogo = new Label("Aura");
-        toolbar.setMargin(new MarginInfo(false, true, false, true));
+        Label siteLogo = new Label("AURA");
+        Label placeHolder = new Label("");
+        siteLogo.setSizeUndefined();
+        siteLogo.setWidth(300, Unit.PIXELS);
+        siteLogo.setStyleName("headlabel");
+//        toolbar.setMargin(new MarginInfo(false, true, false, true));
         toolbar.addComponent(siteLogo);
         toolbar.setComponentAlignment(siteLogo, Alignment.MIDDLE_LEFT);
-        toolbar.addComponent(generalSearchBox);
-        toolbar.addComponent(commenceSearchButton);
+        toolbarSearchCluster.addComponent(generalSearchBox);
+        toolbarSearchCluster.addComponent(commenceSearchButton);
+        toolbar.addComponent(toolbarSearchCluster);
+        toolbar.setComponentAlignment(toolbarSearchCluster, Alignment.MIDDLE_CENTER);
+        toolbar.addComponent(placeHolder);
+        toolbar.setComponentAlignment(placeHolder, Alignment.MIDDLE_RIGHT);
+        
+      
         
 
   
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 1: Home Page
         HomePage homePage = new HomePage();
-        AbsoluteLayout Homage = homePage.drawHomePage();
+        VerticalLayout Homage = homePage.drawHomePage();
         
         
         
@@ -236,8 +255,8 @@ public class MyVaadinUI extends UI
 
         tabs.addTab(Homage, "Home");
         //tabs.addTab(AdvSPage, "Advanced Search");   
-        tabs.addTab(SeaRPage, "Search Results"); 
-        
+        tabs.addTab(SeaRPage, "Search Results");
+        tabs.setStyleName("tabtitle");
         tabs.setCloseHandler(new CloseHandler(){
             @Override
             public void onTabClose(TabSheet tabsheet, Component tabContent){
@@ -259,6 +278,6 @@ public class MyVaadinUI extends UI
             }
         });
         
-        overlord.addComponent(tabs);
+        figureHead.addComponent(tabs);
    }
 }
