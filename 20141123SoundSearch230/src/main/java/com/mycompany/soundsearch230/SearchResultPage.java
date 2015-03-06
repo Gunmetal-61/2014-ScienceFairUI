@@ -13,6 +13,7 @@ import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.text.WordUtils;
 public class SearchResultPage {
     
     public Table resultTable = new Table("Search Results");
+    
     Connection con = DatabaseAccess.startconnection("orcl"); 
     public static String nameIdentifier = "";
     public static String artistIdentifier = "";
@@ -70,7 +72,10 @@ public class SearchResultPage {
         
         //primary.addComponent(grid);
 
-        grid.addComponent(ingrid, "left: 15px; top: 0px;");
+//        grid.addComponent(ingrid, "left: 15px; top: 0px;");
+        grid.addComponent(ingrid);
+
+        resultTable.setStyleName("tableproperties");
 
 ////////////////////////////////////////////////////////////////////////////////        
         //SIDEBAR
@@ -78,10 +83,11 @@ public class SearchResultPage {
         sidebar.setHeight(1200, Unit.PIXELS);
         sidebar.setWidth(200, Unit.PIXELS);
         sidebar.setSpacing(true);
-        //sidebar.addStyleName(sidebur);
+        sidebar.setStyleName("standardmarginleft");
+        sidebar.addStyleName("overlaybackground");
         
         ingrid.addComponent(sidebar, "left: 0px; top: 0px;");
-        
+        String nameCaption = new String("Search By Song Name");
         final TextField songTextSearchBox = new TextField("Search By Song Name");
         final TextField artistTextSearchBox = new TextField("Search By Artist");
         final TextField albumSearchBox = new TextField("Search By Album");
@@ -98,6 +104,29 @@ public class SearchResultPage {
         final CheckBox selectMood5 = new CheckBox("5: Disappointment, Contempt, Jealousy");
         final CheckBox selectMood6 = new CheckBox("6: Irritation, Disgust, Alarm");
         final CheckBox selectMood7 = new CheckBox("7: Astonishment, Eagerness, Curiousity");
+        
+        songTextSearchBox.setStyleName("coloredwhitefontcaption");
+        artistTextSearchBox.setStyleName("coloredwhitefontcaption");
+        albumSearchBox.setStyleName("coloredwhitefontcaption");
+        yearSearchBox.setStyleName("coloredwhitefontcaption");
+        timeInSecondsSearchBox.setStyleName("coloredwhitefontcaption");
+        genreSearchBox.setStyleName("coloredwhitefontcaption");
+        subMoodSearchBox.setStyleName("coloredwhitefontcaption");
+        moodNote.setStyleName("coloredwhitefontlabel");
+        
+        
+        selectMood0.setStyleName("coloredwhitefontsmall");
+        selectMood1.setStyleName("coloredwhitefontsmall");
+        selectMood2.setStyleName("coloredwhitefontsmall");
+        selectMood3.setStyleName("coloredwhitefontsmall");
+        selectMood4.setStyleName("coloredwhitefontsmall");
+        selectMood5.setStyleName("coloredwhitefontsmall");
+        selectMood6.setStyleName("coloredwhitefontsmall");
+        selectMood7.setStyleName("coloredwhitefontsmall");
+
+        
+        
+        
         
         Button startSearchButton = new Button("Filter");
      
@@ -242,12 +271,12 @@ public class SearchResultPage {
 //                other.getTab(SonRPage);
 //                other.removeTab(SonRPage);
                 SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year,mood);
-                AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
+                VerticalLayout SonRPage = songResultPage2.drawSongRPage();
+                
                 other.addTab(SonRPage);
                 other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name
                 other.getTab(SonRPage).setClosable(true); //allow user to close tabs
-                other.setSelectedTab(SonRPage);
-                 
+                other.setSelectedTab(SonRPage);     
             }
         });
         

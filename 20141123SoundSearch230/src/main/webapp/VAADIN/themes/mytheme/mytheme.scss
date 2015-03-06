@@ -10,9 +10,9 @@
 //$v-border-radius: 4px;
 
 // Affects the color of some component elements, e.g Button, Panel title, etc
-//$v-background-color: hsl(210, 0%, 98%);
+/*$v-background-color: #2E4886;*/
 // Affects the color of content areas, e.g  Panel and Window content, TextField input etc
-//$v-app-background-color: $v-background-color;
+//$v-app-background-color: $v-background-color #777777;
 
 // Affects the visual appearance of all components
 //$v-gradient: v-linear 8%;
@@ -27,9 +27,131 @@
 // For more information, see: https://vaadin.com/book/-/page/themes.valo.html
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
 
+
 @import "../valo/valo.scss";
+
+@include font (MicrogrammaBold, '../../../../mytheme/fonts/25963');
 
 @mixin mytheme {
   @include valo;
   // Insert your own theme rules here
+  
+  .homeimage {
+      background: url("img/MusicListening.jpg");
+      /*background: url(http://virtualclubs.net/wp-content/uploads/desktop-backgrounds-hd-music-free-download-wallpaper-from-20141228061133-549f9f156e0e5.jpg);*/
+  }
+
+  .overlordbackground {
+      background-color: #2E4986;
+      /*opacity: 0.4;*/
+  }
+  
+  .overlaybackground {
+      /*background-color: #345AAF;*/
+      background-color: #22313F;
+      /*opacity: 0.4;*/
+  }
+  
+   .whitebackground {
+      background-color: white;
+  }
+  
+  .v-label-headlabel {
+      font-family: 'MicrogrammaBold';
+      font-size: 50px;
+      color: white;
+      
+  }
+  
+  .v-label-coloredwhitefontlabel {
+    font-family: 'Open Sans', monospace;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .v-caption-coloredwhitefontcaption {
+    font-family: 'Open Sans', monospace;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .coloredwhitefontsmall {
+    .v-checkbox .v-caption {
+      font-family: 'Open Sans', monospace;
+      font-weight: bold;
+      font-size: 10pt;
+      color: white;
+    }  
+  }
+  
+  
+  .tabtitle {
+    .v-tabsheet-tabitem .v-captiontext {
+      font-weight: bold;
+      color: white;
+    }
+  }
+  
+  
+  .borderbackground {
+      background-color: #001A4C;
+  }
+  
+  .standardmarginleft .v-margin-left   {
+      padding-left:   20px;
+  }
+  
+  .standardmarginright .v-margin-right  {
+      padding-right:  20px;
+  }
+  
+  .standardmargintop .v-margin-top    {
+      padding-top:    20px;
+  }
+  
+  .standardmarginbottom .v-margin-bottom {
+      padding-bottom: 20px;
+  }
+  
+
+  /////////////////////////////////////////////////////////////////////////////////////
+  // Define style for tables.
+  /////////////////////////////////////////////////////////////////////////////////////
+
+  // Set color of table header.
+  .v-table-header {
+    background: #FDE3A7;
+    color: black;
+  }
+
+  // Set color of all content cells to be the same.
+  .v-table-cell-content {
+/*    background: #FDE3A7;
+    color: black;*/
+  }
+
+  // Set color of even row.  
+  .v-table-row {
+    background: #E4F1FE;
+    color: black;
+  }
+
+  // Set color of odd row.  
+  .v-table-row-odd {
+    background: white;
+    color: black;
+  }
+  
+  // Set color of selected row.  
+  .v-table .v-selected[class*="-row"] {
+    background: black;
+    color: white;
+    .v-table-cell-content {
+        padding: 0;
+        border-color: white;
+    }
+    outline: 0px solid white;  // get rid of the blue outline
+    outline-offset: 0px;  // get rid of the blue outline
+  }
+
 }

@@ -96,25 +96,34 @@ public class SongResultPages {
         //FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
     }
     
-    public AbsoluteLayout drawSongRPage() {
-        AbsoluteLayout grid = new AbsoluteLayout();
-        grid.setHeight(1200, Unit.PIXELS);
-        grid.setWidth(1600, Unit.PIXELS);
-        
+    public VerticalLayout drawSongRPage() {
+        VerticalLayout grid = new VerticalLayout();
+        grid.setHeight(100, Unit.PERCENTAGE);
+
         final VerticalLayout inNonGrid = new VerticalLayout();
+        inNonGrid.setHeight(100, Unit.PERCENTAGE);
 //        inNonGrid.setSpacing(true);
         HorizontalLayout generalInfoContainer = new HorizontalLayout();
         generalInfoContainer.setSpacing(true);
+        
         HorizontalLayout albumArtContainer = new HorizontalLayout();
         VerticalLayout generalSongDataContainer = new VerticalLayout();
         VerticalLayout detailedInfoContainer = new VerticalLayout();
         HorizontalLayout mediaControlContainer = new HorizontalLayout();
 
-        grid.addComponent(inNonGrid, "left: 320px; top: 0px;");
+        grid.addComponent(inNonGrid);
+        grid.setComponentAlignment(inNonGrid, Alignment.TOP_CENTER);
+        inNonGrid.setStyleName("overlaybackground");
+        inNonGrid.setWidth(1024, Unit.PIXELS);
         inNonGrid.addComponent(generalInfoContainer);
         generalInfoContainer.addComponent(albumArtContainer);
         generalInfoContainer.addComponent(generalSongDataContainer);
         inNonGrid.addComponent(detailedInfoContainer);
+        
+        VerticalLayout whiteContainerPanel = new VerticalLayout();
+        whiteContainerPanel.setStyleName("whitebackground");
+        detailedInfoContainer.addComponent(whiteContainerPanel);
+        detailedInfoContainer.setComponentAlignment(whiteContainerPanel, Alignment.TOP_CENTER);
 
         
         ////////////////////////////////////////////////////////////////////////
@@ -132,15 +141,22 @@ public class SongResultPages {
         //Link to Lyrics
         Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));
         
-   
+        songtitle.setStyleName("coloredwhitefontlabel");
+        songartist.setStyleName("coloredwhitefontlabel");
+        songyear.setStyleName("coloredwhitefontlabel");
+        songlength.setStyleName("coloredwhitefontlabel");
+        songgenre.setStyleName("coloredwhitefontlabel");
+        
 
         ////////////////////////////////////////////////////////////////////////        
 //      Waveform Graph Image
         Label waveformtitle = new Label("Waveform Readings");
         
+        waveformtitle.setStyleName("coloredwhitefontlabel");
+        
         final Wavesurfer myWavesurfer = new Wavesurfer();
-        myWavesurfer.setHeight(180, Unit.PIXELS);
-        myWavesurfer.setWidth(900, Unit.PIXELS);
+        myWavesurfer.setHeight(200, Unit.PIXELS);
+        myWavesurfer.setWidth(1024, Unit.PIXELS);
         myWavesurfer.loadPlayFile(playThisFile);
         myWavesurfer.loadRegions(title, artist);
       
@@ -151,6 +167,10 @@ public class SongResultPages {
             albumImage.setWidth(200, Unit.PIXELS);
             albumImage.setHeight(200, Unit.PIXELS);
             albumArtContainer.addComponent(albumImage);
+            albumImage.setStyleName("standardmarginleft");
+            albumImage.setStyleName("standardmarginright");
+            albumImage.setStyleName("standardmargintop");
+            albumImage.setStyleName("standardmarginbottom");
         }
         
         ////////////////////////////////////////////////////////////////////////
@@ -221,7 +241,9 @@ public class SongResultPages {
             }
         });
         
-        Label volume = new Label("Volume");      
+        Label volume = new Label("Volume"); 
+        volume.setStyleName("coloredwhitefontlabel");
+        
         final Slider volumeLevelSlider = new Slider(0, 100);
         try {
             volumeLevelSlider.setValue(100.0);
@@ -229,6 +251,9 @@ public class SongResultPages {
         }
         
         Label speed = new Label("Playback Speed");
+        
+        speed.setStyleName("coloredwhitefontlabel");
+        
         final Slider speedLevelSlider = new Slider(-99,100); //can't go to -100 otherwise playback drop to 0% speed (but the player will go back to normal speed)
         try {
             speedLevelSlider.setValue(0.0);
@@ -264,6 +289,8 @@ public class SongResultPages {
             Logger.getLogger(SongResultPages.class.getName()).log(Level.SEVERE, null, ex);
         }
         TextArea lyricsDisplayed = new TextArea("Song Lyrics");
+        
+        lyricsDisplayed.setStyleName("coloredwhitefontcaption");
         lyricsDisplayed.setValue(lyricsText);
         lyricsDisplayed.setHeight(300, Unit.PIXELS);
         lyricsDisplayed.setWidth(600, Unit.PIXELS);
@@ -274,7 +301,7 @@ public class SongResultPages {
         generalSongDataContainer.addComponent(songlength);
         generalSongDataContainer.addComponent(songgenre);
         detailedInfoContainer.addComponent(waveformtitle);
-        detailedInfoContainer.addComponent(myWavesurfer);   
+        whiteContainerPanel.addComponent(myWavesurfer);   
         detailedInfoContainer.addComponent(mediaControlContainer);
         mediaControlContainer.addComponent(togglePlayPause);
         mediaControlContainer.addComponent(toggleMute);

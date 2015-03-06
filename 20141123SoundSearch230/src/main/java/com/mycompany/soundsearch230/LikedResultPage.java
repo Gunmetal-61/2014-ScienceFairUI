@@ -103,7 +103,7 @@ public class LikedResultPage {
                 mood = Integer.valueOf(likedTable.getItem(currentItemId).getItemProperty("Mood").getValue().toString());
 
                 SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year,mood);
-                AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
+                VerticalLayout SonRPage = songResultPage2.drawSongRPage();
                 other.addTab(SonRPage);
                 other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name
                 other.getTab(SonRPage).setClosable(true); //allow user to close tabs
