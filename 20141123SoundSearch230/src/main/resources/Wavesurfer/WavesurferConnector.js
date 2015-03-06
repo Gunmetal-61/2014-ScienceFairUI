@@ -35,7 +35,7 @@ Wavesurfer_Wavesurfer =
             
             this.fileLoader = function(playThisFile) {    
                 console.log("argument:" + playThisFile);
-                wavesurfer.load ('G:\\dev\\apache-tomcat-8.0.17\\webapps\\ROOT\\Songs\\mp3\\' + playThisFile);
+                wavesurfer.load ('/Songs/mp3/' + playThisFile);
             };
             
             this.pauseOrPlay = function () {
