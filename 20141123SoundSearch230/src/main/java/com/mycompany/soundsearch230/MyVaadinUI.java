@@ -120,8 +120,8 @@ public class MyVaadinUI extends UI
         toolbar.setComponentAlignment(siteLogo, Alignment.MIDDLE_LEFT);
         toolbarSearchCluster.addComponent(generalSearchBox);
         toolbarSearchCluster.addComponent(commenceSearchButton);
-        toolbar.addComponent(subSong);
-        toolbar.setComponentAlignment(subSong, Alignment.MIDDLE_LEFT);
+        toolbarSearchCluster.addComponent(subSong);
+        toolbarSearchCluster.setComponentAlignment(subSong, Alignment.MIDDLE_LEFT);
         toolbar.addComponent(toolbarSearchCluster);
         toolbar.setComponentAlignment(toolbarSearchCluster, Alignment.MIDDLE_CENTER);
         toolbar.addComponent(placeHolder);
@@ -167,7 +167,7 @@ public class MyVaadinUI extends UI
                 result = null; //clear the results
                 searchResultPage.resultTable.removeAllItems(); //clear the table
                 
-                String generalq = generalSearchBox.getValue();
+                String generalq = generalSearchBox.getValue().toLowerCase();
                 int counter = 0; //id of row
                 MoodCentral translateMoodWords = new MoodCentral();
                 Map theNumberBase = translateMoodWords.MoodKey();
@@ -233,9 +233,7 @@ public class MyVaadinUI extends UI
                 }    
             }
         });
- 
         
-              
         ////////////////////////////////////////////////////////////////////////
 //      TAB 3: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(tabs, SeaRPage);
