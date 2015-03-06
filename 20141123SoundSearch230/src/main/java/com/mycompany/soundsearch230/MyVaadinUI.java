@@ -43,6 +43,7 @@ import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
@@ -65,6 +66,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 
@@ -72,10 +74,10 @@ import org.apache.commons.lang3.text.WordUtils;
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
-    public static DBRow[] result = new DBRow[100];
-    static DatabaseAccess dba = new DatabaseAccess(); 
-    public static Connection con = dba.startconnection("orcl");
+    public static DBRow[] result = null;
+    public static Connection con = DatabaseAccess.startconnection("orcl");
     public static SearchResultPage searchResultPage;
+    public static LikedResultPage likedResultPage;
          
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, widgetset = "com.mycompany.soundsearch230.AppWidgetSet")
@@ -97,21 +99,23 @@ public class MyVaadinUI extends UI
         generalSearchBox.setWidth(200, Unit.PIXELS);
              
         final Button commenceSearchButton = new Button("Search");
+        final CheckBox subSong = new CheckBox("Subsong");
         Label siteLogo = new Label("Aura");
+        
         toolbar.setMargin(new MarginInfo(false, true, false, true));
+        toolbar.setSpacing(true);
         toolbar.addComponent(siteLogo);
         toolbar.setComponentAlignment(siteLogo, Alignment.MIDDLE_LEFT);
         toolbar.addComponent(generalSearchBox);
         toolbar.addComponent(commenceSearchButton);
-        
+        toolbar.addComponent(subSong);
+        toolbar.setComponentAlignment(subSong, Alignment.MIDDLE_LEFT);
 
   
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 1: Home Page
         HomePage homePage = new HomePage();
-        AbsoluteLayout Homage = homePage.drawHomePage();
-        
-        
+        AbsoluteLayout HomePage = homePage.drawHomePage();
         
         
         ////////////////////////////////////////////////////////////////////////
@@ -120,7 +124,10 @@ public class MyVaadinUI extends UI
         final AbsoluteLayout SeaRPage = searchResultPage.drawSearchRPage();
         
         ////////////////////////////////////////////////////////////////////////
-//             
+//      TAB 3: Liked Results Page
+        likedResultPage = new LikedResultPage(tabs);
+        final AbsoluteLayout LikePage = likedResultPage.drawLikedPage();
+        
         //enter key handlers from: https://vaadin.com/forum/#!/thread/77601/8315545
         //if enter button is pressed
         generalSearchBox.addFocusListener(new FocusListener() {
@@ -138,70 +145,77 @@ public class MyVaadinUI extends UI
             }
         });
         
-        
-        
+ 
         //if search button is pressed
         commenceSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
-                searchResultPage.resultTable.removeAllItems();
-                
+                result = null; //clear the results
+                searchResultPage.resultTable.removeAllItems(); //clear the table
                 
                 String generalq = generalSearchBox.getValue();
-                int primaryCounter = 0;
+                int counter = 0; //id of row
                 MoodCentral translateMoodWords = new MoodCentral();
                 Map theNumberBase = translateMoodWords.MoodKey();
-                if (theNumberBase.containsKey(generalq)) {
-                    int[] theConvertedKey = {(Integer) theNumberBase.get(generalq)};
-                    System.out.println("INteger:" + theConvertedKey);
-                    
-                    if(!generalq.equals("")){ //if not empty
-                        System.out.println("INtegeref:" + theConvertedKey);
-                        result = dba.getSearchResults(con, "", theConvertedKey, 0, "", "", "", "", "", 0);
-
-                        for(primaryCounter = 0; primaryCounter<result.length; primaryCounter++){
-                            if(result[primaryCounter]==null){
-                                break;
-                            }else{
-                                String moodconvert = Integer.toString(result[primaryCounter].mood);
-                                //searchResultPage.resultTable.addItem(new Object[]{result[i].name, result[i].artist, "Top Hits", "", "", moodconvert, myWavesurfer}, i);
-                                searchResultPage.resultTable.addItem(new Object[]{
-                                    WordUtils.capitalize(result[primaryCounter].name), 
-                                    result[primaryCounter].artist, 
-                                    result[primaryCounter].album, 
-                                    moodconvert, 
-                                    result[primaryCounter].genre, 
-                                    SongResultPages.formatTime(result[primaryCounter].length),
-                                    (MyVaadinUI.result[primaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[primaryCounter].year)}, primaryCounter);              
-                                System.out.println(primaryCounter + ": " + result[primaryCounter].name);
-                            }                
+                
+                System.out.println("Query: " + generalq);
+                String[] splitQuery = generalq.split("\\s+"); //split up the general query into separate words (that were separated by spaces)
+                
+                boolean moodSearch = false;
+                ArrayList<Integer> moods = new ArrayList<Integer>();
+                for(String word : splitQuery){ //iterate through all words
+                    if(theNumberBase.containsKey(word)){ //if the word is a mood word
+                        System.out.println("Mood word: " + word);
+                        if(!moods.contains((Integer) theNumberBase.get(word))){ //and if the mood isn't already in the list
+                            moods.add((Integer) theNumberBase.get(word)); //add it
+                        }
+                        moodSearch = true;
+                    }
+                }
+                int[] allMoods = Utilities.convertIntegers(moods); //convert from ArrayList to integer array
+                
+                if(!generalq.isEmpty()){ //if query isn't empty
+                    if(moodSearch) { //if there was a mood word found
+                        if(subSong.getValue()){
+                            result = DatabaseAccess.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 1); //get subsong mood results
+                        } else {
+                            result = DatabaseAccess.getSearchResults(con, "", allMoods, 0, "", "", "", "", "", 0); //get mood results
+                        }  
+                        System.out.println("Number of mood results:" + result.length);
+                        if(result!=null){
+                            for(counter = 0; counter<result.length; counter++){
+                                searchResultPage.addEntry(result[counter].name, 
+                                    result[counter].artist, 
+                                    result[counter].album, 
+                                    result[counter].genre, 
+                                    result[counter].length, 
+                                    result[counter].year, 
+                                    result[counter].mood, 
+                                    counter);
+                                System.out.println(counter + ": " + result[counter].name);
+                            }
                         }
                     }
-                } 
-                System.out.println(generalq);
-                int otherCounter = primaryCounter;
-                if(!generalq.equals("")){ //if not empty
+
                     int[] divertMood = {0,1,2,3,4,5,6,7};
-                    result = dba.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0);
-                    System.out.println(primaryCounter);
-                    for(int secondaryCounter = 0; secondaryCounter<result.length; secondaryCounter++){
-                        otherCounter++;
-                        if(result[secondaryCounter]==null){
-                            break;
-                        }else{
-                            String moodconvert = Integer.toString(result[secondaryCounter].mood);
-                            searchResultPage.resultTable.addItem(new Object[]{
-                                WordUtils.capitalize(result[secondaryCounter].name), 
-                                result[secondaryCounter].artist, 
-                                result[secondaryCounter].album, 
-                                moodconvert, 
-                                result[secondaryCounter].genre, 
-                                SongResultPages.formatTime(result[secondaryCounter].length),
-                                (MyVaadinUI.result[secondaryCounter].year==0) ? "" : String.valueOf(MyVaadinUI.result[secondaryCounter].year)}, otherCounter);               
-                            System.out.println(otherCounter + ": " + result[secondaryCounter].name);
-                        }                
+                    //get normal text results and add it on to the mood results
+                    result = ArrayUtils.addAll(result,DatabaseAccess.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0));
+                    System.out.println("Counter: " + counter);
+                    System.out.println(result.length);
+                    if(result!=null){
+                        for(counter = counter; counter<result.length; counter++){ //continue counting from where the mood search left off
+                            searchResultPage.addEntry(result[counter].name, 
+                                    result[counter].artist, 
+                                    result[counter].album, 
+                                    result[counter].genre, 
+                                    result[counter].length, 
+                                    result[counter].year, 
+                                    result[counter].mood, 
+                                    counter);
+                            System.out.println(counter + ": " + result[counter].name);
+                        }
                     }
                     tabs.setSelectedTab(SeaRPage);
-                }        
+                }    
             }
         });
  
@@ -211,33 +225,34 @@ public class MyVaadinUI extends UI
 //      TAB 3: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(tabs, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
-
-
+        
+        /*
         IDEWrite Page = new IDEWrite();
         //File[] instantFiles = Page.listFiles();
         String convert = null;
+         
+        Page.fixSubsong(con);
+        System.out.println("Number of files = " + instantFiles.length);
         
-        //Page.fixSubsong(con);
-//        System.out.println("Number of files = " + instantFiles.length);
-//        
-//        for(int i = 0; i<instantFiles.length; i++){
-//            System.out.println("1:" + instantFiles[i].toString());
-//            convert = instantFiles[i].toString();
-////            System.out.println(convert);
-//            Page.writeArtist(con, convert);
-////            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
-//        }
- 
+        for(int i = 0; i<instantFiles.length; i++){
+            System.out.println("1:" + instantFiles[i].toString());
+            convert = instantFiles[i].toString();
+//            System.out.println(convert);
+            Page.writeArtist(con, convert);
+//            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
+        }
+        */
+        
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 4: Song Results Page        
 //      Code not here or instantiated here, please see SearchResultPage.java and
 //      the bulk of the code which is in SongResultPages.java .
-////////////////////////////////////////////////////////////////////////////////
 
-
-        tabs.addTab(Homage, "Home");
+        tabs.addTab(HomePage, "Home");
         //tabs.addTab(AdvSPage, "Advanced Search");   
         tabs.addTab(SeaRPage, "Search Results"); 
+        tabs.addTab(LikePage, "Liked Results");
+        
         
         tabs.setCloseHandler(new CloseHandler(){
             @Override
@@ -247,6 +262,7 @@ public class MyVaadinUI extends UI
             }
         });
         
+        //tab change listeners
         tabs.addFocusListener(new FocusListener() {
             @Override
             public void focus(final FocusEvent event) {

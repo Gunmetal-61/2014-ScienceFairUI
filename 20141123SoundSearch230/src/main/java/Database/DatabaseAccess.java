@@ -4,20 +4,29 @@
  */
 package Database;
 
+import com.mycompany.soundsearch230.Utilities;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Jeffrey
  */
 public class DatabaseAccess {
+    /**
+     * Gets a connection to the database
+     * 
+     * @param database Name of the database
+     * @return Connection
+     */
      public static Connection startconnection(String database){ //connection code is from http://www.mkyong.com/jdbc/connect-to-oracle-db-via-jdbc-driver-java/
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -46,9 +55,9 @@ public class DatabaseAccess {
 	}
         return connection;
     }
-    ////////////////////////////////////////////////////////////////////////////
-//  RETRIEVE SELECTED SONG'S SUBSONG MOOD VALUES TO COLOR IT'S WAVEFORM GRAPH APPRORPRIATELY
+
     /**
+     * Retrieve selected song's subsong mood values to color it's waveform graph appropriately
      * @deprecated 
      * 
      * @param con
@@ -83,25 +92,25 @@ public class DatabaseAccess {
         }
         return song;
     }
-    
-    ////////////////////////////////////////////////////////////////////////////
-//  EXECUTE QUERIES BY THE USER   
+      
     /**
+     * Gets search results based on user queries
      * 
-     * @param con
-     * @param generalq
-     * @param mood
-     * @param length
-     * @param name
-     * @param artist
-     * @param moodlevel
+     * @param con Database connection
+     * @param generalq General query
+     * @param mood Array of moods in the output
+     * @param length Length of the song in seconds
+     * @param name Name of the song
+     * @param artist Artist of song
+     * @param album Song album
+     * @param genre Genre of song
+     * @param year Song release year
+     * @param moodLevel For specifying full song or subsong mood search (0 is full song, 1 is subsong)
      * @return
      */
-    public static DBRow[] getSearchResults(Connection con, String generalq, int[] mood, int length, String name, String artist, String album, String genre, String year, int moodlevel){
-    //  Declare Query Strings  
-        DBRow[] output = new DBRow[100];//creates an array of 25 rows in the song result table
-        
-
+    public static DBRow[] getSearchResults(Connection con, String generalq, int[] mood, int length, String name, String artist, String album, String genre, String year, int moodLevel){
+        DBRow[] output = null;
+        //  Declare Query Strings  
         try {
             String generalQuery = "";//string to create sql query over all types of data
             String namesQuery = "";//string from name of song query field sent to sql command line
@@ -114,18 +123,13 @@ public class DatabaseAccess {
             String lyricsQuery = "";
             
             generalq = generalq.toLowerCase();
-            System.out.println("ef:" + generalq);
+            System.out.println("General Query: " + generalq);
             name = name.toLowerCase();
             artist = artist.toLowerCase();
             album = album.toLowerCase();
             genre = genre.toLowerCase();
 
-
             Statement stmt = null;
-            int upperlength = length + 30;/*for [lengthsquery]; sets a leeway of 30 
-            seconds above the specified time when results are returned (i.e. query
-            for length of 2:30, song is 2:50 long, this will allow it to show up in the results)
-            */
             ////////////////////////////////////////////////////////////////////
 //          SQL QUERY FOR SEARCH ACROSS ALL FIELDS (A GENERAL SEARCH):
             if(!generalq.equals("")){
@@ -166,8 +170,9 @@ public class DatabaseAccess {
             }
 
             ////////////////////////////////////////////////////////////////////
-//          SQL QUERY FOR SEARCHING SONGS WITH LENGTH OF SONG:             
-            int lowerlength = length - 30;//like [upperlength], sets leeway of -30 seconds
+//          SQL QUERY FOR SEARCHING SONGS WITH LENGTH OF SONG:    
+            int upperlength = length + 30; //+/- 30 seconds around time
+            int lowerlength = length - 30;
             if(lowerlength < 0){//i.e. if [lengthquery] is 20 seconds, if statment sets [lowerlength] leeway to -0 seconds
                 lowerlength = 0;
             }       
@@ -196,23 +201,17 @@ public class DatabaseAccess {
 
             ////////////////////////////////////////////////////////////////////
 //          SQL QUERY FOR SEARCHING SONGS WITH MOOD             
-            String moods = "";//new string
-            for(int i = 0; i<mood.length; i++){//new {int} [i] declared as 0, the as long as it is less than the length of the song, +1 value of [i] per cycle
-                moods = moods + mood[i] +  ",";//[moods] 
+            String moods = "";//new string 
+            for(int i = 0; i<mood.length; i++){
+                moods = moods + mood[i] +  ","; 
             }
-            if(!moods.equals("")){//if mood is blank
-                if(moodlevel == 0){//if the mood level is 0
-                    moods = moods.substring(0, moods.lastIndexOf(","));//moods will then equal
-                    moodsQuery = " AND AUDIOMOOD IN ("+moods+")";
-                    if(genresQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&albumsQuery.equals("")&&namesQuery.equals("")&&artistsQuery.equals("")){
-                        moodsQuery = "WHERE AUDIOMOOD IN ("+moods+")";
-                    }
-                }
-                if(moodlevel == 1){
-
+            if(!moods.equals("")){//if mood isn't blank
+                moods = moods.substring(0, moods.lastIndexOf(","));//get rid of last comma
+                moodsQuery = " AND AUDIOMOOD IN ("+moods+")";
+                if(genresQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&albumsQuery.equals("")&&namesQuery.equals("")&&artistsQuery.equals("")){
+                    moodsQuery = "WHERE AUDIOMOOD IN ("+moods+")";
                 }
             }
-            
             
 
             ////////////////////////////////////////////////////////////////////
@@ -221,8 +220,18 @@ public class DatabaseAccess {
 //            will be added to a single statement assembled here to address the
 //            database for search.
             
+            //counts the number results that will be returned
+            String countQuery = "SELECT COUNT(*) AS \"ResultLength\" FROM SONGTABLE "
+                    + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
+                    + "LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID "
+                    + "LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
+                    + "LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " 
+                    + generalQuery + namesQuery + artistsQuery + albumsQuery 
+                    + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery;
+            
+            //actual query
             String query =
-                    "SELECT DISTINCT SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
+                    "SELECT DISTINCT SONGTABLE.RANKING, SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
                     + "SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, "
                     + "YEARS.ACTUALYEAR, ALBUMS.ALBUMNAME, GENRES.GENRENAME FROM SONGTABLE "
                     + "LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
@@ -230,28 +239,135 @@ public class DatabaseAccess {
                     + "LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID "
                     + "LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " 
                     + generalQuery + namesQuery + artistsQuery + albumsQuery 
-                    + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery ;
+                    + lengthsQuery + yearsQuery + genresQuery + moodsQuery + lyricsQuery;
             
-
-            System.out.println(query);
+            if(!moods.equals("0,1,2,3,4,5,6,7")){ //if it isn't a general search
+                query = query + " ORDER BY RANKING DESC";
+            }
+            
+            //generate appropriate sections of the SQL statement based on which subsong moods are desired
+            String subMoodsRelevant = "";
+            String subMoodsWhere = "";
+            for(int i = 0; i<mood.length; i++){
+                if(i==0){ //for the first part of the string don't add the connectors
+                    subMoodsRelevant = "\"" + mood[i] + "\""; 
+                    subMoodsWhere = "\"" + mood[i] + "\" >= 1";
+                } else {
+                    subMoodsRelevant = subMoodsRelevant + "+\"" + mood[i] + "\""; //+ connector
+                    subMoodsWhere = subMoodsWhere + " AND \"" + mood[i] + "\" >= 1"; //AND connector
+                }
+            }
+            
+            //counts number of results that will be returned by a subsong query
+            String subsongCountQuery = 
+                    "SELECT COUNT(*) AS \"ResultLength\" FROM SONGTABLE " 
+                    + " LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID " 
+                    + " LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID " 
+                    + " LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID " 
+                    + " LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " 
+                    + " LEFT JOIN (\n" 
+                    + " SELECT TITLE, ARTISTID, \"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", (" + subMoodsRelevant + ") \"RELEVANTSECTIONS\" from (" 
+                    + " select TITLE, ARTISTID, MOOD" 
+                    + " from SUBSONGTABLE" 
+                    + "   ) slt" 
+                    + "   pivot (" 
+                    + "     COUNT(MOOD)" 
+                    + "     for MOOD in (0,1,2,3,4,5,6,7)" 
+                    + "   ) pvt" 
+                    + "   WHERE " + subMoodsWhere 
+                    + " ) output " 
+                    + " ON SONGTABLE.TITLE = output.TITLE AND SONGTABLE.ARTISTID = output.ARTISTID" 
+                    + " WHERE RELEVANTSECTIONS >= 1 " 
+                    + generalQuery + namesQuery + artistsQuery + albumsQuery 
+                    + lengthsQuery + yearsQuery + genresQuery + lyricsQuery;
+            
+            //actual subsong query
+            String subsongQuery = 
+                    "SELECT DISTINCT OUTPUT.RELEVANTSECTIONS, SONGTABLE.RANKING, SONGTABLE.TITLE, SONGTABLE.AUDIOMOOD, "
+                    + "SONGTABLE.SLENGTH, SONGTABLE.ARTISTID, ARTISTS.ARTISTNAME, "
+                    + "YEARS.ACTUALYEAR, ALBUMS.ALBUMNAME, GENRES.GENRENAME FROM SONGTABLE " 
+                    + " LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID " 
+                    + " LEFT JOIN YEARS ON SONGTABLE.YEARID = YEARS.YEARID " 
+                    + " LEFT JOIN ALBUMS ON SONGTABLE.ALBUMID = ALBUMS.ALBUMID " 
+                    + " LEFT JOIN GENRES ON SONGTABLE.GENREID = GENRES.GENREID " 
+                    + " LEFT JOIN (" //This is the table that retrieves the songs with the correct subsong sections
+                    + " SELECT TITLE, ARTISTID, \"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", (" + subMoodsRelevant + ") \"RELEVANTSECTIONS\" from (" 
+                    + " select TITLE, ARTISTID, MOOD" 
+                    + " from SUBSONGTABLE" 
+                    + "   ) slt" 
+                    + "   pivot (" //pivot table on moods
+                    + "     COUNT(MOOD)" //count how many times a certain mood appears
+                    + "     for MOOD in (0,1,2,3,4,5,6,7)" //these are moods values to count over (list how many of each type of mood there are in a song)
+                    + "   ) pvt" 
+                    + "   WHERE " + subMoodsWhere 
+                    + "   ORDER BY RELEVANTSECTIONS DESC" 
+                    + " ) output " 
+                    + " ON SONGTABLE.TITLE = output.TITLE AND SONGTABLE.ARTISTID = output.ARTISTID" 
+                    + " WHERE RELEVANTSECTIONS >= 1" //only get rows where there are relevant sections
+                    + " ORDER BY RELEVANTSECTIONS DESC, RANKING DESC " //first order by number of relevant sections, and then by ranking
+                    + generalQuery + namesQuery + artistsQuery + albumsQuery 
+                    + lengthsQuery + yearsQuery + genresQuery + lyricsQuery;
+            
             try {
-                stmt = con.createStatement();
-                long startTime = System.nanoTime();  
-                ResultSet rs = stmt.executeQuery(query);
-                long estimatedTime = System.nanoTime() - startTime;
-                System.out.println(estimatedTime);
-                int i = 0;
-                while(rs.next()&&(i<100)) {
-                 //   System.out.println(i+"Hello");
-                    output[i] = new DBRow();
-                    output[i].name = rs.getString("TITLE");
-                    output[i].artist = rs.getString("ARTISTNAME");
-                    output[i].mood = rs.getInt("AUDIOMOOD");
-                    output[i].length = rs.getInt("SLENGTH");
-                    output[i].album = rs.getString("ALBUMNAME");
-                    output[i].year = rs.getInt("ACTUALYEAR");
-                    output[i].genre = rs.getString("GENRENAME");
-                    i++;
+                stmt = con.createStatement();   
+                long startTime = System.nanoTime();
+                if(moodLevel == 0){ //if doing a full song search
+                    System.out.println(query);
+                    ResultSet rs = stmt.executeQuery(countQuery);//find how many results there will be
+                    int resultSize = 0;
+                    if(rs.next()){
+                        resultSize = rs.getInt("ResultLength");
+                    }
+                    if(resultSize != 0){ //if there will be results
+                        rs = stmt.executeQuery(query); //run the actual query
+                    } else {
+                        return output;
+                    }
+                    long estimatedTime = System.nanoTime() - startTime; //see how long the process took
+                    System.out.println(estimatedTime);
+
+                    output = new DBRow[resultSize];
+                    int i = 0;  
+                    while(rs.next()&&(i<resultSize)) {
+                        output[i] = new DBRow();
+                        output[i].name = rs.getString("TITLE");
+                        output[i].artist = rs.getString("ARTISTNAME");
+                        output[i].mood = rs.getInt("AUDIOMOOD");
+                        output[i].length = rs.getInt("SLENGTH");
+                        output[i].album = rs.getString("ALBUMNAME");
+                        output[i].year = rs.getInt("ACTUALYEAR");
+                        output[i].genre = rs.getString("GENRENAME");
+                        i++;
+                    }
+                }
+                if(moodLevel == 1){ //if doing a subsong search
+                    System.out.println(subsongQuery);
+                    ResultSet rs = stmt.executeQuery(subsongCountQuery);//find how many results there will be
+                    int resultSize = 0;
+                    if(rs.next()){
+                        resultSize = rs.getInt("ResultLength");
+                    }
+                    if(resultSize != 0){ //if there will be results
+                        rs = stmt.executeQuery(subsongQuery); //run the actual query
+                    } else {
+                        return output;
+                    }
+                    long estimatedTime = System.nanoTime() - startTime; //see how long the process took
+                    System.out.println(estimatedTime);
+
+                    output = new DBRow[resultSize];
+                    int i = 0;  
+                    while(rs.next()&&(i<resultSize)) {
+                        output[i] = new DBRow();
+                        output[i].name = rs.getString("TITLE");
+                        output[i].artist = rs.getString("ARTISTNAME");
+                        output[i].mood = rs.getInt("AUDIOMOOD");
+                        output[i].length = rs.getInt("SLENGTH");
+                        output[i].album = rs.getString("ALBUMNAME");
+                        output[i].year = rs.getInt("ACTUALYEAR");
+                        output[i].genre = rs.getString("GENRENAME");
+                        i++;
+                    }
                 }
             } catch (SQLException e) {
                 System.err.println(e);
@@ -259,15 +375,14 @@ public class DatabaseAccess {
                 if (stmt != null) { stmt.close(); } //close connection
             }
         }catch(Exception e){
-                
+            e.printStackTrace();
         }
         
         return output;
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-//  RETRIEVE LYRICS OF SELECTED SONG TO BE DISPLAYED IN GUI BOX        
     /**
+     * Retrieve lyrics of selected song to be displayed in GUI box
      * 
      * @param con
      * @param title
@@ -293,10 +408,9 @@ public class DatabaseAccess {
         }
         return lyrics;
     }
-    
-    ////////////////////////////////////////////////////////////////////////////
-//  RECALLS FILENAME OF SELECTED SONG FROM DATABASE TO BRING UP FOR PLAYING IN GUI    
+      
     /**
+     * Recalls filename of selected song from database to bring up for playing in GUI
      * 
      * @param con
      * @param newdir if null, then we want to get the directory stored in the database; else fill database with new directory
@@ -329,8 +443,17 @@ public class DatabaseAccess {
         }
         return dir;
     }
-    ////////////////////////////////////////////////////////////////////////////
-//  RECALLS FILENAME OF SELECTED SONG'S ALBUM IMAGE FOR DISPLAY IN [SearchResultPage] and [SongResultPages]
+  
+    /**
+     * RECALLS FILENAME OF SELECTED SONG'S ALBUM IMAGE FOR DISPLAY IN [SearchResultPage] and [SongResultPages]
+     * 
+     * @param con
+     * @param newdir
+     * @param title
+     * @param artistname
+     * @return
+     * @throws SQLException 
+     */
     public static String albumPNGDir(Connection con, String newdir, String title, String artistname) throws SQLException{
         String dir = "";
         Statement stmt = null;
@@ -355,10 +478,10 @@ public class DatabaseAccess {
         }
         return "\\home\\mitchell\\Music\\Album Art\\"+dir;
     }
-    ////////////////////////////////////////////////////////////////////////////
-//  SETUP CODE USED TO PLACE AN ANALYZED SONG'S SUBSONG MOOD VALUES INTO THE ORACLE DATABASE TABLE 
-//  NOT ACTIVE IN FINAL GUI PROGRAM  
+
     /**
+     * SETUP CODE USED TO PLACE AN ANALYZED SONG'S SUBSONG MOOD VALUES INTO THE ORACLE DATABASE TABLE 
+     * NOT ACTIVE IN FINAL GUI PROGRAM  
      * @deprecated
      * 
      * @param con
@@ -396,6 +519,7 @@ public class DatabaseAccess {
     }
     
     /**
+     * Gets the subsong details of a song
      * 
      * @param con Database connection
      * @param title Title of the song
@@ -409,7 +533,7 @@ public class DatabaseAccess {
         
         Statement stmt = null;
         String query =
-                "SELECT SEQUENCE, MOOD, LENGTH FROM SUBSONGTABLE INNER JOIN ARTISTS ON SUBSONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE ARTISTNAME = '" + artistname + "' AND TITLE = '"+ title +"' ORDER BY SEQUENCE";
+                "SELECT SEQUENCE, MOOD, LENGTH FROM SUBSONGTABLE LEFT JOIN ARTISTS ON SUBSONGTABLE.ARTISTID = ARTISTS.ARTISTID WHERE ARTISTNAME = '" + artistname + "' AND TITLE = '"+ title +"' ORDER BY SEQUENCE";
         try {
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -426,19 +550,62 @@ public class DatabaseAccess {
         
         int[][] output = new int[3][sequence.size()];
         //convert arraylist to
-        output[0]=convertIntegers(sequence);
-        output[1]=convertIntegers(mood);
-        output[2]=convertIntegers(length);
+        output[0] = Utilities.convertIntegers(sequence);
+        output[1] = Utilities.convertIntegers(mood);
+        output[2] = Utilities.convertIntegers(length);
         return output;
     }
     
-    public static int[] convertIntegers(List<Integer> integers){
-        int[] ret = new int[integers.size()];
-        Iterator<Integer> iterator = integers.iterator();
-        for (int i = 0; i < ret.length; i++)
-        {
-            ret[i] = iterator.next().intValue();
+    /**
+     * Updates the rank of a song (and gets the rank of a song)
+     * 
+     * @param con
+     * @param title
+     * @param artistname
+     * @param newLike 1 is like, -1 is dislike
+     * @return  Song rank
+     */
+    public static float updateRank(Connection con, String title, String artistname, int newLike){
+        title = title.replaceAll("'", "''");
+        artistname = artistname.replaceAll("'", "''");
+        
+        double lowerBound = 0;
+        Statement stmt = null;
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT LIKES, DISLIKES FROM SONGTABLE LEFT JOIN ARTISTS ON SONGTABLE.ARTISTID = ARTISTS.ARTISTID "
+                    + "WHERE TITLE = '" + title + "' AND ARTISTNAME = '" + artistname + "'");         
+            float likes = 0;
+            float dislikes = 0;
+            while (rs.next()) {
+                likes = rs.getInt("LIKES");
+                dislikes = rs.getInt("DISLIKES");
+            }  
+                        
+            if(newLike==1){
+                ++likes;
+            }
+            if(newLike==-1){
+                ++dislikes;
+            }
+
+            float sampleSize = likes+dislikes;
+            if(sampleSize>=30){ //only apply ranking if the sample size is greater than 30
+                float p = likes/sampleSize;
+                lowerBound = p - 1.96*Math.sqrt((p*(1.0-p))/sampleSize); //calculate lower bound of 95% confidence interval
+                //double upperBound = p + 1.96*Math.sqrt((p*(1-p))/sampleSize);
+                System.out.println(title + ": " + lowerBound);
+                System.out.println(p);
+            }
+            
+            stmt.executeQuery("UPDATE SONGTABLE SET RANKING="+lowerBound+", LIKES="+likes+", DISLIKES="+dislikes+" "
+                    + "WHERE TITLE = '"+title+"' "
+                    + "AND ARTISTID = (SELECT ARTISTID FROM ARTISTS WHERE ARTISTNAME = '"+artistname+"')");
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+            if (stmt != null) { try {stmt.close();} catch (SQLException ex) {ex.printStackTrace();}} //close connection
         }
-        return ret;
+        return (float)lowerBound;
     }
 }

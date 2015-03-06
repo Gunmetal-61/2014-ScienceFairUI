@@ -6,11 +6,8 @@ package com.mycompany.soundsearch230;
 
 import Database.DBRow;
 import Database.DatabaseAccess;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPartistText;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPmood;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPseconds;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsongText;
-import static com.mycompany.soundsearch230.AdvancedSearchPage.ASPsubMood;
+import static com.mycompany.soundsearch230.MyVaadinUI.result;
+import static com.mycompany.soundsearch230.MyVaadinUI.searchResultPage;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbsoluteLayout;
@@ -36,14 +33,14 @@ public class SearchResultPage {
     
     public Table resultTable = new Table("Search Results");
     Connection con = DatabaseAccess.startconnection("orcl"); 
-    int[] moodarray;
     public static String nameIdentifier = "";
     public static String artistIdentifier = "";
     public static String genre = "";
     public static String album = "";
     public static int length = 0;
     public static int year = 0;
-
+    public static int mood = -1;
+    
     Label stConvert;
     Label saConvert;
     AbsoluteLayout SRPingrid;
@@ -52,24 +49,12 @@ public class SearchResultPage {
     public static String ASPartistText = "";
     public static int ASPseconds = 0;
     public static int[] ASPmood = {0,1,2,3,4,5,6,7}; 
-    public static int ASPsubMood = 0;
     AbsoluteLayout alternate;
 
     
     public SearchResultPage(TabSheet primary) {
         other = primary;
     }
-    
-    public static int[] convertIntegers(List<Integer> integers){
-        int[] ret = new int[integers.size()];
-        Iterator<Integer> iterator = integers.iterator();
-        for (int i = 0; i < ret.length; i++)
-        {
-            ret[i] = iterator.next().intValue();
-        }
-        return ret;
-    }
-    
     
     public AbsoluteLayout drawSearchRPage(){
 ////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +126,7 @@ public class SearchResultPage {
         //when search button button is clicked
         startSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                MyVaadinUI.searchResultPage.resultTable.removeAllItems();
+                MyVaadinUI.searchResultPage.resultTable.removeAllItems(); //clear the table
                                 
                 String generalq = "";
                 ASPsongText = songTextSearchBox.getValue();
@@ -172,30 +157,39 @@ public class SearchResultPage {
                 if(selectMood7.getValue()){
                     moodsSelected.add(7);
                 }
-
-                ASPmood = convertIntegers(moodsSelected);
+                
+                if(moodsSelected.isEmpty()){
+                    ASPmood[0] = 0;
+                    ASPmood[1] = 1;
+                    ASPmood[2] = 2;
+                    ASPmood[3] = 3;
+                    ASPmood[4] = 4;
+                    ASPmood[5] = 5;
+                    ASPmood[6] = 6;
+                    ASPmood[7] = 7;
+                } else {
+                    ASPmood = Utilities.convertIntegers(moodsSelected);
+                }
                // ASPsubMood = artistTextSearchBox.getValue();
                 System.out.println(ASPsongText);
                 
                 //ASPmood = moodSearchBox.getValue();
 
-                MyVaadinUI.result = MyVaadinUI.dba.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","",ASPsubMood);
+                MyVaadinUI.result = DatabaseAccess.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","", 0);
                 
-                for(int i = 0; i<100; i++){
-//                    if(generalq.equals("prayer")){
+                for(int i = 0; i<MyVaadinUI.result.length; i++){
                     if(MyVaadinUI.result[i]==null){
                         //songTextSearchBox.setValue("");
                         ASPsongText = "";
                     }else{
-                        String moodconverter = Integer.toString(MyVaadinUI.result[i].mood);
-
-                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{WordUtils.capitalize(MyVaadinUI.result[i].name), 
-                            MyVaadinUI.result[i].artist, 
-                            MyVaadinUI.result[i].album, 
-                            moodconverter, 
-                            MyVaadinUI.result[i].genre,
-                            SongResultPages.formatTime(MyVaadinUI.result[i].length),
-                            (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)}, i);
+                        MyVaadinUI.searchResultPage.addEntry(result[i].name, 
+                            result[i].artist, 
+                            result[i].album, 
+                            result[i].genre, 
+                            result[i].length, 
+                            result[i].year, 
+                            result[i].mood, 
+                            i);
                     }
                 }
             }
@@ -203,16 +197,7 @@ public class SearchResultPage {
         
         
 ////////////////////////////////////////////////////////////////////////////////
-//      RESULT TABLE
-        moodarray = new int[7];
-        moodarray[0] = 1;
-        moodarray[1] = 2;
-        moodarray[2] = 3;
-        moodarray[3] = 4;
-        moodarray[4] = 5;
-        moodarray[5] = 6;
-        moodarray[6] = 7;
-        
+//      RESULT TABLE        
         //expand table
         resultTable.setSizeFull();
         
@@ -248,6 +233,7 @@ public class SearchResultPage {
                 year = MyVaadinUI.result[selectedRow].year;
                 album = MyVaadinUI.result[selectedRow].album;
                 genre = MyVaadinUI.result[selectedRow].genre;
+                mood = MyVaadinUI.result[selectedRow].mood;
 //                stConvert = new Label(nameIdentifier);
 //                saConvert = new Label(artistIdentifier);
 //                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
@@ -255,7 +241,7 @@ public class SearchResultPage {
                 
 //                other.getTab(SonRPage);
 //                other.removeTab(SonRPage);
-                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year);
+                SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year,mood);
                 AbsoluteLayout SonRPage = songResultPage2.drawSongRPage();
                 other.addTab(SonRPage);
                 other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name
@@ -270,4 +256,27 @@ public class SearchResultPage {
         return grid;
     }
     
+    /**
+     * Add a search results to the search result table
+     * 
+     * @param name
+     * @param artist
+     * @param album
+     * @param genre
+     * @param length
+     * @param year
+     * @param mood
+     * @param id 
+     */
+    public void addEntry(String name, String artist, String album, String genre, int length, int year, int mood, int id){
+        resultTable.addItem(new Object[]{
+            WordUtils.capitalize(name), 
+            artist, 
+            album, 
+            Integer.toString(mood), 
+            genre, 
+            Utilities.formatTime(length),
+            (year==0) ? "" : String.valueOf(year)}, //if the year is zero display nothing
+            id);               
+    }
 }

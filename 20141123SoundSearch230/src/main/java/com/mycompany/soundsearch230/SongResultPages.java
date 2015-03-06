@@ -62,9 +62,12 @@ public class SongResultPages {
     String genre;
     int length;
     int year;
+    int mood;
     
     String playThisFile;
     Image albumImage;
+    
+    int likeState = 0;
     /**
      * Instantiate a song result page
      * 
@@ -74,14 +77,16 @@ public class SongResultPages {
      * @param genre
      * @param length
      * @param year 
+     * @param mood 
      */
-    public SongResultPages(String title, String artist, String album, String genre, int length, int year){
+    public SongResultPages(String title, String artist, String album, String genre, int length, int year, int mood){
         this.title =  title;
         this.artist = artist;
         this.album = album;
         this.genre = genre;
         this.length = length;
         this.year = year;
+        this.mood = mood;
         
         //Get the album art
         IDEExtract ideExtract = new IDEExtract();
@@ -121,14 +126,13 @@ public class SongResultPages {
         //Year Song was Released
         Label songyear = new Label(String.valueOf(year));
         //Length of Song
-        Label songlength = new Label(formatTime(length));
+        Label songlength = new Label(Utilities.formatTime(length));
         //Song Genre
         Label songgenre = new Label(genre);    
         //Link to Lyrics
         Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));
         
    
-
 
         ////////////////////////////////////////////////////////////////////////        
 //      Waveform Graph Image
@@ -154,6 +158,9 @@ public class SongResultPages {
         final Button toggleMute = new Button("Mute");
         final Button toggleStopReset = new Button("Reset");
         final Button togglePlayPause = new Button("Play");
+        
+        final Button likeButton = new Button("Like");
+        final Button dislikeButton = new Button("Dislike");
         
         //mute listener
         toggleMute.addClickListener(new Button.ClickListener() {
@@ -192,6 +199,25 @@ public class SongResultPages {
                     myWavesurfer.playOrPause(false); //pause
                     togglePlayPause.setCaption("Play");
                 }  
+            }
+        });
+        
+        //if the like button is pressed
+        likeButton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,1);
+                MyVaadinUI.likedResultPage.addEntry(title, artist, album, genre, length, year, mood);
+                likeButton.setEnabled(false);
+                dislikeButton.setEnabled(false);
+            }
+        });
+        
+        //if the dislike button is pressed
+        dislikeButton.addClickListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                DatabaseAccess.updateRank(MyVaadinUI.con,title,artist,-1);
+                likeButton.setEnabled(false);
+                dislikeButton.setEnabled(false);
             }
         });
         
@@ -257,23 +283,13 @@ public class SongResultPages {
         mediaControlContainer.addComponent(volumeLevelSlider);
         mediaControlContainer.addComponent(speed);
         mediaControlContainer.addComponent(speedLevelSlider);
+        mediaControlContainer.addComponent(likeButton);
+        mediaControlContainer.addComponent(dislikeButton);
         mediaControlContainer.setComponentAlignment(volume, Alignment.MIDDLE_LEFT);
         mediaControlContainer.setComponentAlignment(speed, Alignment.MIDDLE_LEFT);
         mediaControlContainer.setSpacing(true);
         detailedInfoContainer.addComponent(lyricsDisplayed);
         
         return grid;
-    }
-    
-
-    
-    /**
-     * Convert seconds into M:SS
-     * @param input Seconds
-     * @return 
-     */
-    public static String formatTime(int input){
-        String seconds = (input%60>9)?String.valueOf(input%60):"0"+String.valueOf(input%60);
-        return input/60 + ":" + seconds;
     }
 }
