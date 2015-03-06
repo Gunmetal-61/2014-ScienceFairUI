@@ -6,6 +6,8 @@ package com.mycompany.soundsearch230;
 
 import Database.DBRow;
 import Database.DatabaseAccess;
+import static com.mycompany.soundsearch230.MyVaadinUI.result;
+import static com.mycompany.soundsearch230.MyVaadinUI.searchResultPage;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbsoluteLayout;
@@ -124,7 +126,7 @@ public class SearchResultPage {
         //when search button button is clicked
         startSearchButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                MyVaadinUI.searchResultPage.resultTable.removeAllItems();
+                MyVaadinUI.searchResultPage.resultTable.removeAllItems(); //clear the table
                                 
                 String generalq = "";
                 ASPsongText = songTextSearchBox.getValue();
@@ -180,14 +182,13 @@ public class SearchResultPage {
                         //songTextSearchBox.setValue("");
                         ASPsongText = "";
                     }else{
-                        MyVaadinUI.searchResultPage.resultTable.addItem(new Object[]{
-                            WordUtils.capitalize(MyVaadinUI.result[i].name), 
-                            MyVaadinUI.result[i].artist, 
-                            MyVaadinUI.result[i].album, 
-                            Integer.toString(MyVaadinUI.result[i].mood), 
-                            MyVaadinUI.result[i].genre,
-                            Utilities.formatTime(MyVaadinUI.result[i].length),
-                            (MyVaadinUI.result[i].year==0) ? "" : String.valueOf(MyVaadinUI.result[i].year)},
+                        MyVaadinUI.searchResultPage.addEntry(result[i].name, 
+                            result[i].artist, 
+                            result[i].album, 
+                            result[i].genre, 
+                            result[i].length, 
+                            result[i].year, 
+                            result[i].mood, 
                             i);
                     }
                 }
@@ -255,4 +256,27 @@ public class SearchResultPage {
         return grid;
     }
     
+    /**
+     * Add a search results to the search result table
+     * 
+     * @param name
+     * @param artist
+     * @param album
+     * @param genre
+     * @param length
+     * @param year
+     * @param mood
+     * @param id 
+     */
+    public void addEntry(String name, String artist, String album, String genre, int length, int year, int mood, int id){
+        resultTable.addItem(new Object[]{
+            WordUtils.capitalize(name), 
+            artist, 
+            album, 
+            Integer.toString(mood), 
+            genre, 
+            Utilities.formatTime(length),
+            (year==0) ? "" : String.valueOf(year)}, //if the year is zero display nothing
+            id);               
+    }
 }

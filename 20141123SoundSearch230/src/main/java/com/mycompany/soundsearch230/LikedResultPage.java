@@ -61,9 +61,8 @@ public class LikedResultPage {
         ingrid.addComponent(sidebar, "left: 0px; top: 0px;");
 
 ////////////////////////////////////////////////////////////////////////////////
-//      RESULT TABLE
+//      Liked Results Table
 
-        
         //expand table
         likedTable.setSizeFull();
         
@@ -84,8 +83,6 @@ public class LikedResultPage {
         likedTable.setColumnExpandRatio("Genre",2);
         likedTable.setColumnExpandRatio("Length",1);
         likedTable.setColumnExpandRatio("Year",1);
-
-        final String generalq = "";
         
         //when a row in the table is clicked on
         likedTable.addItemClickListener(new ItemClickEvent.ItemClickListener () {
@@ -93,14 +90,13 @@ public class LikedResultPage {
             public void itemClick(ItemClickEvent event) {
                 Object currentItemId = event.getItemId();
                 
-                nameIdentifier = likedTable.getItem(currentItemId).getItemProperty("Song Name").getValue().toString().toLowerCase();
+                nameIdentifier = likedTable.getItem(currentItemId).getItemProperty("Song Name").getValue().toString().toLowerCase(); //make title lowercase again
                 artistIdentifier = likedTable.getItem(currentItemId).getItemProperty("Artist").getValue().toString();
-                ///unconvert the time back to seconds
+                //unconvert the formatted time [MM:SS] back to seconds
                 String formattedLength = likedTable.getItem(currentItemId).getItemProperty("Length").getValue().toString();  
                 int index = formattedLength.indexOf(":");
                 int seconds = Integer.parseInt(formattedLength.substring(index+1)) + Integer.parseInt(formattedLength.substring(0,index))*60;
-                length = seconds;
-                
+                length = seconds;      
                 year = Integer.valueOf(likedTable.getItem(currentItemId).getItemProperty("Year").getValue().toString());
                 album = likedTable.getItem(currentItemId).getItemProperty("Artist").getValue().toString();
                 genre = likedTable.getItem(currentItemId).getItemProperty("Genre").getValue().toString();

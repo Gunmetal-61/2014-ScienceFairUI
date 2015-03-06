@@ -183,15 +183,14 @@ public class MyVaadinUI extends UI
                         System.out.println("Number of mood results:" + result.length);
                         if(result!=null){
                             for(counter = 0; counter<result.length; counter++){
-                                searchResultPage.resultTable.addItem(new Object[]{
-                                    WordUtils.capitalize(result[counter].name), 
+                                searchResultPage.addEntry(result[counter].name, 
                                     result[counter].artist, 
                                     result[counter].album, 
-                                    Integer.toString(result[counter].mood), 
                                     result[counter].genre, 
-                                    Utilities.formatTime(result[counter].length),
-                                    (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, 
-                                    counter);              
+                                    result[counter].length, 
+                                    result[counter].year, 
+                                    result[counter].mood, 
+                                    counter);
                                 System.out.println(counter + ": " + result[counter].name);
                             }
                         }
@@ -204,15 +203,14 @@ public class MyVaadinUI extends UI
                     System.out.println(result.length);
                     if(result!=null){
                         for(counter = counter; counter<result.length; counter++){ //continue counting from where the mood search left off
-                            searchResultPage.resultTable.addItem(new Object[]{
-                                WordUtils.capitalize(result[counter].name), 
-                                result[counter].artist, 
-                                result[counter].album, 
-                                Integer.toString(result[counter].mood), 
-                                result[counter].genre, 
-                                Utilities.formatTime(result[counter].length),
-                                (MyVaadinUI.result[counter].year==0) ? "" : String.valueOf(MyVaadinUI.result[counter].year)}, //if the year is zero display nothing
-                                counter);               
+                            searchResultPage.addEntry(result[counter].name, 
+                                    result[counter].artist, 
+                                    result[counter].album, 
+                                    result[counter].genre, 
+                                    result[counter].length, 
+                                    result[counter].year, 
+                                    result[counter].mood, 
+                                    counter);
                             System.out.println(counter + ": " + result[counter].name);
                         }
                     }
@@ -227,28 +225,28 @@ public class MyVaadinUI extends UI
 //      TAB 3: Advanced Search Page
         AdvancedSearchPage advancedSearchPage = new AdvancedSearchPage(tabs, SeaRPage);
         AbsoluteLayout AdvSPage = advancedSearchPage.drawAdvancedSPage();
-
+        
+        /*
         IDEWrite Page = new IDEWrite();
         //File[] instantFiles = Page.listFiles();
         String convert = null;
+         
+        Page.fixSubsong(con);
+        System.out.println("Number of files = " + instantFiles.length);
         
-        //Page.fixSubsong(con);
-//        System.out.println("Number of files = " + instantFiles.length);
-//        
-//        for(int i = 0; i<instantFiles.length; i++){
-//            System.out.println("1:" + instantFiles[i].toString());
-//            convert = instantFiles[i].toString();
-////            System.out.println(convert);
-//            Page.writeArtist(con, convert);
-////            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
-//        }
- 
+        for(int i = 0; i<instantFiles.length; i++){
+            System.out.println("1:" + instantFiles[i].toString());
+            convert = instantFiles[i].toString();
+//            System.out.println(convert);
+            Page.writeArtist(con, convert);
+//            System.out.println("ehgwheoig" + Page.writeAlbum(con, convert));
+        }
+        */
+        
         ////////////////////////////////////////////////////////////////////////        
 //      TAB 4: Song Results Page        
 //      Code not here or instantiated here, please see SearchResultPage.java and
 //      the bulk of the code which is in SongResultPages.java .
-////////////////////////////////////////////////////////////////////////////////
-
 
         tabs.addTab(HomePage, "Home");
         //tabs.addTab(AdvSPage, "Advanced Search");   
