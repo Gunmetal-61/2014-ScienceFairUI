@@ -65,7 +65,7 @@ public class SongResultPages {
     int mood;
     
     String playThisFile;
-    Image albumImage;
+    Image albumImage = new Image();
     
     int likeState = 0;
     /**
@@ -92,22 +92,18 @@ public class SongResultPages {
         IDEExtract ideExtract = new IDEExtract();
         this.playThisFile = ideExtract.findFile(title, artist);
         albumImage = ideExtract.getAlbumArt(playThisFile);
-        //this.resource = new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\album-artwork"));
-        //FileResource resource = new FileResource(new File("/home/mitchell/Documents/album-artwork"));
     }
     
     public VerticalLayout drawSongRPage() {
         VerticalLayout grid = new VerticalLayout();
-        grid.setHeight(100, Unit.PERCENTAGE);
 
         final VerticalLayout inNonGrid = new VerticalLayout();
-        inNonGrid.setHeight(100, Unit.PERCENTAGE);
-//        inNonGrid.setSpacing(true);
         HorizontalLayout generalInfoContainer = new HorizontalLayout();
-        generalInfoContainer.setSpacing(true);
+        generalInfoContainer.addStyleName("gensongcontainer-margin");
         
-        HorizontalLayout albumArtContainer = new HorizontalLayout();
+        VerticalLayout albumArtContainer = new VerticalLayout();
         VerticalLayout generalSongDataContainer = new VerticalLayout();
+        
         VerticalLayout detailedInfoContainer = new VerticalLayout();
         HorizontalLayout mediaControlContainer = new HorizontalLayout();
 
@@ -129,23 +125,49 @@ public class SongResultPages {
         ////////////////////////////////////////////////////////////////////////
 //      LABELS
         //Song Title
-        Label songtitle = new Label(WordUtils.capitalize(artist));
+        Label songtitle = new Label(WordUtils.capitalize(title));
         //Artist of Song
-        Label songartist = new Label(WordUtils.capitalize(title));
+        Label artistMarker = new Label("ARTIST");
+        Label songartist = new Label(WordUtils.capitalize(artist));
         //Year Song was Released
+        Label yearMarker = new Label("YEAR");
         Label songyear = new Label(String.valueOf(year));
         //Length of Song
+        Label lengthMarker = new Label("LENGTH");
         Label songlength = new Label(Utilities.formatTime(length));
         //Song Genre
+        Label genreMarker = new Label("GENRE");
         Label songgenre = new Label(genre);    
         //Link to Lyrics
         Link lyricslink = new Link("Song Lyrics",new ExternalResource("http://www.azlyrics.com/lyrics/maroon5/onemorenight.html"));
         
-        songtitle.setStyleName("coloredwhitefontlabel");
-        songartist.setStyleName("coloredwhitefontlabel");
-        songyear.setStyleName("coloredwhitefontlabel");
-        songlength.setStyleName("coloredwhitefontlabel");
-        songgenre.setStyleName("coloredwhitefontlabel");
+        songtitle.addStyleName("geninfocontainer-generalmargin");
+        songtitle.addStyleName("geninfocontainer-songnametext");
+        artistMarker.addStyleName("geninfocontainer-generalmargin");
+        artistMarker.addStyleName("geninfocontainer-generalmarkers");
+        
+        songartist.addStyleName("geninfocontainer-generalmargin");
+        songartist.addStyleName("geninfocontainer-generaltext");
+        
+        yearMarker.addStyleName("geninfocontainer-generalmargin");
+        yearMarker.addStyleName("geninfocontainer-generalmarkers");
+        
+        songyear.addStyleName("geninfocontainer-generalmargin");
+        songyear.addStyleName("geninfocontainer-generaltext");
+        
+        lengthMarker.addStyleName("geninfocontainer-generalmargin");
+        lengthMarker.addStyleName("geninfocontainer-generalmarkers");
+        
+        songlength.addStyleName("geninfocontainer-generalmargin");
+        songlength.addStyleName("geninfocontainer-generaltext");
+        
+        genreMarker.addStyleName("geninfocontainer-generalmargin");
+        genreMarker.addStyleName("geninfocontainer-generalmarkers");
+        
+        songgenre.addStyleName("gensongcontainer-generalmargin");
+        songgenre.addStyleName("geninfocontainer-generaltext");
+        
+
         
 
         ////////////////////////////////////////////////////////////////////////        
@@ -167,10 +189,8 @@ public class SongResultPages {
             albumImage.setWidth(200, Unit.PIXELS);
             albumImage.setHeight(200, Unit.PIXELS);
             albumArtContainer.addComponent(albumImage);
-            albumImage.setStyleName("standardmarginleft");
-            albumImage.setStyleName("standardmarginright");
-            albumImage.setStyleName("standardmargintop");
-            albumImage.setStyleName("standardmarginbottom");
+        } else{
+//            albumImage = albumImage.
         }
         
         ////////////////////////////////////////////////////////////////////////
@@ -294,10 +314,14 @@ public class SongResultPages {
         lyricsDisplayed.setHeight(300, Unit.PIXELS);
         lyricsDisplayed.setWidth(1024, Unit.PIXELS);
         
-        generalSongDataContainer.addComponent(songtitle);
+        generalSongDataContainer.addComponent(songtitle);     
+        generalSongDataContainer.addComponent(artistMarker);
         generalSongDataContainer.addComponent(songartist);
+        generalSongDataContainer.addComponent(yearMarker);
         generalSongDataContainer.addComponent(songyear);
+        generalSongDataContainer.addComponent(lengthMarker);
         generalSongDataContainer.addComponent(songlength);
+        generalSongDataContainer.addComponent(genreMarker);
         generalSongDataContainer.addComponent(songgenre);
         detailedInfoContainer.addComponent(waveformtitle);
         whiteContainerPanel.addComponent(myWavesurfer);   

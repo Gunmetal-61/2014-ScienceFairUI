@@ -73,16 +73,23 @@
     font-family: 'Open Sans', monospace;
     font-weight: bold;
     color: white;
+    margin-left: 6px;
   }
   
-  .coloredwhitefontsmall {
-    .v-checkbox .v-caption {
-      font-family: 'Open Sans', monospace;
-      font-weight: bold;
-      font-size: 10pt;
-      color: white;
+  
+  
+
+  .v-checkbox-coloredwhitefontsmall {
+    font-family: 'Open Sans', monospace;
+    font-weight: bold;
+    font-size: 10pt;
+    color: white;
+    .v-checkbox > input { 
+    }
+    .v-checkbox > label { 
     }  
   }
+
   
   
   .tabtitle {
@@ -96,23 +103,97 @@
   .borderbackground {
       background-color: #001A4C;
   }
+
+////////////////////////////////////////////////////////////////////////////////  
+// TEXT FORMATTING AND STYLING
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // [SongResultPages.java] CUSTOM MARGINS
+        
+        ////////////////////////////////////////////////////////////////////////
+        // [generalSongDataContainer] AND COMPONENTS  
+        
+            // [generalInfoContainer]
+            .geninfocontainer-songnametext {
+                font-family: 'Open Sans', monospace;
+                font-size: 36px;
+                color: white;
+                
+            }
+            .geninfocontainer-generalmarkers {
+                font-family: 'Open Sans', monospace;
+                font-weight: bold;
+                font-size: 8px;
+                color: white;
+                
+            }
+            
+            .geninfocontainer-generaltext {
+                font-family: 'Open Sans', monospace;
+                color: white;
+                
+            }
+            
+            
   
-  .standardmarginleft .v-margin-left   {
-      padding-left:   20px;
-  }
-  
-  .standardmarginright .v-margin-right  {
-      padding-right:  20px;
-  }
-  
-  .standardmargintop .v-margin-top    {
-      padding-top:    20px;
-  }
-  
-  .standardmarginbottom .v-margin-bottom {
-      padding-bottom: 20px;
-  }
-  
+////////////////////////////////////////////////////////////////////////////////  
+// MARGINS AND SPACING
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // GENERAL MARGINS
+    .v-margin-left   {
+        padding-left:   20px;
+    }
+    .v-margin-right  {
+        padding-right:  20px;
+    }
+    .v-margin-top    {
+        padding-top:    20px;
+    }
+    .v-margin-bottom {
+        padding-bottom: 20px;
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // [SeachResultPage.java] CUSTOM MARGINS
+    
+        ////////////////////////////////////////////////////////////////////////////
+        // [sidebar] AND COMPONENTS
+        .sidebar-generalmargin { //general left and right margin applied individually to each component 
+            margin-left: 6px;
+            margin-right: 6px;
+        }
+        
+        .sidebar-filterbuttonspace { //
+            margin-top: 40px;
+        }
+    ////////////////////////////////////////////////////////////////////////////
+    // [SongResultPages.java] CUSTOM MARGINS
+        
+        ////////////////////////////////////////////////////////////////////////
+        //[inNonGrid] AND COMPONENTS
+        .inNonGrid-generalmargin { //general left and right margin applied individually to each component 
+            margin-left: 16px;
+            margin-right: 16px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+        ////////////////////////////////////////////////////////////////////////
+        // [generalSongDataContainer] AND COMPONENTS
+        .gensongcontainer-margin { //general left and right margin applied individually to each component 
+            margin-left: 60px;
+            margin-right: 16px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+            
+            // [generalInfoContainer]
+            .geninfocontainer-generalmargin {
+                margin-left: 16px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+    
 
   /////////////////////////////////////////////////////////////////////////////////////
   // Define style for tables.

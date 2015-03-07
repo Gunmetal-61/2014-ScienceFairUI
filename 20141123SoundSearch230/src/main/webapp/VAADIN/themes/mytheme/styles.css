@@ -12138,9 +12138,10 @@ div.v-layout.v-horizontal.v-widget {
 	font-family: "Open Sans", monospace;
 	font-weight: bold;
 	color: white;
+	margin-left: 6px;
 }
 
-.mytheme .coloredwhitefontsmall .v-checkbox .v-caption {
+.mytheme .v-checkbox-coloredwhitefontsmall {
 	font-family: "Open Sans", monospace;
 	font-weight: bold;
 	font-size: 10pt;
@@ -12156,20 +12157,67 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #001A4C;
 }
 
-.mytheme .standardmarginleft .v-margin-left {
+.mytheme .geninfocontainer-songnametext {
+	font-family: "Open Sans", monospace;
+	font-size: 36px;
+	color: white;
+}
+
+.mytheme .geninfocontainer-generalmarkers {
+	font-family: "Open Sans", monospace;
+	font-weight: bold;
+	font-size: 8px;
+	color: white;
+}
+
+.mytheme .geninfocontainer-generaltext {
+	font-family: "Open Sans", monospace;
+	color: white;
+}
+
+.mytheme .v-margin-left {
 	padding-left: 20px;
 }
 
-.mytheme .standardmarginright .v-margin-right {
+.mytheme .v-margin-right {
 	padding-right: 20px;
 }
 
-.mytheme .standardmargintop .v-margin-top {
+.mytheme .v-margin-top {
 	padding-top: 20px;
 }
 
-.mytheme .standardmarginbottom .v-margin-bottom {
+.mytheme .v-margin-bottom {
 	padding-bottom: 20px;
+}
+
+.mytheme .sidebar-generalmargin {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+.mytheme .sidebar-filterbuttonspace {
+	margin-top: 40px;
+}
+
+.mytheme .inNonGrid-generalmargin {
+	margin-left: 16px;
+	margin-right: 16px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.mytheme .gensongcontainer-margin {
+	margin-left: 60px;
+	margin-right: 16px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.mytheme .geninfocontainer-generalmargin {
+	margin-left: 16px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 .mytheme .v-table-header {

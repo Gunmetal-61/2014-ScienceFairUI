@@ -11,7 +11,9 @@ import static com.mycompany.soundsearch230.MyVaadinUI.result;
 import static com.mycompany.soundsearch230.MyVaadinUI.searchResultPage;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
@@ -83,20 +85,25 @@ public class SearchResultPage {
         //SIDEBAR
         VerticalLayout sidebar = new VerticalLayout();
         sidebar.setHeight(1200, Unit.PIXELS);
-        sidebar.setWidth(200, Unit.PIXELS);
+        sidebar.setWidth(300, Unit.PIXELS);
         sidebar.setSpacing(true);
-        sidebar.setStyleName("standardmarginleft");
         sidebar.addStyleName("overlaybackground");
-        
         ingrid.addComponent(sidebar, "left: 0px; top: 0px;");
         String nameCaption = new String("Search By Song Name");
         final TextField songTextSearchBox = new TextField("Search By Song Name");
+        songTextSearchBox.setWidth(288, Unit.PIXELS);
         final TextField artistTextSearchBox = new TextField("Search By Artist");
+        artistTextSearchBox.setWidth(288, Unit.PIXELS);
         final TextField albumSearchBox = new TextField("Search By Album");
+        albumSearchBox.setWidth(288, Unit.PIXELS);
         final TextField yearSearchBox = new TextField("Search By Year");
+        yearSearchBox.setWidth(288, Unit.PIXELS);
         final TextField timeInSecondsSearchBox = new TextField("Search By Song Length");
+        timeInSecondsSearchBox.setWidth(288, Unit.PIXELS);
         final TextField genreSearchBox = new TextField("Search By Genre");
+        genreSearchBox.setWidth(288, Unit.PIXELS);
         final TextField subMoodSearchBox = new TextField("Search By Subsong Mood");
+        subMoodSearchBox.setWidth(288, Unit.PIXELS);
         Label moodNote = new Label("Select an Overall Mood");
         final CheckBox selectMood0 = new CheckBox("0: Inspiration, Desire, Love");
         final CheckBox selectMood1 = new CheckBox("1: Fascination, Admiration, Joyfulness");
@@ -107,27 +114,53 @@ public class SearchResultPage {
         final CheckBox selectMood6 = new CheckBox("6: Irritation, Disgust, Alarm");
         final CheckBox selectMood7 = new CheckBox("7: Astonishment, Eagerness, Curiousity");
         
-        songTextSearchBox.setStyleName("coloredwhitefontcaption");
-        artistTextSearchBox.setStyleName("coloredwhitefontcaption");
-        albumSearchBox.setStyleName("coloredwhitefontcaption");
-        yearSearchBox.setStyleName("coloredwhitefontcaption");
-        timeInSecondsSearchBox.setStyleName("coloredwhitefontcaption");
-        genreSearchBox.setStyleName("coloredwhitefontcaption");
-        subMoodSearchBox.setStyleName("coloredwhitefontcaption");
-        moodNote.setStyleName("coloredwhitefontlabel");
+        songTextSearchBox.addStyleName("coloredwhitefontcaption");
+        songTextSearchBox.addStyleName("sidebar-generalmargin");
         
-        
-        selectMood0.setStyleName("coloredwhitefontsmall");
-        selectMood1.setStyleName("coloredwhitefontsmall");
-        selectMood2.setStyleName("coloredwhitefontsmall");
-        selectMood3.setStyleName("coloredwhitefontsmall");
-        selectMood4.setStyleName("coloredwhitefontsmall");
-        selectMood5.setStyleName("coloredwhitefontsmall");
-        selectMood6.setStyleName("coloredwhitefontsmall");
-        selectMood7.setStyleName("coloredwhitefontsmall");
+        artistTextSearchBox.addStyleName("coloredwhitefontcaption");
+        artistTextSearchBox.addStyleName("sidebar-generalmargin");
+
+        albumSearchBox.addStyleName("coloredwhitefontcaption");
+        albumSearchBox.addStyleName("sidebar-generalmargin");
+
+        yearSearchBox.addStyleName("coloredwhitefontcaption");
+        yearSearchBox.addStyleName("sidebar-generalmargin");
+
+        timeInSecondsSearchBox.addStyleName("coloredwhitefontcaption");
+        timeInSecondsSearchBox.addStyleName("sidebar-generalmargin");
+
+        genreSearchBox.addStyleName("coloredwhitefontcaption");
+        genreSearchBox.addStyleName("sidebar-generalmargin");
+
+        subMoodSearchBox.addStyleName("coloredwhitefontcaption");
+        subMoodSearchBox.addStyleName("sidebar-generalmargin");
+
+        moodNote.addStyleName("coloredwhitefontlabel");
+        moodNote.addStyleName("sidebar-generalmargin");
 
         
-        Button startSearchButton = new Button("Filter");
+        
+        selectMood0.addStyleName("sidebar-generalmargin");
+        selectMood1.addStyleName("sidebar-generalmargin");
+        selectMood2.addStyleName("sidebar-generalmargin");
+        selectMood3.addStyleName("sidebar-generalmargin");
+        selectMood4.addStyleName("sidebar-generalmargin");
+        selectMood5.addStyleName("sidebar-generalmargin");
+        selectMood6.addStyleName("sidebar-generalmargin");
+        selectMood7.addStyleName("sidebar-generalmargin");
+        
+        selectMood0.addStyleName("coloredwhitefontsmall");
+        selectMood1.addStyleName("coloredwhitefontsmall");
+        selectMood2.addStyleName("coloredwhitefontsmall");
+        selectMood3.addStyleName("coloredwhitefontsmall");
+        selectMood4.addStyleName("coloredwhitefontsmall");
+        selectMood5.addStyleName("coloredwhitefontsmall");
+        selectMood6.addStyleName("coloredwhitefontsmall");
+        selectMood7.addStyleName("coloredwhitefontsmall");
+
+               
+        Button startFilterButton = new Button("Filter");
+        startFilterButton.addStyleName("sidebar-filterbuttonspace");
      
         VerticalLayout moodCheck = new VerticalLayout();
         moodCheck.addComponent(moodNote);
@@ -140,7 +173,8 @@ public class SearchResultPage {
         moodCheck.addComponent(selectMood6);
         moodCheck.addComponent(selectMood7);
         moodCheck.addComponent(subMoodSearchBox);
-        moodCheck.addComponent(startSearchButton);
+        moodCheck.addComponent(startFilterButton);
+        moodCheck.setComponentAlignment(startFilterButton, Alignment.TOP_CENTER);
         
         sidebar.addComponent(songTextSearchBox);
         sidebar.addComponent(artistTextSearchBox);
@@ -152,7 +186,7 @@ public class SearchResultPage {
         sidebar.setExpandRatio(moodCheck,1);
         
         //when search button button is clicked
-        startSearchButton.addClickListener(new Button.ClickListener() {
+        startFilterButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 MyVaadinUI.searchResultPage.resultTable.removeAllItems(); //clear the table
                                 
@@ -295,7 +329,7 @@ public class SearchResultPage {
             }
         });
         
-        ingrid.addComponent(resultTable, "left: 200px; top: 0px;");
+        ingrid.addComponent(resultTable, "left: 300px; top: 0px;");
 
         return grid;
     }
