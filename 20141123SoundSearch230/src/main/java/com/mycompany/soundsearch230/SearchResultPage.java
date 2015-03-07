@@ -6,6 +6,7 @@ package com.mycompany.soundsearch230;
 
 import Database.DBRow;
 import Database.DatabaseAccess;
+import SearchSystem.MoodCentral;
 import static com.mycompany.soundsearch230.MyVaadinUI.result;
 import static com.mycompany.soundsearch230.MyVaadinUI.searchResultPage;
 import com.vaadin.event.ItemClickEvent;
@@ -24,6 +25,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.text.WordUtils;
 
 /**
@@ -47,10 +49,13 @@ public class SearchResultPage {
     Label saConvert;
     AbsoluteLayout SRPingrid;
     TabSheet other;
-    public static String ASPsongText = "";
-    public static String ASPartistText = "";
-    public static int ASPseconds = 0;
-    public static int[] ASPmood = {0,1,2,3,4,5,6,7}; 
+    private static String nameText = "";
+    private static String artistText = "";
+    private static String subMood = "";
+    private static String albumText = "";
+    private static String yearText = "";
+    private static int seconds = 0;
+    private static int[] ASPmood = {0,1,2,3,4,5,6,7};
     AbsoluteLayout alternate;
 
     
@@ -70,9 +75,6 @@ public class SearchResultPage {
         ingrid.setHeight(1200, Unit.PIXELS);
         ingrid.setWidth("100%");
         
-        //primary.addComponent(grid);
-
-//        grid.addComponent(ingrid, "left: 15px; top: 0px;");
         grid.addComponent(ingrid);
 
         resultTable.setStyleName("tableproperties");
@@ -125,9 +127,6 @@ public class SearchResultPage {
         selectMood7.setStyleName("coloredwhitefontsmall");
 
         
-        
-        
-        
         Button startSearchButton = new Button("Filter");
      
         VerticalLayout moodCheck = new VerticalLayout();
@@ -158,8 +157,11 @@ public class SearchResultPage {
                 MyVaadinUI.searchResultPage.resultTable.removeAllItems(); //clear the table
                                 
                 String generalq = "";
-                ASPsongText = songTextSearchBox.getValue();
-                ASPartistText = artistTextSearchBox.getValue();
+                nameText = songTextSearchBox.getValue();
+                artistText = artistTextSearchBox.getValue();
+                albumText = albumSearchBox.getValue();
+                yearText = yearSearchBox.getValue();
+                subMood = subMoodSearchBox.getValue();
                 ArrayList<Integer> moodsSelected = new ArrayList<Integer>();
                 
                 if(selectMood0.getValue()){
@@ -199,26 +201,45 @@ public class SearchResultPage {
                 } else {
                     ASPmood = Utilities.convertIntegers(moodsSelected);
                 }
-               // ASPsubMood = artistTextSearchBox.getValue();
-                System.out.println(ASPsongText);
                 
-                //ASPmood = moodSearchBox.getValue();
-
-                MyVaadinUI.result = DatabaseAccess.getSearchResults(MyVaadinUI.con,generalq,ASPmood,ASPseconds,ASPsongText,ASPartistText,"","","", 0);
+                boolean moodSearch = false;
+                ArrayList<Integer> moods = new ArrayList<Integer>();
+                if(!subMood.isEmpty()){
+                    MoodCentral translateMoodWords = new MoodCentral();
+                    Map wordToMood = translateMoodWords.MoodKey();
+                    String[] splitQuery = subMood.split("\\s+");
+                    for(String word : splitQuery){ //iterate through all words
+                        if(wordToMood.containsKey(word)){ //if the word is a mood word
+                            System.out.println("Mood word: " + word);
+                            if(!moods.contains((Integer) wordToMood.get(word))){ //and if the mood isn't already in the list
+                                moods.add((Integer) wordToMood.get(word)); //add it
+                            }
+                            moodSearch = true;
+                        }
+                    }
+                }
+                int[] allMoods = Utilities.convertIntegers(moods); //convert from ArrayList to integer array
                 
-                for(int i = 0; i<MyVaadinUI.result.length; i++){
-                    if(MyVaadinUI.result[i]==null){
-                        //songTextSearchBox.setValue("");
-                        ASPsongText = "";
-                    }else{
-                        MyVaadinUI.searchResultPage.addEntry(result[i].name, 
-                            result[i].artist, 
-                            result[i].album, 
-                            result[i].genre, 
-                            result[i].length, 
-                            result[i].year, 
-                            result[i].mood, 
-                            i);
+                System.out.println(nameText);
+                if(moodSearch){
+                    MyVaadinUI.result = DatabaseAccess.getSearchResults(MyVaadinUI.con,generalq,allMoods,seconds,nameText,artistText,albumText,"",yearText, 1);
+                } else {
+                    MyVaadinUI.result = DatabaseAccess.getSearchResults(MyVaadinUI.con,generalq,ASPmood,seconds,nameText,artistText,albumText,"",yearText, 0);
+                }
+                if(result!=null){
+                    for(int i = 0; i<MyVaadinUI.result.length; i++){
+                        if(MyVaadinUI.result[i]==null){
+                            break;
+                        }else{
+                            MyVaadinUI.searchResultPage.addEntry(result[i].name, 
+                                result[i].artist, 
+                                result[i].album, 
+                                result[i].genre, 
+                                result[i].length, 
+                                result[i].year, 
+                                result[i].mood, 
+                                i);
+                        }
                     }
                 }
             }
@@ -263,13 +284,7 @@ public class SearchResultPage {
                 album = MyVaadinUI.result[selectedRow].album;
                 genre = MyVaadinUI.result[selectedRow].genre;
                 mood = MyVaadinUI.result[selectedRow].mood;
-//                stConvert = new Label(nameIdentifier);
-//                saConvert = new Label(artistIdentifier);
-//                SRPingrid.addComponent(stConvert, "left: 260px; top: 40px;");
-//                SRPingrid.addComponent(saConvert, "left: 260px; top: 60px;");
-                
-//                other.getTab(SonRPage);
-//                other.removeTab(SonRPage);
+
                 SongResultPages songResultPage2 = new SongResultPages(nameIdentifier,artistIdentifier,album,genre,length,year,mood);
                 VerticalLayout SonRPage = songResultPage2.drawSongRPage();
                 
