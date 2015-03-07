@@ -12106,8 +12106,8 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
-.mytheme .homeimage {
-	background: url("img/MusicListening.jpg");
+.mytheme .homepage {
+	background: transparent url("img/MusicListening.jpg");
 }
 
 .mytheme .overlordbackground {

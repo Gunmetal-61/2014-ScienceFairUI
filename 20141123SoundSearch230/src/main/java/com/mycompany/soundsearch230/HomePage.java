@@ -6,8 +6,10 @@
 
 package com.mycompany.soundsearch230;
 
-import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.server.FileResource;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.VerticalLayout;
+import java.io.File;
 
 /**
  *
@@ -16,7 +18,9 @@ import com.vaadin.ui.VerticalLayout;
 public class HomePage {
     public static VerticalLayout drawHomePage(){
         VerticalLayout grid = new VerticalLayout();
-
+//        Image homeImage = new Image(null,new FileResource(new File("F:\\Jeffrey\\Desktop\\Science Project 2014-2015\\UI\\2014-ScienceFairUI\\20141123SoundSearch230\\src\\main\\webapp\\VAADIN\\themes\\mytheme\\img\\MusicListening.jpg")));
+//        grid.addComponent(homeImage);
+        grid.setStyleName("homepage");
         return grid;
     }
 }

@@ -145,27 +145,27 @@ public class DatabaseAccess {
             ////////////////////////////////////////////////////////////////////
 //          SQL QUERY FOR SEARCHING SONGS WITH NAME(aka. TITLE) OF SONG:             
             if(!name.equals("")){
-                namesQuery = " AND LOWER(TITLE) LIKE '%"+name.toLowerCase()+"%'";
+                namesQuery = " AND LOWER(TITLE) LIKE '%"+name+"%'";
                 if(moodsQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&genresQuery.equals("")&&albumsQuery.equals("")&&artistsQuery.equals("")){
-                    namesQuery = "WHERE LOWER(TITLE) LIKE '%"+name.toLowerCase()+"%'";
+                    namesQuery = "WHERE LOWER(TITLE) LIKE '%"+name+"%'";
                 }
             }        
 
             ////////////////////////////////////////////////////////////////////
 //          SQL QUERY FOR SEARCHING SONGS WITH ARTIST NAME:        
             if(!artist.equals("")){
-                artistsQuery = " AND LOWER(ARTISTNAME) LIKE '%"+artist.toLowerCase()+"%'";
+                artistsQuery = " AND LOWER(ARTISTNAME) LIKE '%"+artist+"%'";
                 if(moodsQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&genresQuery.equals("")&&albumsQuery.equals("")&&namesQuery.equals("")){
-                    artistsQuery = "WHERE LOWER(ARTISTNAME) LIKE '%"+artist.toLowerCase()+"%'";
+                    artistsQuery = "WHERE LOWER(ARTISTNAME) LIKE '%"+artist+"%'";
                 }
             }
 
              ////////////////////////////////////////////////////////////////////
 //          SQL QUERY FOR SEARCHING SONGS WITH ALBUM OF SONG: 
             if(!album.equals("")){
-                albumsQuery = " AND LOWER(ALBUMNAME) LIKE '%"+name.toLowerCase()+"%'";
+                albumsQuery = " AND LOWER(ALBUMNAME) LIKE '%"+album+"%'";
                 if(moodsQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&genresQuery.equals("")&&namesQuery.equals("")&&artistsQuery.equals("")){
-                    albumsQuery = "WHERE LOWER(ALBUMNAME) LIKE '%"+name.toLowerCase()+"%'";
+                    albumsQuery = "WHERE LOWER(ALBUMNAME) LIKE '%"+album+"%'";
                 }
             }
 
@@ -183,18 +183,18 @@ public class DatabaseAccess {
             ////////////////////////////////////////////////////////////////////
 //          SQL QUERY FOR SEARCHING SONGS WITH YEAR OF SONG: 
             if(!year.equals("")){
-                yearsQuery = " AND ACTUALYEAR LIKE '%"+name.toLowerCase()+"%'";
+                yearsQuery = " AND ACTUALYEAR LIKE "+year;
                 if(moodsQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&genresQuery.equals("")&&albumsQuery.equals("")&&namesQuery.equals("")&&artistsQuery.equals("")){
-                    yearsQuery = "WHERE ACTUALYEAR LIKE '%"+name.toLowerCase()+"%'";
+                    yearsQuery = "WHERE ACTUALYEAR = "+year;
                 }
             }
 
             ////////////////////////////////////////////////////////////////////
 //          SQL QUERY FOR SEARCHING SONGS WITH GENRE OF SONG: 
             if(!genre.equals("")){
-                genresQuery = " AND LOWER(GENRENAME) LIKE '%"+name.toLowerCase()+"%'";
+                genresQuery = " AND LOWER(GENRENAME) LIKE '%"+genre+"%'";
                 if(moodsQuery.equals("")&&lengthsQuery.equals("")&&generalQuery.equals("")&&yearsQuery.equals("")&&albumsQuery.equals("")&&namesQuery.equals("")&&artistsQuery.equals("")){
-                    genresQuery = "WHERE LOWER(GENRENAME) LIKE '%"+name.toLowerCase()+"%'";
+                    genresQuery = "WHERE LOWER(GENRENAME) LIKE '%"+genre+"%'";
                 }
             }
 

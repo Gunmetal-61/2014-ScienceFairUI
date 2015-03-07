@@ -170,7 +170,7 @@ public class MyVaadinUI extends UI
                 String generalq = generalSearchBox.getValue().toLowerCase();
                 int counter = 0; //id of row
                 MoodCentral translateMoodWords = new MoodCentral();
-                Map theNumberBase = translateMoodWords.MoodKey();
+                Map wordToMood = translateMoodWords.MoodKey();
                 
                 System.out.println("Query: " + generalq);
                 String[] splitQuery = generalq.split("\\s+"); //split up the general query into separate words (that were separated by spaces)
@@ -178,10 +178,10 @@ public class MyVaadinUI extends UI
                 boolean moodSearch = false;
                 ArrayList<Integer> moods = new ArrayList<Integer>();
                 for(String word : splitQuery){ //iterate through all words
-                    if(theNumberBase.containsKey(word)){ //if the word is a mood word
+                    if(wordToMood.containsKey(word)){ //if the word is a mood word
                         System.out.println("Mood word: " + word);
-                        if(!moods.contains((Integer) theNumberBase.get(word))){ //and if the mood isn't already in the list
-                            moods.add((Integer) theNumberBase.get(word)); //add it
+                        if(!moods.contains((Integer) wordToMood.get(word))){ //and if the mood isn't already in the list
+                            moods.add((Integer) wordToMood.get(word)); //add it
                         }
                         moodSearch = true;
                     }
@@ -215,8 +215,8 @@ public class MyVaadinUI extends UI
                     //get normal text results and add it on to the mood results
                     result = ArrayUtils.addAll(result,DatabaseAccess.getSearchResults(con, generalq, divertMood, 0, "", "", "", "", "", 0));
                     System.out.println("Counter: " + counter);
-                    System.out.println(result.length);
                     if(result!=null){
+                        System.out.println(result.length);
                         for(counter = counter; counter<result.length; counter++){ //continue counting from where the mood search left off
                             searchResultPage.addEntry(result[counter].name, 
                                     result[counter].artist, 

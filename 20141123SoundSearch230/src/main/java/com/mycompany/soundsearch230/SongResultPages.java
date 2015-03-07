@@ -280,7 +280,6 @@ public class SongResultPages {
                 }
         });
         
-
         
         String lyricsText = null;
         try {
@@ -288,12 +287,12 @@ public class SongResultPages {
         } catch (SQLException ex) {
             Logger.getLogger(SongResultPages.class.getName()).log(Level.SEVERE, null, ex);
         }
-        TextArea lyricsDisplayed = new TextArea("Song Lyrics");
         
+        TextArea lyricsDisplayed = new TextArea("Song Lyrics");
         lyricsDisplayed.setStyleName("coloredwhitefontcaption");
         lyricsDisplayed.setValue(lyricsText);
         lyricsDisplayed.setHeight(300, Unit.PIXELS);
-        lyricsDisplayed.setWidth(600, Unit.PIXELS);
+        lyricsDisplayed.setWidth(1024, Unit.PIXELS);
         
         generalSongDataContainer.addComponent(songtitle);
         generalSongDataContainer.addComponent(songartist);

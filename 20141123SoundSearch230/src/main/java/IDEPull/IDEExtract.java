@@ -80,12 +80,14 @@ public class IDEExtract {
             final byte[] data = id3v2Tag.getAlbumImage(); //byte array of image: convert this to BufferedImage
             if (data != null) {
                 try {
-                    img = new Image("", new StreamResource( //save as Vaadin image
+                    StreamResource res = new StreamResource( //convert byte stream to resource
                         new StreamResource.StreamSource(){
                             public InputStream getStream(){
                                 return new ByteArrayInputStream(data);
                             }
-                        }, ""));
+                        }, "");
+                    res.setCacheTime(0); //don't cache image in browser
+                    img = new Image(null, res); //save as Vaadin image
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
