@@ -67,8 +67,8 @@ public class IDEExtract {
         //RandomAccessFile file = null;
         Image img = null;
         try {
-            mp3file = new Mp3File("G:\\dev\\apache-tomcat-8.0.17\\webapps\\ROOT\\Songs\\mp3\\" + playThisFile);
-//            mp3file = new Mp3File("/usr/local/apache-tomcat-7.0.41/webapps/ROOT/Songs/mp3/" + playThisFile);
+//            mp3file = new Mp3File("G:\\dev\\apache-tomcat-8.0.17\\webapps\\ROOT\\Songs\\mp3\\" + playThisFile);
+            mp3file = new Mp3File("/usr/local/apache-tomcat-7.0.41/webapps/ROOT/Songs/mp3/" + playThisFile);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("MP3 couldn't be loaded");
@@ -80,7 +80,7 @@ public class IDEExtract {
             final byte[] data = id3v2Tag.getAlbumImage(); //byte array of image: convert this to BufferedImage
             if (data != null) {
                 try {
-                    img = new Image("", new StreamResource( //save as Vaadin image
+                    img = new Image(null, new StreamResource( //save as Vaadin image
                         new StreamResource.StreamSource(){
                             public InputStream getStream(){
                                 return new ByteArrayInputStream(data);

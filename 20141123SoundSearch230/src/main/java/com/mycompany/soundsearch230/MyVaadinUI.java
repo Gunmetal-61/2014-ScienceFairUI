@@ -108,14 +108,15 @@ public class MyVaadinUI extends UI
         generalSearchBox.setWidth(400, Unit.PIXELS);
              
         final Button commenceSearchButton = new Button("Search");
-        final CheckBox subSong = new CheckBox("Subsong");
+        final CheckBox subSong = new CheckBox("Search for Subsong Moods");
+        subSong.addStyleName("coloredwhitefontsmall");
+        subSong.addStyleName("inNonGrid-generalmargin");
         Label siteLogo = new Label("AURA");
         Label placeHolder = new Label("");
         
         siteLogo.setSizeUndefined();
         siteLogo.setWidth(300, Unit.PIXELS);
         siteLogo.setStyleName("headlabel");
-//        toolbar.setMargin(new MarginInfo(false, true, false, true));
         toolbar.addComponent(siteLogo);
         toolbar.setComponentAlignment(siteLogo, Alignment.MIDDLE_LEFT);
         toolbarSearchCluster.addComponent(generalSearchBox);
