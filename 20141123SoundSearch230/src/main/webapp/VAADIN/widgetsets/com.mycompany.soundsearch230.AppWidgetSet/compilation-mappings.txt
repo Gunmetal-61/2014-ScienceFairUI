@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-6E165CC5C0AAEC4EC5FD3EF5E247CCE0.cache.js
-=======
 9CA3CA55DA53C17682B5BCE405ED45DF.cache.js
->>>>>>> 27faa559201d98ac54cebf018b43489406ed23b9
 ClientBundle.enableInlining true
 audioElementSupport maybe
 canvasElementSupport maybe
@@ -35,11 +31,7 @@ vaadin.profiler false
 videoElementSupport maybe
 webApiUsage modern
 
-<<<<<<< HEAD
-6E165CC5C0AAEC4EC5FD3EF5E247CCE0.cache.js
-=======
 9CA3CA55DA53C17682B5BCE405ED45DF.cache.js
->>>>>>> 27faa559201d98ac54cebf018b43489406ed23b9
 ClientBundle.enableInlining true
 audioElementSupport maybe
 canvasElementSupport maybe
@@ -72,11 +64,7 @@ vaadin.profiler false
 videoElementSupport maybe
 webApiUsage modern
 
-<<<<<<< HEAD
-6E165CC5C0AAEC4EC5FD3EF5E247CCE0.cache.js
-=======
 9CA3CA55DA53C17682B5BCE405ED45DF.cache.js
->>>>>>> 27faa559201d98ac54cebf018b43489406ed23b9
 ClientBundle.enableInlining true
 audioElementSupport maybe
 canvasElementSupport maybe
@@ -109,11 +97,7 @@ vaadin.profiler false
 videoElementSupport maybe
 webApiUsage modern
 
-<<<<<<< HEAD
-6E165CC5C0AAEC4EC5FD3EF5E247CCE0.cache.js
-=======
 9CA3CA55DA53C17682B5BCE405ED45DF.cache.js
->>>>>>> 27faa559201d98ac54cebf018b43489406ed23b9
 ClientBundle.enableInlining true
 audioElementSupport no
 canvasElementSupport no
@@ -146,11 +130,7 @@ vaadin.profiler false
 videoElementSupport no
 webApiUsage modern
 
-<<<<<<< HEAD
-6E165CC5C0AAEC4EC5FD3EF5E247CCE0.cache.js
-=======
 9CA3CA55DA53C17682B5BCE405ED45DF.cache.js
->>>>>>> 27faa559201d98ac54cebf018b43489406ed23b9
 ClientBundle.enableInlining true
 audioElementSupport maybe
 canvasElementSupport maybe
@@ -183,11 +163,7 @@ vaadin.profiler false
 videoElementSupport maybe
 webApiUsage modern
 
-<<<<<<< HEAD
-6E165CC5C0AAEC4EC5FD3EF5E247CCE0.cache.js
-=======
 9CA3CA55DA53C17682B5BCE405ED45DF.cache.js
->>>>>>> 27faa559201d98ac54cebf018b43489406ed23b9
 ClientBundle.enableInlining true
 audioElementSupport maybe
 canvasElementSupport maybe
@@ -220,11 +196,7 @@ vaadin.profiler false
 videoElementSupport maybe
 webApiUsage modern
 
-<<<<<<< HEAD
-6E165CC5C0AAEC4EC5FD3EF5E247CCE0.cache.js
-=======
 9CA3CA55DA53C17682B5BCE405ED45DF.cache.js
->>>>>>> 27faa559201d98ac54cebf018b43489406ed23b9
 ClientBundle.enableInlining true
 audioElementSupport maybe
 canvasElementSupport maybe
