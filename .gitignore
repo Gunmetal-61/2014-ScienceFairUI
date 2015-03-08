@@ -214,16 +214,11 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-<<<<<<< HEAD
-<<<<<<< HEAD
 /20141111SoundSearch210/target/
 /20141120SoundSearch220/target/
-=======
->>>>>>> parent of cd29649... 2014.11.14 Meeting Update
-=======
->>>>>>> parent of cd29649... 2014.11.14 Meeting Update
 /20141120SoundSearch221/target/
 /mavenproject1/target/
 /20141123SoundSearch230/target/
 /mavenproject2/target/
 /mavenproject3/target/
+/20141123SoundSearch230/src/main/webapp/VAADIN/widgetsets/com.mycompany.soundsearch230.AppWidgetSet/

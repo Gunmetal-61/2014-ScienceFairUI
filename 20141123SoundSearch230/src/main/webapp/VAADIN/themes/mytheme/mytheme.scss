@@ -37,8 +37,10 @@
   // Insert your own theme rules here
   
   .homepage {
-      background: transparent url("img/MusicListening.jpg");
-      /*background: url(http://virtualclubs.net/wp-content/uploads/desktop-backgrounds-hd-music-free-download-wallpaper-from-20141228061133-549f9f156e0e5.jpg);*/
+      background: transparent url("img/home.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      /*background: http://hublog.hubmed.org/files/2007-05-25-albums.jpg*/
   }
 
   .overlordbackground {
