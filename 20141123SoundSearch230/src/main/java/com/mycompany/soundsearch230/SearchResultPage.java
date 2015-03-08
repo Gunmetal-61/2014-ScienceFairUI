@@ -323,6 +323,7 @@ public class SearchResultPage {
                 VerticalLayout SonRPage = songResultPage2.drawSongRPage();
                 
                 other.addTab(SonRPage);
+                other.getTab(SonRPage).setId(nameIdentifier+"]~["+artistIdentifier+"]~["+album+"]~["+genre+"]~["+length+"]~["+year+"]~["+mood);
                 other.getTab(SonRPage).setCaption(WordUtils.capitalize(nameIdentifier)); //label tab with song name
                 other.getTab(SonRPage).setClosable(true); //allow user to close tabs
                 other.setSelectedTab(SonRPage);     

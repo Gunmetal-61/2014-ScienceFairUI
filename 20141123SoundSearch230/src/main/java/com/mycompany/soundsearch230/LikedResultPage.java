@@ -42,24 +42,6 @@ public class LikedResultPage {
         grid.setHeight(1200, Unit.PIXELS);
         grid.setWidth("100%");
         
-        AbsoluteLayout ingrid = new AbsoluteLayout();
-        ingrid.setHeight(1200, Unit.PIXELS);
-        ingrid.setWidth("100%");
-        
-        //primary.addComponent(grid);
-
-        grid.addComponent(ingrid, "left: 15px; top: 0px;");
-
-////////////////////////////////////////////////////////////////////////////////        
-        //SIDEBAR
-        VerticalLayout sidebar = new VerticalLayout();
-        sidebar.setHeight(1200, Unit.PIXELS);
-        sidebar.setWidth(200, Unit.PIXELS);
-        sidebar.setSpacing(true);
-        //sidebar.addStyleName(sidebur);
-        
-        ingrid.addComponent(sidebar, "left: 0px; top: 0px;");
-
 ////////////////////////////////////////////////////////////////////////////////
 //      Liked Results Table
 
@@ -111,7 +93,7 @@ public class LikedResultPage {
             }
         });
         
-        ingrid.addComponent(likedTable, "left: 200px; top: 0px;");
+        grid.addComponent(likedTable, "left: 0px; top: 0px;");
 
         return grid;
     }

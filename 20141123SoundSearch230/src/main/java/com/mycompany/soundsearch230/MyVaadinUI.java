@@ -44,6 +44,7 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet.CloseHandler;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
@@ -264,9 +265,11 @@ public class MyVaadinUI extends UI
 //      the bulk of the code which is in SongResultPages.java .
 
         tabs.addTab(HomePage, "Home");
-        //tabs.addTab(AdvSPage, "Advanced Search");
+        tabs.getTab(HomePage).setId("1");
         tabs.addTab(SeaRPage, "Search Results"); 
+        tabs.getTab(SeaRPage).setId("1");
         tabs.addTab(LikePage, "Liked Results");
+        tabs.getTab(LikePage).setId("1");
         
         tabs.setStyleName("tabtitle");
 
@@ -279,19 +282,29 @@ public class MyVaadinUI extends UI
         });
         
         //tab change listeners
-        tabs.addFocusListener(new FocusListener() {
-            @Override
-            public void focus(final FocusEvent event) {
-                
-            }
-        });    
-        tabs.addBlurListener(new BlurListener() {
+        tabs.addSelectedTabChangeListener(
+        new TabSheet.SelectedTabChangeListener() {
+            public void selectedTabChange(SelectedTabChangeEvent event) {
+                // Find the tabsheet
+                TabSheet tabsheet = event.getTabSheet();
 
-            public void blur(final BlurEvent event) {
-                
+                // Find the tab (here we know it's a layout)
+                Layout tab = (Layout) tabsheet.getSelectedTab();
+
+                // Get the tab caption from the tab object
+                String caption = tabsheet.getTab(tab).getCaption();
+                String id = tabsheet.getTab(tab).getId();
+                System.out.println(caption);
+                                
+                // Fill the tab content
+                if(!id.equals("1")){ //if it isn't a base tab
+                    tab.removeAllComponents();
+                    String[] properties = id.split("\\]~\\["); //split the id by ]~[
+                    SongResultPages songResultPage2 = new SongResultPages(properties[0],properties[1],properties[2],properties[3],Integer.valueOf(properties[4]),Integer.valueOf(properties[5]),Integer.valueOf(properties[6]));
+                    tab.addComponent(songResultPage2.drawSongRPage());
+                }
             }
         });
-        
         overlord.addComponent(tabs);
    }
 }
