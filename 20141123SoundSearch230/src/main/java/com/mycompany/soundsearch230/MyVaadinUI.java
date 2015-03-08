@@ -87,20 +87,20 @@ public class MyVaadinUI extends UI
     @Override
     protected void init(VaadinRequest request) {
         VerticalLayout overlord = new VerticalLayout();
-        overlord.setSizeFull();
+//        overlord.setSizeFull();
         overlord.setPrimaryStyleName("overlordbackground");
-        VerticalLayout figureHead = new VerticalLayout();
-        overlord.addComponent(figureHead);
+//        VerticalLayout figurehead = new VerticalLayout();
+//        overlord.addComponent(figureHead);
         final HorizontalLayout toolbar = new HorizontalLayout();
         toolbar.setHeight(100, Unit.PIXELS);
         toolbar.setSizeFull();
         HorizontalLayout toolbarSearchCluster = new HorizontalLayout();
         final TabSheet tabs = new TabSheet();
         getPage().setTitle("Aura");
-//        overlord.setStyleName("homeimage");
+        
 
         setContent(overlord);
-        figureHead.addComponent(toolbar);
+        overlord.addComponent(toolbar);
 
     
         final TextField generalSearchBox = new TextField();
@@ -110,8 +110,9 @@ public class MyVaadinUI extends UI
         final Button commenceSearchButton = new Button("Search");
         final CheckBox subSong = new CheckBox("Search for Subsong Moods");
         subSong.addStyleName("coloredwhitefontsmall");
-        subSong.addStyleName("inNonGrid-generalmargin");
+        subSong.addStyleName("geninfocontainer-generalmargin");
         Label siteLogo = new Label("AURA");
+        siteLogo.setStyleName("geninfocontainer-generalmargin");
         Label placeHolder = new Label("");
         
         siteLogo.setSizeUndefined();
@@ -291,6 +292,6 @@ public class MyVaadinUI extends UI
             }
         });
         
-        figureHead.addComponent(tabs);
+        overlord.addComponent(tabs);
    }
 }

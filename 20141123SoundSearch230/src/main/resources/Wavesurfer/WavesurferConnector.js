@@ -79,28 +79,28 @@ Wavesurfer_Wavesurfer =
                 var color = "rgba(0,0,0,0.1)";
                 switch(mood){
                     case 0: //love, inspiration
-                        color = "rgba(25,181,254,0.3)";
+                        color = "rgba(211,84,6,0.3)"; //Orange Color aka: "Burnt Orange", D54300 
                     break;
                     case 1: //fascination, admiration
-                        color = "rgba(248,148,6,0.3)";  
+                        color = "rgba(247,202,24,0.3)"; //Yellow Color aka: "Ripe Lemon", F7CA18
                     break;
                     case 2: //satisfaction, relaxed
-                        color = "rgba(253,227,167,0.3)";
+                        color = "rgba(38,166,91,0.3)"; //Green Color aka: "Eucalyptus", 26A65B
                     break;
                     case 3: //calm, awaiting
-                        color = "rgba(200,147,197,0.3)";
+                        color = "rgba(27,163,156,0.3)"; // Aqua Color aka: "Light Sea Green", 1BA39C
                     break;
                     case 4: //boredom, sadness
-                        color = "rgba(191,191,191,0.3)";
+                        color = "rgba(65,131,215,0.3)"; //Blue Color aka: "Royal Blue", 4183D7
                     break;
                     case 5: //disappointment, jealousy
-                        color = "rgba(154,18,179,0.3)";
+                        color = "rgba(142,68,173,0.3)"; //Purple Color aka: "Studio", 8E44AD
                     break;
                     case 6: //irritation, disgust
-                        color = "rgba(242,38,19,0.3)"; //red
+                        color = "rgba(242,38,19,0.3)"; //Red Color aka: "Thunderbird", D91E18
                     break;
                     case 7: //astonishment, curiosity
-                        color = "rgba(246,71,71,0.3)"; 
+                        color = "rgba(149,165,166,0.3)"; //Grey Color aka: "Cascade", 95A5A6
                     break;
                 }
                 console.log(color);
